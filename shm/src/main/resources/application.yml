@@ -1,0 +1,21 @@
+
+# Server settings (ServerProperties)
+server:
+  port: 8888
+  address: 127.0.0.1
+  sessionTimeout: 30
+  contextPath: /shm
+
+# MVC
+spring.view.prefix: /WEB-INF/jsp/
+spring.view.suffix: .jsp
+
+# JPA
+#spring.jpa.hibernate.ddl-auto: create-drop
+
+#spring:
+#  datasource:
+ #   driverClassName: com.mysql.jdbc.Driver
+ #   url: jdbc:mysql://localhost:3306/proddb
+ #   username: root
+ #  password: 
