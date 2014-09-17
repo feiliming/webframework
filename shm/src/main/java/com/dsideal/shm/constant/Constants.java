@@ -6,6 +6,8 @@ package com.dsideal.shm.constant;
  *
  */
 public final class Constants {
+	
+	public static final String SESSION_INFO = "sessionInfo";
 
 	//启用, 禁用
 	public static final Integer ENABLED = 0; 

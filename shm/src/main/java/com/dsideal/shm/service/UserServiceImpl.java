@@ -83,12 +83,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Page<User> getByLoginNameContaining(String loginName,
 			Pageable pageable) {
-		return repository.findByLoginNameContaining(loginName, pageable);
+		return repository.findByLoginNameContainingOrderByIdAsc(loginName, pageable);
 	}
 
 	@Override
 	public Page<User> getByRealNameContaining(String realName, Pageable pageable) {
-		return repository.findByRealNameContaining(realName, pageable);
+		return repository.findByRealNameContainingOrderByIdAsc(realName, pageable);
 	}
 
 	@Override

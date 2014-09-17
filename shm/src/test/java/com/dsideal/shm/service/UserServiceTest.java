@@ -39,5 +39,11 @@ public class UserServiceTest {
 		for(User u : userList){
 			System.out.println(u.toString());
 		}
+		
+		User user2 = userRepository.findByLoginName("admin");
+		System.out.println(user2.getLoginName());
+		
+		User user3 = userService.getByLoginNameAndPassword("admin", "123456");
+		System.out.println(user3.getLoginName() + user3.getRealName());
 	}
 }
