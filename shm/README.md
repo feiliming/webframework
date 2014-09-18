@@ -14,6 +14,8 @@ Technology
 * Apache Maven 3.x
 
 * Spring Boot 1.2.0.BUILD-SNAPSHOT
+* Spring MVC
+* Spring Data JPA
 
 Quick start
 ------------------------------
