@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.dsideal.shm.Application;
+import com.dsideal.shm.ApplicationMain;
 import com.dsideal.shm.domain.User;
 import com.dsideal.shm.repository.UserRepository;
 
@@ -19,7 +19,7 @@ import com.dsideal.shm.repository.UserRepository;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = ApplicationMain.class)
 public class UserServiceTest {
 
 	@Autowired

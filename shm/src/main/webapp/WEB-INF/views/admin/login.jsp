@@ -5,37 +5,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>吉林省组织机构代码电子商务交易信用服务信息平台</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/easyui/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/easyui/themes/icon.css">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui/jquery.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/js/easyui/themes/icon.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	var login = function(){
-		//$.messager.progress({
-		//	title : '提示',
-		//	text : '数据处理中，请稍后....'
-		//});
+		$.messager.progress({
+			title : '提示',
+			text : '数据处理中，请稍后....'
+		});
 		$('#loginForm').form('submit', {
 			url: '${pageContext.request.contextPath}/admin/login',
 			onSubmit: function(){
-				//param.loginName = $;
-				//param.password = ;
 				var isValid = $('#loginForm').form('validate');
 				if (!isValid){
-					///$.messager.progress('close');
+					$.messager.progress('close');
 				}
 				return isValid;
 			},
 			success: function(data){
-				//$.messager.progress('close');
-				alert($.parseJSON(data));
-				alert(data.success);
+				$.messager.progress('close');
+				data = $.parseJSON(data);
 				if(data.success){
-					alert(11);
 					self.location = '${pageContext.request.contextPath}/admin';
 				} else {
-					$.messager.alert('错误', result.msg, 'error');
+					$.messager.alert('错误', data.msg, 'error');
 				}
 			}
 		});

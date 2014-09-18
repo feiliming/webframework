@@ -31,11 +31,6 @@ public class AdminController {
 		if(sessionInfo != null && sessionInfo.getUserId() != null){
 			return "/admin/index";
 		}
-		return "redirect:/admin/tologin";
-	}
-	
-	@RequestMapping("/tologin")
-	public String toLogin(){
 		return "/admin/login";
 	}
 	
@@ -61,7 +56,7 @@ public class AdminController {
 			request.getSession().setAttribute(Constants.SESSION_INFO, sessionInfo2);
 			return json;
 		}
-		json.setMsg("登录失败.");
+		json.setMsg("用户名或密码错误.");
 		return json;
 	}
 	
@@ -76,4 +71,5 @@ public class AdminController {
 		j.setMsg("注销成功！");
 		return j;
 	}
+	
 }
