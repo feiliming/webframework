@@ -11,6 +11,12 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
+	
+	var sessionInfo_userId = '${sessionInfo.id}';
+	if (sessionInfo_userId) {//如果登录,直接跳转到index页面
+		window.location.href='${ctx}/admin/index';
+	}
+	
 	var login = function(){
 		$.messager.progress({
 			title : '提示',
