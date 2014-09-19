@@ -1,5 +1,6 @@
 package com.dsideal.shm;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -15,13 +16,11 @@ import org.springframework.context.annotation.ComponentScan;
 public class ApplicationMain extends SpringBootServletInitializer{
 
 	//内嵌tomcat
-	/**
     public static void main(String[] args) throws Exception {
-    	SpringApplication app = new SpringApplication(ApplicationConfiguration.class);
+    	SpringApplication app = new SpringApplication(ApplicationMain.class);
     	app.setShowBanner(false);
     	app.run(args);
     }
-    */
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

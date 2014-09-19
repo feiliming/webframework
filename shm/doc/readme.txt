@@ -71,6 +71,27 @@ public class Application extends SpringBootServletInitializer{
 	}
 }
 
-5. spring mvc
+5.切换到内嵌tomcat
+参考4，并添加jasper编译jsp
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-6.     
+6. 添加数据库
+classpath下有数据库包，spring boot会自动查找
+也可在Application。properties下配置
+spring.jpa.database: MySQL
+spring.jpa.show-sql: true
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+6. spring mvc  

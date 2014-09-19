@@ -33,7 +33,7 @@ public class UserServiceTest {
 	
 	@Test
 	public void saveUser() throws Exception{
-		User user = new User("feilm", "123456", "费利明", "275400898@qq.com", 0);
+		User user = new User("feilm", "123456", "费利明", 0, 20, "275400898@qq.com", 0);
 		userService.add(user);
 		List<User> userList = userService.getAll();
 		for(User u : userList){
