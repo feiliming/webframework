@@ -7,12 +7,12 @@
 <head>
 <jsp:include page="../inc.jsp"></jsp:include>
 <meta http-equiv="X-UA-Compatible" content="edge" />
-<c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/edit')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/edit')}">
 	<script type="text/javascript">
 		$.canEdit = false;
 	</script>
 </c:if>
-<c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/delete')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/delete')}">
 	<script type="text/javascript">
 		$.canDelete = true;
 	</script>
@@ -22,13 +22,13 @@
 	var dataGrid;
 	$(function() {
 		dataGrid = $('#dataGrid').datagrid({
-			url : '${ctx}' + '/enterpriseinfo/dataGrid',
+			url : '${ctx}' + '/productinfo/dataGrid',
 			striped : true,
 			rownumbers : true,
 			pagination : true,
 			singleSelect : true,
-			idField : 'code_id',
-			sortName : 'code_id',
+			idField : 'pid',
+			sortName : 'pid',
 			sortOrder : 'asc',
 			pageSize : 50,
 			pageList : [ 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 ],
@@ -40,32 +40,32 @@
 			}, {
 				width : '200',
 				title : '名称',
-				field : 'code_cn',
+				field : 'product_name',
 				sortable : true
 			} , {
 				width : '80',
-				title : '经济行业',
-				field : 'industry_id',
+				title : '产品类别',
+				field : 'product_class',
 				sortable : true
 			}, {
-				width : '200',
-				title : '地址',
-				field : 'addressname',
+				width : '120',
+				title : '常用名',
+				field : 'product_commonname',
+				sortable : true
+			}, {
+				width : '120',
+				title : '执行标准ID',
+				field : 'standard_id',
+				sortable : true
+			}, {
+				width : '150',
+				title : '执行标准名称',
+				field : 'standard_name',
 				sortable : true
 			}, {
 				width : '80',
-				title : '邮编',
-				field : 'postcode',
-				sortable : true
-			}, {
-				width : '100',
-				title : '电话',
-				field : 'tel',
-				sortable : true
-			}, {
-				width : '80',
-				title : '状态',
-				field : 'status',
+				title : '产品状态',
+				field : 'product_status',
 				sortable : true,
 				formatter : function(value, row, index) {
 					switch (value) {
@@ -90,11 +90,11 @@
 					//if(row.isdefault!=0){
 						//str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
 						if ($.canEdit) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.code_id);
+							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.pid);
 						}
 						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
 						if ($.canDelete) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.code_id);
+							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.pid);
 						}
 					///}
 					return str;
@@ -109,32 +109,32 @@
 			title : '添加',
 			width : 500,
 			height : 300,
-			href : '${ctx}/enterpriseinfo/addPage',
+			href : '${ctx}/productinfo/addPage',
 			buttons : [ {
 				text : '添加',
 				handler : function() {
 					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个treeGrid，所以先预定义好
-					var f = parent.$.modalDialog.handler.find('#enterpriseinfoAddForm');
+					var f = parent.$.modalDialog.handler.find('#productinfoAddForm');
 					f.submit();
 				}
 			} ]
 		});
 	}
 	
-	function deleteFun(code_id) {
-		if (code_id == undefined) {//点击右键菜单才会触发这个
+	function deleteFun(pid) {
+		if (pid == undefined) {//点击右键菜单才会触发这个
 			var rows = dataGrid.datagrid('getSelections');
-			code_id = rows[0].code_id;
+			pid = rows[0].pid;
 		} else {//点击操作里面的删除图标会触发这个
 			dataGrid.datagrid('unselectAll').datagrid('uncheckAll');
 		}
 		parent.$.messager.confirm('询问', '您是否要删除当前机构？', function(b) {
 			if (b) {
 				var currentUserId = '${sessionInfo.id}';/*当前登录用户的ID*/
-				if (currentUserId != code_id) {
+				if (currentUserId != pid) {
 					progressLoad();
-					$.post('${ctx}/enterpriseinfo/delete', {
-						code_id : code_id
+					$.post('${ctx}/productinfo/delete', {
+						pid : pid
 					}, function(result) {
 						if (result.success) {
 							parent.$.messager.alert('提示', result.msg, 'info');
@@ -152,10 +152,10 @@
 		});
 	}
 	
-	function editFun(code_id) {
-		if (code_id == undefined) {
+	function editFun(pid) {
+		if (pid == undefined) {
 			var rows = dataGrid.datagrid('getSelections');
-			code_id = rows[0].code_id;
+			pid = rows[0].pid;
 		} else {
 			dataGrid.datagrid('unselectAll').datagrid('uncheckAll');
 		}
@@ -163,12 +163,12 @@
 			title : '编辑',
 			width : 500,
 			height : 300,
-			href : '${ctx}/enterpriseinfo/editPage?code_id=' + code_id,
+			href : '${ctx}/productinfo/editPage?pid=' + pid,
 			buttons : [ {
 				text : '编辑',
 				handler : function() {
 					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
-					var f = parent.$.modalDialog.handler.find('#enterpriseinfoEditForm');
+					var f = parent.$.modalDialog.handler.find('#productinfoEditForm');
 					f.submit();
 				}
 			} ]
@@ -181,9 +181,8 @@
 	
 	function cleanFun() {
 		$('#searchForm input').val('');
-		$('#searchForm select').val('ALL');
 		dataGrid.datagrid('load', {});
-	}
+	}	
 	</script>
 </head>
 <body  class="easyui-layout" data-options="fit:true,border:false" style="overflow: hidden;">
@@ -193,31 +192,21 @@
 				<tr>
 					<th>组织机构代码:</th>
 					<td><input name="code_id" placeholder="请输入组织机构代码"/></td>
-					<th>组织机构名称:</th>
-					<td><input name="code_cn" placeholder="请输入组织机构名称"/></td>
-					<th>信用等级:</th>
-					<td>
-						<select name="creditlevel">
-							<option value="ALL" selected="selected">--所有--</option>
-							<option value="AAA">AAA</option>
-							<option value="AA">AA</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-						</select>
+					<th>产品名称:</th>
+					<td><input name="product_name" placeholder="请输入组织机构名称"/>
 						<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_search',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_cancel',plain:true" onclick="cleanFun();">清空</a>
 					</td>
 				</tr>
 			</table>
 		</form>
-	</div>
-
+	</div>	
+	
 	<div data-options="region:'center',border:false">
 		<table id="dataGrid"></table>
 	</div>
 	
 	<div id="toolbar" style="display: none;">
-		<c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/add')}">
+		<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/add')}">
 			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon_add'">添加</a>
 		</c:if>
 	</div>

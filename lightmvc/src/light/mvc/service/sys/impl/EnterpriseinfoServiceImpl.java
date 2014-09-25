@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import light.mvc.dao.BaseDaoI;
 import light.mvc.model.sys.Tenterpriseinfo;
-import light.mvc.model.sys.Tresource;
 import light.mvc.pageModel.base.PageFilter;
 import light.mvc.pageModel.base.Tree;
 import light.mvc.pageModel.sys.Enterpriseinfo;
@@ -53,11 +51,11 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoServiceI {
 	}
 
 	@Override
-	public List<Enterpriseinfo> dataGrid(Enterpriseinfo Enterpriseinfo, PageFilter ph) {
+	public List<Enterpriseinfo> dataGrid(Enterpriseinfo enterpriseinfo, PageFilter ph) {
 		List<Enterpriseinfo> ul = new ArrayList<Enterpriseinfo>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		String hql = " from Tenterpriseinfo t ";
-		List<Tenterpriseinfo> l = enterpriseinfoDao.find(hql + whereHql(Enterpriseinfo, params) + orderHql(ph), params, ph.getPage(), ph.getRows());
+		List<Tenterpriseinfo> l = enterpriseinfoDao.find(hql + whereHql(enterpriseinfo, params) + orderHql(ph), params, ph.getPage(), ph.getRows());
 		for (Tenterpriseinfo t : l) {
 			Enterpriseinfo u = new Enterpriseinfo();
 			BeanUtils.copyProperties(t, u);
@@ -67,19 +65,26 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoServiceI {
 	}
 
 	@Override
-	public Long count(Enterpriseinfo Enterpriseinfo, PageFilter ph) {
+	public Long count(Enterpriseinfo enterpriseinfo, PageFilter ph) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		String hql = " from Tenterpriseinfo t ";
-		return enterpriseinfoDao.count("select count(*) " + hql + whereHql(Enterpriseinfo, params), params);
+		return enterpriseinfoDao.count("select count(*) " + hql + whereHql(enterpriseinfo, params), params);
 	}
 
-	private String whereHql(Enterpriseinfo Enterpriseinfo, Map<String, Object> params) {
+	private String whereHql(Enterpriseinfo enterpriseinfo, Map<String, Object> params) {
 		String hql = "";
-		if (Enterpriseinfo != null) {
+		if (enterpriseinfo != null) {
 			hql += " where 1=1 ";
-			if (Enterpriseinfo.getCode_cn() != null) {
-				hql += " and t.name like :name";
-				params.put("name", "%%" + Enterpriseinfo.getCode_cn() + "%%");
+			if (enterpriseinfo.getCode_id() != null) {
+				hql += " and t.code_id like :code_id";
+				params.put("code_id", "%%" + enterpriseinfo.getCode_id() + "%%");
+			}
+			if (enterpriseinfo.getCode_cn() != null) {
+				hql += " and t.code_cn like :code_cn";
+				params.put("code_cn", "%%" + enterpriseinfo.getCode_cn() + "%%");
+			}
+			if (enterpriseinfo.getCreditlevel() != null && !"ALL".equals(enterpriseinfo.getCreditlevel())) {
+				hql += " and t.creditlevel = '" + enterpriseinfo.getCreditlevel() + "'";
 			}
 		}
 		return hql;
