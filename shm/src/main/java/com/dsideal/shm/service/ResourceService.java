@@ -3,6 +3,7 @@ package com.dsideal.shm.service;
 import java.util.List;
 
 import com.dsideal.shm.domain.Resource;
+import com.dsideal.shm.vo.Tree;
 
 /**
  * 
@@ -16,4 +17,5 @@ public interface ResourceService {
 	void delete(List<Resource> resourceList) throws Exception;
 	
 	Resource getById(Long id);
+	List<Tree> getByUserId(Long userId);
 }

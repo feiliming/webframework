@@ -38,6 +38,11 @@ public class EnterpriseinfoController extends BaseController {
 		return grid;
 	}
 	
+	@RequestMapping("/statistic")
+	public String statistics(){
+		return "/admin/enterpriseinfostatistic";
+	}
+	
 	@RequestMapping("/tree")
 	@ResponseBody
 	public List<Tree> tree() {

@@ -8,6 +8,7 @@ public class SessionInfo {
 	private String loginName;// 登录名
 	private String realName;// 姓名
 	private String ip;// 用户IP
+	private String roleId;
 
 	private List<String> resourceList;// 用户可以访问的资源地址列表
 	
@@ -43,6 +44,14 @@ public class SessionInfo {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public String getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 
 	public List<String> getResourceList() {

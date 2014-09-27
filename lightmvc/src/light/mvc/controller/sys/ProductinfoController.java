@@ -38,6 +38,11 @@ public class ProductinfoController extends BaseController {
 		return grid;
 	}
 	
+	@RequestMapping("/statistic")
+	public String statistics(){
+		return "/admin/productinfostatistic";
+	}
+	
 	@RequestMapping("/tree")
 	@ResponseBody
 	public List<Tree> tree() {
