@@ -12,49 +12,44 @@
 <title>组织机构查询</title>
 	<script type="text/javascript">
 	$(function() {
-		//时间段内总体情况统计，查询条件为开始时间和结束时间
-	   	var totalxml = "<graph caption='安全信息总体情况统计(时间段内)' xAxisName='统计类型' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='检查数'/><category name='隐患数'/>"+
-	   	"<category name='事故数'/></categories>"+
-	   	"<dataset><set color='588526' value='100'/><set color='F6BD0F' value='11'/><set color='9D080D' value='2'/>"+
+		//////////////////
+	   	var totalxml = "<graph caption='组织机构按类型统计' xAxisName='宽城区' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
+	   	"<categories><category name='企业'/><category name='事业单位'/><category name='社团'/><category name='机关法人'/><category name='民办非企业单位'/>"+
+	   	"<category name='个体'/><category name='工会'/></categories>"+
+	   	"<dataset><set color='C6EDFF' value='440'/><set color='FFD42C' value='840'/><set color='9DCA14' value='650'/><set color='D37A43' value='490'/><set color='21A9A9' value='655'/><set color='EE6464' value='980'/><set color='A25DA2' value='930'/>"+
 	   	"</dataset>"+
 	   	"</graph>";
-		var chart = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "700", "265"); 
+		var chart = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "900", "350"); 
 		chart.setDataXML(totalxml);		   
 		chart.render("typediv"); 	
-		//时间段内按检查项统计，查询条件为开始时间和结束时间
-		var checkStandardxml = "<graph caption='安全信息按检查项统计(时间段内)' xAxisName='检查项' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='建筑安全'/><category name='教学设施'/><category name='消防安全'/><category name='水电气安全'/>"+
-	   	"<category name='公共卫生安全'/><category name='食品卫生安全'/><category name='校舍安全'/><category name='自然灾害安全'/></categories>"+
-	   	"<dataset seriesName='检查数' color='588526'><set value='110'/><set value='150'/><set value='110'/><set value='130'/><set value='119'/><set value='120'/><set value='115'/><set value='100'/></dataset>"+
-	   	"<dataset seriesName='隐患数' color='B3AA00'><set value='20'/><set value='12'/><set value='15'/><set value='10'/><set value='8'/><set value='16'/><set value='14'/><set value='12'/></dataset>"+
-	   	"<dataset seriesName='事故数' color='9D080D'><set value='8'/><set value='1'/><set value='3'/><set value='2'/><set value='1'/><set value='3'/><set value='1'/><set value='2'/></dataset>"+
+		////////////////////
+		var participantPiexml = "<graph  caption='组织机构各区分布情况' baseFontSize='12' showNames='1' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
+	   	"<set name='宽城区' value='180' isSliced='1'/><set name='南关区' value='120'/><set name='朝阳区' value='170'/><set name='德惠市' value='80'/>"+
+	   	"<set name='榆树市' value='120'/><set name='九台市' value='50'/><set name='农安县' value='50'/><set name='双阳区' value='100'/>"+
+	   	"<set name='绿园区' value='80'/>"+
 	   	"</graph>";
-		var chart1 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "700", "265"); 
-		chart1.setDataXML(checkStandardxml);		   
+		var chart1 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/Pie3D.swf", "ChartId", "900", "350");
+		chart1.setDataXML(participantPiexml);		   
 		chart1.render("typediv1"); 
-		//时间段内按地点统计，查询条件为开始时间和结束时间
-		var positionxml = "<graph caption='安全信息按地点统计(时间段内)' xAxisName='地点' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='教学楼'/><category name='体育馆'/><category name='办公楼'/><category name='图书馆'/>"+
-	   	"<category name='游泳馆'/><category name='食堂'/><category name='宿舍'/><category name='音乐厅'/><category name='实验楼'/><category name='车库'/></categories>"+
-	   	"<dataset seriesName='检查数' color='588526'><set value='110'/><set value='150'/><set value='110'/><set value='130'/><set value='100'/><set value='90'/><set value='110'/><set value='120'/><set value='110'/><set value='125'/></dataset>"+
-	   	"<dataset seriesName='隐患数' color='B3AA00'><set value='20'/><set value='12'/><set value='15'/><set value='10'/><set value='8'/><set value='16'/><set value='14'/><set value='12'/><set value='15'/><set value='10'/></dataset>"+
-	   	"<dataset seriesName='事故数' color='9D080D'><set value='8'/><set value='1'/><set value='3'/><set value='2'/><set value='1'/><set value='3'/><set value='1'/><set value='2'/><set value='4'/><set value='2'/></dataset>"+
+		///////////////////////
+		var positionxml = "<graph caption='组织机构信用度排名前十' xAxisName='组织机构' yAxisName='分数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
+	   	"<categories><category name='吉林省组织机构代码管理中心'/><category name='吉林省工商行政管理局'/><category name='吉林省事业单位登记管理局'/><category name='扶余县双春纯净水有限公司'/><category name='吉林市棋盘粮油有限公司'/>"+
+	   	"<category name='吉林兴龙薯业有限公司'/><category name='集安市恒益纺织有限公司'/><category name='白城市宏达化工产品有限公司'/><category name='吉林市汇缘包装制品有限公司'/><category name='吉林兆丰农业开发有限公司'/></categories>"+
+	   	"<dataset><set color='C6EDFF' value='99'/><set color='FFD42C' value='95'/><set color='9DCA14' value='92'/><set color='D37A43' value='88'/><set color='21A9A9' value='83'/><set color='EE6464' value='80'/><set color='A25DA2' value='75'/><set color='A25DA2' value='72'/><set color='A25DA2' value='71'/><set color='A25DA2' value='65'/>"+
+	   	"</dataset>"+
 	   	"</graph>";
-		var chart2 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "700", "265"); 
+		var chart2 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSBar3D.swf", "ChartId", "900", "350"); 
 		chart2.setDataXML(positionxml);		   
-		chart2.render("typediv2"); 
-		//时间段内按检查员统计，查询条件为开始时间和结束时间
-		var checkerxml = "<graph caption='安全信息按检查员统计(时间段内)' xAxisName='检查员' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='刘春香'/>"+
-	   	"<category name='范少魁'/><category name='刘一年'/><category name='萧炎'/><category name='毕爽'/></categories>"+
-	   	"<dataset seriesName='检查数' color='588526'><set value='130'/><set value='100'/><set value='90'/><set value='110'/><set value='120'/></dataset>"+
-	   	"<dataset seriesName='隐患数' color='B3AA00'><set value='10'/><set value='8'/><set value='16'/><set value='14'/><set value='12'/></dataset>"+
-	   	"<dataset seriesName='事故数' color='9D080D'><set value='2'/><set value='1'/><set value='3'/><set value='1'/><set value='2'/></dataset>"+
+		chart2.render("typediv2");
+		///////////////////////////
+		var OrgRiskMonthLinexml = "<graph  caption='组织机构历史变化情况' xAxisName='年份' yAxisName='分数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
+	   	"<categories><category name='2008'/><category name='2009'/><category name='2010'/><category name='2011'/><category name='2012'/><category name='2013'/>"+
+	   	"<category name='2014'/></categories>"+
+	   	"<dataset seriesName='吉林省工商行政管理局'color='588526'><set value='80'/><set value='85'/><set value='90'/><set value='82'/><set value='80'/><set value='89'/><set value='98'/></dataset>"+
 	   	"</graph>";
-		var chart3 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "700", "265"); 
-		chart3.setDataXML(checkerxml);		   
-		chart3.render("typediv3"); 
+		var chart3 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSLine.swf", "ChartId", "900", "350");
+		chart3.setDataXML(OrgRiskMonthLinexml);		   
+		chart3.render("typediv3"); 		
 	});
 
 	function searchFun() {
@@ -69,6 +64,7 @@
 	</script>
 </head>
 <body class="easyui-layout" data-options="fit:true,border:false" style="overflow: hidden;">
+<!-- 
 	<div data-options="region:'north',border:false" style="height: 30px; overflow: hidden;background-color: #f4f4f4">
 		<form id="searchForm">
 			<table>
@@ -93,7 +89,7 @@
 			</table>
 		</form>
 	</div>
-
+ -->
 	<div data-options="region:'center',border:false">
 		<div id="typediv" align="center" style="display:" ></div>	
 		<div id="typediv1" align="center" style="display:" ></div>	
