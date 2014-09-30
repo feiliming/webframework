@@ -10,7 +10,9 @@ import light.mvc.pageModel.base.Json;
 import light.mvc.pageModel.base.PageFilter;
 import light.mvc.pageModel.base.Tree;
 import light.mvc.pageModel.sys.Productinfo;
+import light.mvc.pageModel.sys.Zrxzqh;
 import light.mvc.service.sys.ProductinfoServiceI;
+import light.mvc.service.sys.ZrxzqhServiceI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ public class ProductinfoController extends BaseController {
 	@Autowired
 	private ProductinfoServiceI productinfoService;
 	
+	@Autowired
+	private ZrxzqhServiceI zrxzqhService;
+	
 	@RequestMapping("/manager")
 	public String manager() {
 		return "/admin/productinfo";
@@ -31,16 +36,35 @@ public class ProductinfoController extends BaseController {
 
 	@RequestMapping("/dataGrid")
 	@ResponseBody
-	public Grid dataGrid(Productinfo productinfo, PageFilter ph) {
+	public Grid dataGrid(HttpServletRequest request, Productinfo productinfo, PageFilter ph) {
+		String dishi = request.getParameter("dishi");
+		String quxian = request.getParameter("quxian");
+		String region = "";
+		if(quxian != null && !"".equals(quxian)){
+			region = quxian;
+		}else if(dishi != null && !"".equals(dishi)){
+			region = dishi;
+		}		
 		Grid grid = new Grid();
-		grid.setRows(productinfoService.dataGrid(productinfo, ph));
-		grid.setTotal(productinfoService.count(productinfo, ph));
+		grid.setRows(productinfoService.dataGrid(region, productinfo, ph));
+		grid.setTotal(productinfoService.count(region, productinfo, ph));
 		return grid;
 	}
 	
 	@RequestMapping("/statistic")
 	public String statistics(){
 		return "/admin/productinfostatistic";
+	}
+	
+	@RequestMapping("/getLevel2")
+	@ResponseBody
+	public List<Zrxzqh> getLevel2(){
+		return zrxzqhService.getLevel2();
+	}
+	@RequestMapping("/getLevel3")
+	@ResponseBody
+	public List<Zrxzqh> getLevel3(String dishiid){
+		return zrxzqhService.getLevel3(dishiid);
 	}
 	
 	@RequestMapping("/tree")

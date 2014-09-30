@@ -51,37 +51,42 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 	}
 
 	@Override
-	public List<Productinfo> dataGrid(Productinfo productinfo, PageFilter ph) {
+	public List<Productinfo> dataGrid(String region, Productinfo productinfo, PageFilter ph) {
 		List<Productinfo> ul = new ArrayList<Productinfo>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		String hql = " from Tproductinfo t ";
-		List<Tproductinfo> l = productinfoDao.find(hql + whereHql(productinfo, params) + orderHql(ph), params, ph.getPage(), ph.getRows());
+		List<Tproductinfo> l = productinfoDao.find(hql + whereHql(region, productinfo, params) + orderHql(ph), params, ph.getPage(), ph.getRows());
 		for (Tproductinfo t : l) {
 			Productinfo u = new Productinfo();
 			BeanUtils.copyProperties(t, u);
+			u.setCode_id(t.getTenterpriseinfo().getCode_id());
 			ul.add(u);
 		}
 		return ul;
 	}
 
 	@Override
-	public Long count(Productinfo productinfo, PageFilter ph) {
+	public Long count(String region, Productinfo productinfo, PageFilter ph) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		String hql = " from Tproductinfo t ";
-		return productinfoDao.count("select count(*) " + hql + whereHql(productinfo, params), params);
+		return productinfoDao.count("select count(*) " + hql + whereHql(region, productinfo, params), params);
 	}
 
-	private String whereHql(Productinfo productinfo, Map<String, Object> params) {
+	private String whereHql(String region, Productinfo productinfo, Map<String, Object> params) {
 		String hql = "";
 		if (productinfo != null) {
 			hql += " where 1=1 ";
-			if (productinfo.getCode_id() != null) {
-				hql += " and t.code_id like :code_id";
-				params.put("code_id", "%%" + productinfo.getCode_id() + "%%");
+			if (productinfo.getCode_id() != null && !"".equals(productinfo.getCode_id())) {
+				hql += " and t.tenterpriseinfo.code_id like '%"+productinfo.getCode_id()+"%'";
+				//params.put("code_id", "%%" + productinfo.getCode_id() + "%%");
 			}
-			if (productinfo.getProduct_name() != null) {
+			if (productinfo.getProduct_name() != null && !"".equals(productinfo.getProduct_name())) {
 				hql += " and t.product_name like :product_name";
 				params.put("product_name", "%%" + productinfo.getProduct_name() + "%%");
+			}
+			if(region != null && !"".equals(region)){
+				hql += " and t.tenterpriseinfo.zrxzqh like '%"+region+"%'";
+				//params.put("zrxzqh", "%%" + region + "%%");
 			}
 		}
 		return hql;
@@ -105,7 +110,7 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 		if ((l != null) && (l.size() > 0)) {
 			for (Tproductinfo r : l) {
 				Tree tree = new Tree();
-				tree.setId(r.getCode_id());
+				tree.setId(r.getTenterpriseinfo().getCode_id());
 				tree.setText(r.getProduct_name());
 				lt.add(tree);
 			}

@@ -36,7 +36,8 @@ public class Enterpriseinfo extends IdEntity implements java.io.Serializable{
 	private String outstanding;
 	private String glory;
 	private Date finishdate;
-	private String zrxzqh;
+	private String zrxzqh_id;
+	private String zrxzqh_name;
 	private String workunit;
 	private String ly;
 	private String zlfzr;
@@ -269,12 +270,20 @@ public class Enterpriseinfo extends IdEntity implements java.io.Serializable{
 		this.finishdate = finishdate;
 	}
 
-	public String getZrxzqh() {
-		return zrxzqh;
+	public String getZrxzqh_id() {
+		return zrxzqh_id;
 	}
 
-	public void setZrxzqh(String zrxzqh) {
-		this.zrxzqh = zrxzqh;
+	public void setZrxzqh_id(String zrxzqh_id) {
+		this.zrxzqh_id = zrxzqh_id;
+	}
+
+	public String getZrxzqh_name() {
+		return zrxzqh_name;
+	}
+
+	public void setZrxzqh_name(String zrxzqh_name) {
+		this.zrxzqh_name = zrxzqh_name;
 	}
 
 	public String getWorkunit() {

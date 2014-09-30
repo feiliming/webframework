@@ -3,7 +3,10 @@ package light.mvc.model.sys;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,7 +24,9 @@ public class Tproductinfo implements java.io.Serializable{
 
 	@Id
 	private Long pid;
-	private String code_id;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "code_id", referencedColumnName = "code_id")
+	private Tenterpriseinfo tenterpriseinfo;
 	private String product_name;
 	private String product_en;
 	private String product_class;
@@ -52,11 +57,11 @@ public class Tproductinfo implements java.io.Serializable{
 	public void setPid(Long pid) {
 		this.pid = pid;
 	}
-	public String getCode_id() {
-		return code_id;
+	public Tenterpriseinfo getTenterpriseinfo() {
+		return tenterpriseinfo;
 	}
-	public void setCode_id(String code_id) {
-		this.code_id = code_id;
+	public void setTenterpriseinfo(Tenterpriseinfo tenterpriseinfo) {
+		this.tenterpriseinfo = tenterpriseinfo;
 	}
 	public String getProduct_name() {
 		return product_name;

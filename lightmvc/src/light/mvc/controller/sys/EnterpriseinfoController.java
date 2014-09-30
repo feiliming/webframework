@@ -10,7 +10,9 @@ import light.mvc.pageModel.base.Json;
 import light.mvc.pageModel.base.PageFilter;
 import light.mvc.pageModel.base.Tree;
 import light.mvc.pageModel.sys.Enterpriseinfo;
+import light.mvc.pageModel.sys.Zrxzqh;
 import light.mvc.service.sys.EnterpriseinfoServiceI;
+import light.mvc.service.sys.ZrxzqhServiceI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ public class EnterpriseinfoController extends BaseController {
 
 	@Autowired
 	private EnterpriseinfoServiceI enterpriseinfoService;
+	@Autowired
+	private ZrxzqhServiceI zrxzqhService;
 	
 	@RequestMapping("/manager")
 	public String manager() {
@@ -31,7 +35,14 @@ public class EnterpriseinfoController extends BaseController {
 
 	@RequestMapping("/dataGrid")
 	@ResponseBody
-	public Grid dataGrid(Enterpriseinfo enterpriseinfo, PageFilter ph) {
+	public Grid dataGrid(HttpServletRequest request, Enterpriseinfo enterpriseinfo, PageFilter ph) {
+		String dishi = request.getParameter("dishi");
+		String quxian = request.getParameter("quxian");
+		if(quxian != null && !"".equals(quxian)){
+			enterpriseinfo.setZrxzqh_id(quxian);
+		}else if(dishi != null && !"".equals(dishi)){
+			enterpriseinfo.setZrxzqh_id(dishi);
+		}
 		Grid grid = new Grid();
 		grid.setRows(enterpriseinfoService.dataGrid(enterpriseinfo, ph));
 		grid.setTotal(enterpriseinfoService.count(enterpriseinfo, ph));
@@ -41,6 +52,17 @@ public class EnterpriseinfoController extends BaseController {
 	@RequestMapping("/statistic")
 	public String statistics(){
 		return "/admin/enterpriseinfostatistic";
+	}
+	
+	@RequestMapping("/getLevel2")
+	@ResponseBody
+	public List<Zrxzqh> getLevel2(){
+		return zrxzqhService.getLevel2();
+	}
+	@RequestMapping("/getLevel3")
+	@ResponseBody
+	public List<Zrxzqh> getLevel3(String dishiid){
+		return zrxzqhService.getLevel3(dishiid);
 	}
 	
 	@RequestMapping("/tree")

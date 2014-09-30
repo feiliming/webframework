@@ -2,8 +2,12 @@ package light.mvc.model.sys;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,7 +53,9 @@ public class Tenterpriseinfo implements java.io.Serializable{
 	private String glory;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date finishdate;
-	private String zrxzqh;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "zrxzqh",referencedColumnName="zrxzqh_id")
+	private Tzrxzqh zrxzqh;
 	private String workunit;
 	private String ly;
 	private String zlfzr;
@@ -282,11 +288,11 @@ public class Tenterpriseinfo implements java.io.Serializable{
 		this.finishdate = finishdate;
 	}
 
-	public String getZrxzqh() {
+	public Tzrxzqh getZrxzqh() {
 		return zrxzqh;
 	}
 
-	public void setZrxzqh(String zrxzqh) {
+	public void setZrxzqh(Tzrxzqh zrxzqh) {
 		this.zrxzqh = zrxzqh;
 	}
 

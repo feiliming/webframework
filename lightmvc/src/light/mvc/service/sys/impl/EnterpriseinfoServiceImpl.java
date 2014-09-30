@@ -59,6 +59,8 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoServiceI {
 		for (Tenterpriseinfo t : l) {
 			Enterpriseinfo u = new Enterpriseinfo();
 			BeanUtils.copyProperties(t, u);
+			u.setZrxzqh_id(t.getZrxzqh().getZrxzqh_id());
+			u.setZrxzqh_name(t.getZrxzqh().getZrxzqh_name());
 			ul.add(u);
 		}
 		return ul;
@@ -75,17 +77,21 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoServiceI {
 		String hql = "";
 		if (enterpriseinfo != null) {
 			hql += " where 1=1 ";
-			if (enterpriseinfo.getCode_id() != null) {
+			if (enterpriseinfo.getCode_id() != null && !"".equals(enterpriseinfo.getCode_id())) {
 				hql += " and t.code_id like :code_id";
 				params.put("code_id", "%%" + enterpriseinfo.getCode_id() + "%%");
 			}
-			if (enterpriseinfo.getCode_cn() != null) {
+			if (enterpriseinfo.getCode_cn() != null && !"".equals(enterpriseinfo.getCode_cn())) {
 				hql += " and t.code_cn like :code_cn";
 				params.put("code_cn", "%%" + enterpriseinfo.getCode_cn() + "%%");
 			}
 			if (enterpriseinfo.getCreditlevel() != null && !"ALL".equals(enterpriseinfo.getCreditlevel())) {
 				hql += " and t.creditlevel = '" + enterpriseinfo.getCreditlevel() + "'";
 			}
+			if (enterpriseinfo.getZrxzqh_id() != null && !"".equals(enterpriseinfo.getZrxzqh_id())) {
+				hql += " and t.zrxzqh.zrxzqh_id like :zrxzqh_id";
+				params.put("zrxzqh_id", "%%" + enterpriseinfo.getZrxzqh_id() + "%%");
+			}			
 		}
 		return hql;
 	}

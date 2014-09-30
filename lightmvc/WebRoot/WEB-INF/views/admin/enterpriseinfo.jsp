@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="edge" />
 <c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/edit')}">
 	<script type="text/javascript">
-		$.canEdit = false;
+		$.canEdit = true;
 	</script>
 </c:if>
 <c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/delete')}">
@@ -42,7 +42,17 @@
 				title : '名称',
 				field : 'code_cn',
 				sortable : true
-			} , {
+			} ,{
+				width : '80',
+				title : '准入行政区Id',
+				field : 'zrxzqh_id',
+				sortable : false
+			}, {
+				width : '200',
+				title : '准入行政区',
+				field : 'zrxzqh_name',
+				sortable : false
+			}, {
 				width : '80',
 				title : '经济行业',
 				field : 'industry_id',
@@ -64,31 +74,31 @@
 				sortable : true
 			}, {
 				width : '80',
-				title : '状态',
-				field : 'status',
+				title : '信用等级',
+				field : 'creditlevel',
 				sortable : true,
 				formatter : function(value, row, index) {
 					switch (value) {
-					case '00':
-						return '未审核';
-					case '01':
-						return '审核未通过';	
-					case '10':
-						return '未上报';	
-					case '12':
-						return '已上报';	
-					case '13':
-						return '已删除';	
+					case 'AAA':
+						return '★★★★★';
+					case 'AA':
+						return '★★★★';	
+					case 'A':
+						return '★★★';	
+					case 'B':
+						return '★★';	
+					case 'C':
+						return '★';	
 					}
 				}
-			}, {
+			}/**, {
 				field : 'action',
 				title : '操作',
 				width : 120,
 				formatter : function(value, row, index) {
 					var str = '&nbsp;';
-					//if(row.isdefault!=0){
-						//str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
+					if(row.isdefault!=0){
+						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
 						if ($.canEdit) {
 							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.code_id);
 						}
@@ -96,11 +106,43 @@
 						if ($.canDelete) {
 							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.code_id);
 						}
-					///}
+					}
 					return str;
 				}
-			} ] ],
+			} */] ],
 			toolbar : '#toolbar'
+		});
+		
+		$('#dishi').combobox({ 
+		    url:'${ctx}' + '/enterpriseinfo/getLevel2',
+		    editable:false, //不可编辑状态
+		    cache: false,
+		    panelHeight: 'auto',//自动高度适合
+		    valueField:'zrxzqh_id',
+		    textField:'zrxzqh_name',
+		    
+		    onSelect: function(re){
+			    $("#quxian").combobox("setValue",'');
+				var dishiid = $('#dishi').combobox('getValue');		
+				$.ajax({
+					type: "POST",
+					url: '${ctx}' + '/enterpriseinfo/getLevel3?dishiid='+dishiid,
+					cache: false,
+					dataType : "json",
+					success: function(data){
+						$("#quxian").combobox("loadData",data);
+					}
+				}); 	
+			}
+		}); 
+		
+		$('#quxian').combobox({ 
+			//url:'itemManage!categorytbl', 
+			editable:false, //不可编辑状态
+			cache: false,
+			panelHeight: 'auto',//自动高度适合
+			valueField:'zrxzqh_id',   
+			textField:'zrxzqh_name'
 		});
 	});
 	
@@ -191,19 +233,23 @@
 		<form id="searchForm">
 			<table>
 				<tr>
-					<th>组织机构代码:</th>
+					<th>地市:</th>
+					<td><select id="dishi" name="dishi" style="width:160px; border: 1px solid #ccc"> </select></td>
+					<th>区县:</th>
+					<td><select id="quxian" name="quxian" style="width:160px; border: 1px solid #ccc"> </select></td>
+					<th>机构代码:</th>
 					<td><input name="code_id" placeholder="请输入组织机构代码"/></td>
-					<th>组织机构名称:</th>
+					<th>机构名称:</th>
 					<td><input name="code_cn" placeholder="请输入组织机构名称"/></td>
 					<th>信用等级:</th>
 					<td>
 						<select name="creditlevel">
 							<option value="ALL" selected="selected">--所有--</option>
-							<option value="AAA">AAA</option>
-							<option value="AA">AA</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
+							<option value="AAA">AAA(★★★★★)</option>
+							<option value="AA">AA(★★★★)</option>
+							<option value="A">A(★★★)</option>
+							<option value="B">B(★★)</option>
+							<option value="C">C(★)</option>
 						</select>
 						<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_search',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_cancel',plain:true" onclick="cleanFun();">清空</a>
 					</td>

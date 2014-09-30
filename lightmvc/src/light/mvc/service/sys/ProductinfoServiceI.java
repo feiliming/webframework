@@ -8,9 +8,9 @@ import light.mvc.pageModel.sys.Productinfo;
 
 public interface ProductinfoServiceI {
 
-	public List<Productinfo> dataGrid(Productinfo productinfo, PageFilter ph);
+	public List<Productinfo> dataGrid(String region, Productinfo productinfo, PageFilter ph);
 
-	public Long count(Productinfo productinfo, PageFilter ph);
+	public Long count(String region, Productinfo productinfo, PageFilter ph);
 
 	public void add(Productinfo productinfo);
 

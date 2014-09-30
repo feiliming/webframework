@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="edge" />
 <c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/edit')}">
 	<script type="text/javascript">
-		$.canEdit = false;
+		$.canEdit = true;
 	</script>
 </c:if>
 <c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/delete')}">
@@ -81,14 +81,14 @@
 						return '已删除';	
 					}
 				}
-			}, {
+			}/**, {
 				field : 'action',
 				title : '操作',
 				width : 120,
 				formatter : function(value, row, index) {
 					var str = '&nbsp;';
-					//if(row.isdefault!=0){
-						//str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
+					if(row.isdefault!=0){
+						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
 						if ($.canEdit) {
 							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.pid);
 						}
@@ -96,11 +96,43 @@
 						if ($.canDelete) {
 							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.pid);
 						}
-					///}
+					}
 					return str;
 				}
-			} ] ],
+			}*/ ] ],
 			toolbar : '#toolbar'
+		});
+		
+		$('#dishi').combobox({ 
+		    url:'${ctx}' + '/productinfo/getLevel2',
+		    editable:false, //不可编辑状态
+		    cache: false,
+		    panelHeight: 'auto',//自动高度适合
+		    valueField:'zrxzqh_id',
+		    textField:'zrxzqh_name',
+		    
+		    onSelect: function(re){
+			    $("#quxian").combobox("setValue",'');
+				var dishiid = $('#dishi').combobox('getValue');		
+				$.ajax({
+					type: "POST",
+					url: '${ctx}' + '/productinfo/getLevel3?dishiid='+dishiid,
+					cache: false,
+					dataType : "json",
+					success: function(data){
+						$("#quxian").combobox("loadData",data);
+					}
+				}); 	
+			}
+		}); 
+		
+		$('#quxian').combobox({ 
+			//url:'itemManage!categorytbl', 
+			editable:false, //不可编辑状态
+			cache: false,
+			panelHeight: 'auto',//自动高度适合
+			valueField:'zrxzqh_id',   
+			textField:'zrxzqh_name'
 		});
 	});
 	
@@ -190,7 +222,11 @@
 		<form id="searchForm">
 			<table>
 				<tr>
-					<th>组织机构代码:</th>
+					<th>地市:</th>
+					<td><select id="dishi" name="dishi" style="width:160px; border: 1px solid #ccc"> </select></td>
+					<th>区县:</th>
+					<td><select id="quxian" name="quxian" style="width:160px; border: 1px solid #ccc"> </select></td>				
+					<th>机构代码:</th>
 					<td><input name="code_id" placeholder="请输入组织机构代码"/></td>
 					<th>产品名称:</th>
 					<td><input name="product_name" placeholder="请输入组织机构名称"/>
