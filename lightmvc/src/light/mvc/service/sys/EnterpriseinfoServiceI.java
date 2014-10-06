@@ -21,5 +21,9 @@ public interface EnterpriseinfoServiceI {
 	public Enterpriseinfo get(String code_id);
 
 	public List<Tree> tree();
-
+	
+	
+	
+	public List<Object[]> statisticByZrxzqh();
+	public List<Object[]> statisticByCreditlevel();
 }

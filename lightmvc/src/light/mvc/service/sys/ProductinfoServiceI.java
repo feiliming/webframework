@@ -22,4 +22,6 @@ public interface ProductinfoServiceI {
 
 	public List<Tree> tree();
 
+	
+	public List<Object[]> statisticByZrxzqh();
 }

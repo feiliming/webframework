@@ -32,6 +32,10 @@ public class EnterpriseinfoController extends BaseController {
 	public String manager() {
 		return "/admin/enterpriseinfo";
 	}
+	@RequestMapping("/compare")
+	public String compare() {
+		return "/admin/enterpriseinfoCompare";
+	}
 
 	@RequestMapping("/dataGrid")
 	@ResponseBody
@@ -53,6 +57,10 @@ public class EnterpriseinfoController extends BaseController {
 	public String statistics(){
 		return "/admin/enterpriseinfostatistic";
 	}
+	@RequestMapping("/statistic2")
+	public String statistics2(){
+		return "/admin/enterpriseinfostatistic2";
+	}
 	
 	@RequestMapping("/getLevel2")
 	@ResponseBody
@@ -63,6 +71,84 @@ public class EnterpriseinfoController extends BaseController {
 	@ResponseBody
 	public List<Zrxzqh> getLevel3(String dishiid){
 		return zrxzqhService.getLevel3(dishiid);
+	}
+	@RequestMapping("/statisticByZrxzqh")
+	@ResponseBody
+	public Json statisticByZrxzqh(){
+		List<Object[]> list = enterpriseinfoService.statisticByZrxzqh();
+		StringBuilder csb = new StringBuilder();
+		StringBuilder dsb = new StringBuilder();
+		StringBuilder ssb = new StringBuilder();
+		for(Object[] o : list){
+			csb.append("<category name='");
+			csb.append(o[1]);
+			csb.append("'/>");
+			dsb.append("<set value='");
+			dsb.append(o[2]);
+			dsb.append("'/>");
+			
+			ssb.append("<set name='" + o[1] + "' value='");
+			ssb.append(o[2]);
+			ssb.append("'/>");
+		}
+		StringBuilder totalxml = new StringBuilder();
+		totalxml.append("<graph caption='组织机构按准入行政区统计(柱状图)' xAxisName='准入行政区' yAxisName='个数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>");
+		totalxml.append("<categories>");
+		totalxml.append(csb);
+		totalxml.append("</categories>");
+		totalxml.append("<dataset>");
+		totalxml.append(dsb);
+		totalxml.append("</dataset>");
+		totalxml.append("</graph>");
+		
+		StringBuilder participantPiexml = new StringBuilder();
+		participantPiexml.append("<graph  caption='组织机构按准入行政区统计(饼状图)' baseFontSize='12' showNames='1' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>");
+		participantPiexml.append(ssb);
+		participantPiexml.append("</graph>");
+		Json j = new Json();
+		j.setObj(totalxml.toString());
+		j.setMsg(participantPiexml.toString());
+		j.setSuccess(true);
+		return j;
+	}
+	@RequestMapping("/statisticByCreditlevel")
+	@ResponseBody
+	public Json statisticByCreditlevel(){
+		List<Object[]> list = enterpriseinfoService.statisticByCreditlevel();
+		StringBuilder csb = new StringBuilder();
+		StringBuilder dsb = new StringBuilder();
+		StringBuilder ssb = new StringBuilder();
+		for(Object[] o : list){
+			csb.append("<category name='");
+			csb.append(o[0]);
+			csb.append("'/>");
+			dsb.append("<set value='");
+			dsb.append(o[1]);
+			dsb.append("'/>");
+			
+			ssb.append("<set name='" + o[0] + "' value='");
+			ssb.append(o[1]);
+			ssb.append("'/>");
+		}
+		StringBuilder totalxml = new StringBuilder();
+		totalxml.append("<graph caption='组织机构按信用等级统计(柱状图)' xAxisName='准入行政区' yAxisName='个数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>");
+		totalxml.append("<categories>");
+		totalxml.append(csb);
+		totalxml.append("</categories>");
+		totalxml.append("<dataset>");
+		totalxml.append(dsb);
+		totalxml.append("</dataset>");
+		totalxml.append("</graph>");
+		
+		StringBuilder participantPiexml = new StringBuilder();
+		participantPiexml.append("<graph  caption='组织机构按信用等级统计(饼状图)' baseFontSize='12' showNames='1' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>");
+		participantPiexml.append(ssb);
+		participantPiexml.append("</graph>");
+		Json j = new Json();
+		j.setObj(totalxml.toString());
+		j.setMsg(participantPiexml.toString());
+		j.setSuccess(true);
+		return j;
 	}
 	
 	@RequestMapping("/tree")

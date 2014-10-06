@@ -47,6 +47,9 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 		Tproductinfo t = productinfoDao.get(Tproductinfo.class, pid);
 		Productinfo r = new Productinfo();
 		BeanUtils.copyProperties(t, r);
+		r.setCode_id(t.getTenterpriseinfo().getCode_id());
+		r.setCode_name(t.getTenterpriseinfo().getCode_cn());
+		r.setCreditlevel(t.getTenterpriseinfo().getCreditlevel());
 		return r;
 	}
 
@@ -60,6 +63,8 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 			Productinfo u = new Productinfo();
 			BeanUtils.copyProperties(t, u);
 			u.setCode_id(t.getTenterpriseinfo().getCode_id());
+			u.setCode_name(t.getTenterpriseinfo().getCode_cn());
+			u.setCreditlevel(t.getTenterpriseinfo().getCreditlevel());
 			ul.add(u);
 		}
 		return ul;
@@ -117,4 +122,19 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 		}
 		return lt;
 	}
+
+	//按准入行政区统计产品
+	@Override
+	public List<Object[]> statisticByZrxzqh() {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT zrxzqh_id,zrxzqh_name,p_count FROM");
+		sql.append(" (SELECT CONCAT(SUBSTRING(e.zrxzqh,1,4),'00') AS zrxzqh,SUM(p_count) AS p_count FROM db_enterpriseinfo e,( SELECT code_id,COUNT(*) AS p_count FROM db_productinfo p GROUP BY p.code_id) t1 ");
+		sql.append(" WHERE e.code_id = t1.code_id GROUP BY SUBSTRING(e.zrxzqh,1,4) ) tt1,sc_zrxzqh tt2 ");
+		sql.append(" WHERE tt1.zrxzqh = tt2.zrxzqh_id AND tt2.zrxzqh_id IN ('220100','220200','220300','220400','220500','220600','220700','220800') ORDER BY zrxzqh_id");
+		List<Object[]> list = productinfoDao.findBySql(sql.toString());
+		return list;
+	}
+	
+	
+	
 }

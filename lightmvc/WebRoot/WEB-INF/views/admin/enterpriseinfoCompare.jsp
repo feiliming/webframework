@@ -7,12 +7,12 @@
 <head>
 <jsp:include page="../inc.jsp"></jsp:include>
 <meta http-equiv="X-UA-Compatible" content="edge" />
-<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/edit')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/edit')}">
 	<script type="text/javascript">
 		$.canEdit = true;
 	</script>
 </c:if>
-<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/delete')}">
+<c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/delete')}">
 	<script type="text/javascript">
 		$.canDelete = true;
 	</script>
@@ -20,17 +20,18 @@
 <title>组织机构查询</title>
 	<script type="text/javascript">
 	var dataGrid;
+	var dghead;
 	$(function() {
 		dataGrid = $('#dataGrid').datagrid({
-			url : '${ctx}' + '/productinfo/dataGrid',
+			url : '${ctx}' + '/enterpriseinfo/dataGrid',
 			striped : true,
 			rownumbers : true,
 			pagination : true,
 			singleSelect : true,
-			idField : 'pid',
-			sortName : 'pid',
+			idField : 'code_id',
+			sortName : 'code_id',
 			sortOrder : 'asc',
-			pageSize : 30,
+			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 ],
 			frozenColumns : [ [ {
 				width : '100',
@@ -40,7 +41,37 @@
 			}, {
 				width : '200',
 				title : '机构名称',
-				field : 'code_name',
+				field : 'code_cn',
+				sortable : true
+			} ,{
+				width : '80',
+				title : '准入行政区Id',
+				field : 'zrxzqh_id',
+				sortable : false
+			}, {
+				width : '200',
+				title : '准入行政区',
+				field : 'zrxzqh_name',
+				sortable : false
+			}, {
+				width : '80',
+				title : '经济行业',
+				field : 'industry_id',
+				sortable : true
+			}, {
+				width : '200',
+				title : '地址',
+				field : 'addressname',
+				sortable : true
+			}, {
+				width : '80',
+				title : '邮编',
+				field : 'postcode',
+				sortable : true
+			}, {
+				width : '100',
+				title : '电话',
+				field : 'tel',
 				sortable : true
 			}, {
 				width : '80',
@@ -61,74 +92,21 @@
 						return '★';	
 					}
 				}
-			} , {
-				width : '200',
-				title : '产品名称',
-				field : 'product_name',
-				sortable : true
-			} , {
-				width : '80',
-				title : '产品类别',
-				field : 'product_class',
-				sortable : true
-			}, {
-				width : '120',
-				title : '常用名',
-				field : 'product_commonname',
-				sortable : true
-			}, {
-				width : '120',
-				title : '执行标准ID',
-				field : 'standard_id',
-				sortable : true
-			}, {
-				width : '150',
-				title : '执行标准名称',
-				field : 'standard_name',
-				sortable : true
-			}/**, {
-				width : '80',
-				title : '产品状态',
-				field : 'product_status',
-				sortable : true,
-				formatter : function(value, row, index) {
-					switch (value) {
-					case '00':
-						return '未审核';
-					case '01':
-						return '审核未通过';	
-					case '10':
-						return '未上报';	
-					case '12':
-						return '已上报';	
-					case '13':
-						return '已删除';	
-					}
-				}
 			}, {
 				field : 'action',
 				title : '操作',
 				width : 120,
 				formatter : function(value, row, index) {
 					var str = '&nbsp;';
-					if(row.isdefault!=0){
-						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
-						if ($.canEdit) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.pid);
-						}
-						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
-						if ($.canDelete) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.pid);
-						}
-					}
+					str += $.formatString('<a href="javascript:void(0)" onclick="compareFun(\'{0}\');" >加入对比</a>', row.code_id);
 					return str;
 				}
-			}*/ ] ],
+			}] ],
 			toolbar : '#toolbar'
 		});
 		
 		$('#dishi').combobox({ 
-		    url:'${ctx}' + '/productinfo/getLevel2',
+		    url:'${ctx}' + '/enterpriseinfo/getLevel2',
 		    editable:false, //不可编辑状态
 		    cache: false,
 		    panelHeight: 'auto',//自动高度适合
@@ -140,7 +118,7 @@
 				var dishiid = $('#dishi').combobox('getValue');		
 				$.ajax({
 					type: "POST",
-					url: '${ctx}' + '/productinfo/getLevel3?dishiid='+dishiid,
+					url: '${ctx}' + '/enterpriseinfo/getLevel3?dishiid='+dishiid,
 					cache: false,
 					dataType : "json",
 					success: function(data){
@@ -158,6 +136,38 @@
 			valueField:'zrxzqh_id',   
 			textField:'zrxzqh_name'
 		});
+		
+		dghead = $('#dghead').datagrid({    
+		    url:'', 
+		    rownumbers: true,
+		    idField : 'code_id',
+		    columns:[[    
+		        {field:'code_id',title:'机构代码',width:100},    
+		        {field:'code_cn',title:'机构名称',width:200},    
+		        {field:'zrxzqh_id',title:'准入行政区ID',width:80},    
+		        {field:'zrxzqh_name',title:'准入行政区',width:200},    
+		        {field:'industry_id',title:'经济行业',width:80},    
+		        {field:'addressname',title:'地址',width:200},    
+		        {field:'postcode',title:'邮编',width:80},
+		        {field:'tel',title:'电话',width:100},
+		        {field:'creditlevel',title:'信用等级',width:80,
+		        formatter : function(value, row, index) {
+					switch (value) {
+					case 'AAA':
+						return '★★★★★';
+					case 'AA':
+						return '★★★★';	
+					case 'A':
+						return '★★★';	
+					case 'B':
+						return '★★';	
+					case 'C':
+						return '★';	
+					}
+				}},
+		        {field:'action',title:'操作',width:120}
+		    ]]    
+		});
 	});
 	
 	function addFun() {
@@ -165,32 +175,32 @@
 			title : '添加',
 			width : 500,
 			height : 300,
-			href : '${ctx}/productinfo/addPage',
+			href : '${ctx}/enterpriseinfo/addPage',
 			buttons : [ {
 				text : '添加',
 				handler : function() {
 					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个treeGrid，所以先预定义好
-					var f = parent.$.modalDialog.handler.find('#productinfoAddForm');
+					var f = parent.$.modalDialog.handler.find('#enterpriseinfoAddForm');
 					f.submit();
 				}
 			} ]
 		});
 	}
 	
-	function deleteFun(pid) {
-		if (pid == undefined) {//点击右键菜单才会触发这个
+	function deleteFun(code_id) {
+		if (code_id == undefined) {//点击右键菜单才会触发这个
 			var rows = dataGrid.datagrid('getSelections');
-			pid = rows[0].pid;
+			code_id = rows[0].code_id;
 		} else {//点击操作里面的删除图标会触发这个
 			dataGrid.datagrid('unselectAll').datagrid('uncheckAll');
 		}
 		parent.$.messager.confirm('询问', '您是否要删除当前机构？', function(b) {
 			if (b) {
 				var currentUserId = '${sessionInfo.id}';/*当前登录用户的ID*/
-				if (currentUserId != pid) {
+				if (currentUserId != code_id) {
 					progressLoad();
-					$.post('${ctx}/productinfo/delete', {
-						pid : pid
+					$.post('${ctx}/enterpriseinfo/delete', {
+						code_id : code_id
 					}, function(result) {
 						if (result.success) {
 							parent.$.messager.alert('提示', result.msg, 'info');
@@ -208,10 +218,10 @@
 		});
 	}
 	
-	function editFun(pid) {
-		if (pid == undefined) {
+	function editFun(code_id) {
+		if (code_id == undefined) {
 			var rows = dataGrid.datagrid('getSelections');
-			pid = rows[0].pid;
+			code_id = rows[0].code_id;
 		} else {
 			dataGrid.datagrid('unselectAll').datagrid('uncheckAll');
 		}
@@ -219,26 +229,71 @@
 			title : '编辑',
 			width : 500,
 			height : 300,
-			href : '${ctx}/productinfo/editPage?pid=' + pid,
+			href : '${ctx}/enterpriseinfo/editPage?code_id=' + code_id,
 			buttons : [ {
 				text : '编辑',
 				handler : function() {
 					parent.$.modalDialog.openner_dataGrid = dataGrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
-					var f = parent.$.modalDialog.handler.find('#productinfoEditForm');
+					var f = parent.$.modalDialog.handler.find('#enterpriseinfoEditForm');
 					f.submit();
 				}
 			} ]
 		});
 	}
 
+	function compareFun(code_id){
+		if (code_id == undefined) {
+			var rows = dataGrid.datagrid('getSelections');
+			code_id = rows[0].pid;
+		} else {
+			dataGrid.datagrid('unselectAll').datagrid('uncheckAll');
+		}
+		//parent.$.messager.confirm('询问', '您确认要加入对比？', function(b) {
+		//	if (b) {
+				$.ajax({
+					type: "POST",
+					url: '${ctx}' + '/enterpriseinfo/get?code_id='+code_id,
+					async: false,
+					success: function(result){
+						var jdata = $.parseJSON(result);
+						$('#dghead').datagrid('appendRow',{
+							code_id: jdata.code_id,
+							code_cn: jdata.code_cn,
+							zrxzqh_id: jdata.zrxzqh_id,
+							zrxzqh_name: jdata.zrxzqh_name,
+							industry_id: jdata.industry_id,
+							addressname: jdata.addressname,
+							postcode: jdata.postcode,
+							tel: jdata.tel,
+							creditlevel: jdata.creditlevel,
+							action: $.formatString('<a href="javascript:void(0)" onclick="delcompareFun(\'{0}\');" >删除对比</a>', code_id)
+						});
+					},
+					error: function(){alert('出错了!');}
+				});
+		//	}
+		//});
+	}
+	function delcompareFun(code_id){
+		if (code_id == undefined) {//点击右键菜单才会触发这个
+			var rows = dghead.datagrid('getSelections');
+			code_id = rows[0].code_id;
+		} else {//点击操作里面的删除图标会触发这个
+			dghead.datagrid('unselectAll').datagrid('uncheckAll');
+		}
+		var index = $('#dghead').datagrid('getRowIndex',code_id);
+		$('#dghead').datagrid('deleteRow',index);
+	}
+	
 	function searchFun() {
 		dataGrid.datagrid('load', $.serializeObject($('#searchForm')));
 	}
 	
 	function cleanFun() {
 		$('#searchForm input').val('');
+		$('#searchForm select').val('ALL');
 		dataGrid.datagrid('load', {});
-	}	
+	}
 	</script>
 </head>
 <body  class="easyui-layout" data-options="fit:true,border:false" style="overflow: hidden;">
@@ -249,26 +304,40 @@
 					<th>地市:</th>
 					<td><select id="dishi" name="dishi" style="width:160px; border: 1px solid #ccc"> </select></td>
 					<th>区县:</th>
-					<td><select id="quxian" name="quxian" style="width:160px; border: 1px solid #ccc"> </select></td>				
+					<td><select id="quxian" name="quxian" style="width:160px; border: 1px solid #ccc"> </select></td>
 					<th>机构代码:</th>
 					<td><input name="code_id" placeholder="请输入组织机构代码"/></td>
-					<th>产品名称:</th>
-					<td><input name="product_name" placeholder="请输入组织机构名称"/>
+					<th>机构名称:</th>
+					<td><input name="code_cn" placeholder="请输入组织机构名称"/></td>
+					<th>信用等级:</th>
+					<td>
+						<select name="creditlevel">
+							<option value="ALL" selected="selected">--所有--</option>
+							<option value="AAA">AAA(★★★★★)</option>
+							<option value="AA">AA(★★★★)</option>
+							<option value="A">A(★★★)</option>
+							<option value="B">B(★★)</option>
+							<option value="C">C(★)</option>
+						</select>
 						<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_search',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_cancel',plain:true" onclick="cleanFun();">清空</a>
 					</td>
 				</tr>
 			</table>
 		</form>
-	</div>	
-	
+	</div>
+
 	<div data-options="region:'center',border:false">
 		<table id="dataGrid"></table>
 	</div>
-	
+	<div id="south" data-options="region:'south',border:true" style="height:400px;">
+		<table id="dghead">   
+		</table> 
+	</div>	
+	<!-- 
 	<div id="toolbar" style="display: none;">
-		<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/add')}">
+		<c:if test="${fn:contains(sessionInfo.resourceList, '/enterpriseinfo/add')}">
 			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon_add'">添加</a>
 		</c:if>
-	</div>
+	</div> -->
 </body>
 </html>

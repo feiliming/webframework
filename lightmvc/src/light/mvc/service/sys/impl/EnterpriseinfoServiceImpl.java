@@ -121,4 +121,35 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoServiceI {
 		}
 		return lt;
 	}
+
+	//按准入行政区划统计
+	@Override
+	public List<Object[]> statisticByZrxzqh() {
+		String sql = "SELECT zrxzqh_id,zrxzqh_name,e_count FROM (SELECT CONCAT(SUBSTRING(e.zrxzqh,1,4),'00') AS zrxzqh,COUNT(*) AS e_count FROM db_enterpriseinfo e GROUP BY SUBSTRING(e.zrxzqh,1,4)) t1,sc_zrxzqh t2 "
+				+ "WHERE t1.zrxzqh = t2.zrxzqh_id AND t2.zrxzqh_id IN ('220100','220200','220300','220400','220500','220600','220700','220800') ORDER BY zrxzqh_id";
+		List<Object[]> list = enterpriseinfoDao.findBySql(sql );
+		return list;
+	}
+
+	//按信用等级统计
+	@Override
+	public List<Object[]> statisticByCreditlevel() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT t1.l,IFNULL(t2.e_count,0) FROM (SELECT 'AAA' AS l FROM DUAL");
+		sql.append(" UNION ALL");
+		sql.append(" SELECT 'AA' AS l FROM DUAL");
+		sql.append(" UNION ALL");
+		sql.append(" SELECT 'A' AS l FROM DUAL");
+		sql.append(" UNION ALL");
+		sql.append(" SELECT 'B' AS l FROM DUAL");
+		sql.append(" UNION ALL");
+		sql.append(" SELECT 'C' AS l FROM DUAL) t1 LEFT JOIN");
+		sql.append(" (SELECT e.creditlevel,COUNT(*) AS e_count FROM db_enterpriseinfo e GROUP BY e.creditlevel) t2");
+		sql.append(" ON t1.l = t2.creditlevel");
+		List<Object[]> list = enterpriseinfoDao.findBySql(sql.toString());
+		return list;
+	}
+	
+	
+	
 }

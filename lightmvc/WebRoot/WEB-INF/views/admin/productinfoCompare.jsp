@@ -20,19 +20,25 @@
 <title>组织机构查询</title>
 	<script type="text/javascript">
 	var dataGrid;
+	var dghead;
 	$(function() {
 		dataGrid = $('#dataGrid').datagrid({
 			url : '${ctx}' + '/productinfo/dataGrid',
 			striped : true,
-			rownumbers : true,
+			//rownumbers : true,
 			pagination : true,
 			singleSelect : true,
 			idField : 'pid',
 			sortName : 'pid',
 			sortOrder : 'asc',
-			pageSize : 30,
+			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 ],
-			frozenColumns : [ [ {
+			frozenColumns : [ [{
+				width : '50',
+				title : '编号',
+				field : 'pid',
+				sortable : true
+			},{
 				width : '100',
 				title : '机构代码',
 				field : 'code_id',
@@ -42,7 +48,7 @@
 				title : '机构名称',
 				field : 'code_name',
 				sortable : true
-			}, {
+			} , {
 				width : '80',
 				title : '信用等级',
 				field : 'creditlevel',
@@ -61,7 +67,7 @@
 						return '★';	
 					}
 				}
-			} , {
+			}, {
 				width : '200',
 				title : '产品名称',
 				field : 'product_name',
@@ -105,25 +111,16 @@
 						return '已删除';	
 					}
 				}
-			}, {
+			}*/, {
 				field : 'action',
 				title : '操作',
 				width : 120,
 				formatter : function(value, row, index) {
 					var str = '&nbsp;';
-					if(row.isdefault!=0){
-						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
-						if ($.canEdit) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.pid);
-						}
-						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
-						if ($.canDelete) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.pid);
-						}
-					}
+					str += $.formatString('<a href="javascript:void(0)" onclick="compareFun(\'{0}\');" >加入对比</a>', row.pid);
 					return str;
 				}
-			}*/ ] ],
+			} ] ],
 			toolbar : '#toolbar'
 		});
 		
@@ -157,6 +154,38 @@
 			panelHeight: 'auto',//自动高度适合
 			valueField:'zrxzqh_id',   
 			textField:'zrxzqh_name'
+		});
+		
+		dghead = $('#dghead').datagrid({    
+		    url:'', 
+		    //rownumbers: true,
+		    idField : 'pid',
+		    columns:[[    
+		        {field:'pid',title:'编号',width:50},    
+		        {field:'code_id',title:'机构代码',width:100},    
+		        {field:'code_name',title:'机构名称',width:200},    
+		        {field:'creditlevel',title:'信用等级',width:80,
+		        formatter : function(value, row, index) {
+					switch (value) {
+					case 'AAA':
+						return '★★★★★';
+					case 'AA':
+						return '★★★★';	
+					case 'A':
+						return '★★★';	
+					case 'B':
+						return '★★';	
+					case 'C':
+						return '★';	
+					}
+				}},
+		        {field:'product_name',title:'产品名称',width:200},    
+		        {field:'product_class',title:'产品类别',width:80},    
+		        {field:'product_commonname',title:'常用名',width:120},    
+		        {field:'standard_id',title:'执行标准ID',width:120},    
+		        {field:'standard_name',title:'执行标准名称',width:150},
+		        {field:'action',title:'操作',width:120}
+		    ]]    
 		});
 	});
 	
@@ -230,6 +259,50 @@
 			} ]
 		});
 	}
+	
+	function compareFun(pid){
+		if (pid == undefined) {
+			var rows = dataGrid.datagrid('getSelections');
+			pid = rows[0].pid;
+		} else {
+			dataGrid.datagrid('unselectAll').datagrid('uncheckAll');
+		}
+		//parent.$.messager.confirm('询问', '您确认要加入对比？', function(b) {
+		//	if (b) {
+				$.ajax({
+					type: "POST",
+					url: '${ctx}' + '/productinfo/get?pid='+pid,
+					async: false,
+					success: function(result){
+						var jdata = $.parseJSON(result);
+						$('#dghead').datagrid('appendRow',{
+							pid:jdata.pid,
+							code_id: jdata.code_id,
+							code_name: jdata.code_name,
+							creditlevel: jdata.creditlevel,
+							product_name: jdata.product_name,
+							product_class: jdata.product_class,
+							product_commonname: jdata.product_commonname,
+							standard_id: jdata.standard_id,
+							standard_name: jdata.standard_name,
+							action: $.formatString('<a href="javascript:void(0)" onclick="delcompareFun(\'{0}\');" >删除对比</a>', pid)
+						});
+					},
+					error: function(){alert('出错了!');}
+				});
+		//	}
+		//});
+	}
+	function delcompareFun(pid){
+		if (pid == undefined) {//点击右键菜单才会触发这个
+			var rows = dghead.datagrid('getSelections');
+			pid = rows[0].pid;
+		} else {//点击操作里面的删除图标会触发这个
+			dghead.datagrid('unselectAll').datagrid('uncheckAll');
+		}
+		var index = $('#dghead').datagrid('getRowIndex',pid);
+		$('#dghead').datagrid('deleteRow',index);
+	}
 
 	function searchFun() {
 		dataGrid.datagrid('load', $.serializeObject($('#searchForm')));
@@ -261,14 +334,19 @@
 		</form>
 	</div>	
 	
-	<div data-options="region:'center',border:false">
+	<div data-options="region:'center',border:false" style="height:400px;">
 		<table id="dataGrid"></table>
 	</div>
 	
+	<div id="south" data-options="region:'south',border:true" style="height:400px;">
+		<table id="dghead">   
+		</table> 
+	</div>
+	<!-- 
 	<div id="toolbar" style="display: none;">
 		<c:if test="${fn:contains(sessionInfo.resourceList, '/productinfo/add')}">
 			<a onclick="addFun();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon_add'">添加</a>
 		</c:if>
-	</div>
+	</div> -->
 </body>
 </html>

@@ -1,9 +1,1 @@
-/config.properties
-/ehcache.xml
 /light/
-/log4j.properties
-/spring-ehcache.xml
-/spring-hibernate.xml
-/spring-tasks.xml
-/spring.xml
-/sql/

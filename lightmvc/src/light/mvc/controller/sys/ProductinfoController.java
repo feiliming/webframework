@@ -33,6 +33,10 @@ public class ProductinfoController extends BaseController {
 	public String manager() {
 		return "/admin/productinfo";
 	}
+	@RequestMapping("/compare")
+	public String compare() {
+		return "/admin/productinfoCompare";
+	}
 
 	@RequestMapping("/dataGrid")
 	@ResponseBody
@@ -65,6 +69,45 @@ public class ProductinfoController extends BaseController {
 	@ResponseBody
 	public List<Zrxzqh> getLevel3(String dishiid){
 		return zrxzqhService.getLevel3(dishiid);
+	}
+	@RequestMapping("/statisticByZrxzqh")
+	@ResponseBody
+	public Json statisticByZrxzqh(){
+		List<Object[]> list = productinfoService.statisticByZrxzqh();
+		StringBuilder csb = new StringBuilder();
+		StringBuilder dsb = new StringBuilder();
+		StringBuilder ssb = new StringBuilder();
+		for(Object[] o : list){
+			csb.append("<category name='");
+			csb.append(o[1]);
+			csb.append("'/>");
+			dsb.append("<set value='");
+			dsb.append(o[2]);
+			dsb.append("'/>");
+			
+			ssb.append("<set name='" + o[1] + "' value='");
+			ssb.append(o[2]);
+			ssb.append("'/>");
+		}
+		StringBuilder totalxml = new StringBuilder();
+		totalxml.append("<graph caption='产品按准入行政区统计(柱状图)' xAxisName='准入行政区' yAxisName='个数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>");
+		totalxml.append("<categories>");
+		totalxml.append(csb);
+		totalxml.append("</categories>");
+		totalxml.append("<dataset>");
+		totalxml.append(dsb);
+		totalxml.append("</dataset>");
+		totalxml.append("</graph>");
+		
+		StringBuilder participantPiexml = new StringBuilder();
+		participantPiexml.append("<graph  caption='产品按准入行政区统计(饼状图)' baseFontSize='12' showNames='1' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>");
+		participantPiexml.append(ssb);
+		participantPiexml.append("</graph>");
+		Json j = new Json();
+		j.setObj(totalxml.toString());
+		j.setMsg(participantPiexml.toString());
+		j.setSuccess(true);
+		return j;
 	}
 	
 	@RequestMapping("/tree")

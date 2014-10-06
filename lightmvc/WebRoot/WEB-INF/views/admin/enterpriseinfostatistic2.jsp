@@ -9,21 +9,21 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/fusionchart/FusionCharts.js" charset="utf-8"></script>
 <meta http-equiv="X-UA-Compatible" content="edge" />
 
-<title>组织机构查询</title>
+<title>组织机构统计</title>
 	<script type="text/javascript">
 	$(function() {
 		//////////////////
+	   	//var totalxml = "<graph caption='组织机构按类型统计' xAxisName='宽城区' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
+	   	//"<categories><category name='企业'/><category name='事业单位'/><category name='社团'/><category name='机关法人'/><category name='民办非企业单位'/>"+
+	   	//"<category name='个体'/><category name='工会'/></categories>"+
+	   	//"<dataset><set color='C6EDFF' value='440'/><set color='FFD42C' value='840'/><set color='9DCA14' value='650'/><set color='D37A43' value='490'/><set color='21A9A9' value='655'/><set color='EE6464' value='980'/><set color='A25DA2' value='930'/>"+
+	    //"</dataset>"+
+	   	//"</graph>";
+		//var chart = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "900", "350"); 
+		//chart.setDataXML(totalxml);		   
+		//chart.render("typediv"); 	
+		///////////////////
 		/**
-	   	var totalxml = "<graph caption='组织机构按类型统计' xAxisName='宽城区' yAxisName='次数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='企业'/><category name='事业单位'/><category name='社团'/><category name='机关法人'/><category name='民办非企业单位'/>"+
-	   	"<category name='个体'/><category name='工会'/></categories>"+
-	   	"<dataset><set color='C6EDFF' value='440'/><set color='FFD42C' value='840'/><set color='9DCA14' value='650'/><set color='D37A43' value='490'/><set color='21A9A9' value='655'/><set color='EE6464' value='980'/><set color='A25DA2' value='930'/>"+
-	   	"</dataset>"+
-	   	"</graph>";
-		var chart = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "900", "350"); 
-		chart.setDataXML(totalxml);		   
-		chart.render("typediv"); 	
-		////////////////////
 		var participantPiexml = "<graph  caption='组织机构各区分布情况' baseFontSize='12' showNames='1' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
 	   	"<set name='宽城区' value='180' isSliced='1'/><set name='南关区' value='120'/><set name='朝阳区' value='170'/><set name='德惠市' value='80'/>"+
 	   	"<set name='榆树市' value='120'/><set name='九台市' value='50'/><set name='农安县' value='50'/><set name='双阳区' value='100'/>"+
@@ -50,11 +50,12 @@
 	   	"</graph>";
 		var chart3 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSLine.swf", "ChartId", "900", "350");
 		chart3.setDataXML(OrgRiskMonthLinexml);		   
-		chart3.render("typediv3"); 	
-		*/ 
+		chart3.render("typediv3");
+		**/
+
 		$.ajax({
 			type: "POST",
-			url: '${ctx}' + '/productinfo/statisticByZrxzqh',
+			url: '${ctx}' + '/enterpriseinfo/statisticByCreditlevel',
 			async: false,
 			success: function(result){
 				var jdata = $.parseJSON(result);
@@ -84,31 +85,21 @@
 </head>
 <body class="easyui-layout" data-options="fit:true,border:false" style="overflow: hidden;">
 <!-- 
-	<div data-options="region:'north',border:false" style="height: 30px; overflow: hidden;background-color: #f4f4f4">
+	<div data-options="region:'north',border:false" style="height: 30px; overflow: hidden;background-color: #f4f4f4" align="center">
 		<form id="searchForm">
 			<table>
 				<tr>
-					<th>组织机构代码:</th>
-					<td><input name="code_id" placeholder="请输入组织机构代码"/></td>
-					<th>组织机构名称:</th>
-					<td><input name="code_cn" placeholder="请输入组织机构名称"/></td>
-					<th>信用等级:</th>
+					<th>地市:</th>
 					<td>
-						<select name="creditlevel">
-							<option value="ALL" selected="selected">--所有--</option>
-							<option value="AAA">AAA</option>
-							<option value="AA">AA</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-						</select>
-						<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_search',plain:true" onclick="searchFun();">查询</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_cancel',plain:true" onclick="cleanFun();">清空</a>
+						<select id="dishi" name="dishi" style="width:160px; border: 1px solid #ccc"> </select>
+						<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_search',plain:true" onclick="searchFun();">查询</a>
+						<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon_cancel',plain:true" onclick="cleanFun();">清空</a>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</div>
- -->
+ -->	
 	<div data-options="region:'center',border:false">
 		<div id="typediv" align="center" style="display:" ></div>	
 		<div id="typediv1" align="center" style="display:" ></div>	

@@ -8,6 +8,7 @@ public class Productinfo implements java.io.Serializable{
 
 	private Long pid;
 	private String code_id;
+	private String code_name;
 	private String product_name;
 	private String product_en;
 	private String product_class;
@@ -30,6 +31,7 @@ public class Productinfo implements java.io.Serializable{
 	private String appreadme;
 	private String memo;
 	private String status;
+	private String creditlevel;
 	private Date finishdate;
 	public Long getPid() {
 		return pid;
@@ -39,6 +41,18 @@ public class Productinfo implements java.io.Serializable{
 	}
 	public String getCode_id() {
 		return code_id;
+	}
+	public String getCode_name() {
+		return code_name;
+	}
+	public void setCode_name(String code_name) {
+		this.code_name = code_name;
+	}
+	public String getCreditlevel() {
+		return creditlevel;
+	}
+	public void setCreditlevel(String creditlevel) {
+		this.creditlevel = creditlevel;
 	}
 	public void setCode_id(String code_id) {
 		this.code_id = code_id;

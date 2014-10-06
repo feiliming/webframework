@@ -30,7 +30,7 @@
 			idField : 'code_id',
 			sortName : 'code_id',
 			sortOrder : 'asc',
-			pageSize : 50,
+			pageSize : 30,
 			pageList : [ 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 ],
 			frozenColumns : [ [ {
 				width : '100',
@@ -91,25 +91,7 @@
 						return '★';	
 					}
 				}
-			}/**, {
-				field : 'action',
-				title : '操作',
-				width : 120,
-				formatter : function(value, row, index) {
-					var str = '&nbsp;';
-					if(row.isdefault!=0){
-						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
-						if ($.canEdit) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="editFun(\'{0}\');" >编辑</a>', row.code_id);
-						}
-						str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
-						if ($.canDelete) {
-							str += $.formatString('<a href="javascript:void(0)" onclick="deleteFun(\'{0}\');" >删除</a>', row.code_id);
-						}
-					}
-					return str;
-				}
-			} */] ],
+			}] ],
 			toolbar : '#toolbar'
 		});
 		
