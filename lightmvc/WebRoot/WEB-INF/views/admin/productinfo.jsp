@@ -30,7 +30,7 @@
 			idField : 'pid',
 			sortName : 'pid',
 			sortOrder : 'asc',
-			pageSize : 30,
+			pageSize : 10,
 			pageList : [ 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 ],
 			frozenColumns : [ [ {
 				width : '100',
@@ -70,22 +70,30 @@
 				width : '80',
 				title : '产品类别',
 				field : 'product_class',
-				sortable : true
+				sortable : false
 			}, {
 				width : '120',
 				title : '常用名',
 				field : 'product_commonname',
-				sortable : true
+				sortable : false
 			}, {
 				width : '120',
 				title : '执行标准ID',
 				field : 'standard_id',
-				sortable : true
+				sortable : false
 			}, {
 				width : '150',
 				title : '执行标准名称',
 				field : 'standard_name',
-				sortable : true
+				sortable : false
+			}, {
+				width : '220',
+				title : '二维码',
+				field : 'twodimension',
+				sortable : false,
+				formatter: function(value, row, index){
+					return "<img src='${pageContext.request.contextPath}"+value+"'/>";
+				}
 			}/**, {
 				width : '80',
 				title : '产品状态',

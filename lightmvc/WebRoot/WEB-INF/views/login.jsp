@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<!DOCTYPE html>
 <html>
 <head>
 <jsp:include page="inc.jsp"></jsp:include>
@@ -33,11 +32,11 @@
 		    	if (result.success) {
 		    		window.location.href='${ctx}/admin/index';
 		    	}else{
-		    		$.messager.show({
-		    			title:'提示',
-		    			msg:'<div class="light-info"><div class="light-tip icon-tip"></div><div>'+result.msg+'</div></div>',
-		    			showType:'show'
-		    		});
+		    		$.messager.alert(
+		    			'提示',
+		    			'<div class="light-info"><div class="light-tip icon-tip"></div><div>'+result.msg+'</div></div>',
+		    			'error'
+		    		);
 		    	}
 		    }
 		});
@@ -52,45 +51,84 @@
 </script>
 </head>
 <body>
-	<div align="center" style="padding:160px 0 0 0">
-	<div class="easyui-panel" title="登录" style="width:400px;" >
-		<div style="padding:10px 0 10px 100px" >
-	    <form id="loginform"  method="post">
-	    	<table>
-	    		<tr>
-	    			<td>用户名:</td>
-	    			<td><input class="easyui-validatebox" type="text" name="loginname" data-options="required:true" value="admin"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>密&nbsp;&nbsp;码:</td>
-	    			<td><input class="easyui-validatebox" type="password" name="password" value="admin"></input></td>
-	    		</tr>
-	    	</table>
-	    </form>
-	    </div>
-	    <div style="text-align:center;padding:5px">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">登录</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除</a>
-		</div>
-	</div>
-	</div>
-	
-	<!--[if lte IE 7]>
-	<div id="ie6-warning"><p>您正在使用 低版本浏览器，在本页面可能会导致部分功能无法使用。建议您升级到 <a href="http://www.microsoft.com/china/windows/internet-explorer/" target="_blank">Internet Explorer 8</a> 或以下浏览器：
-	<a href="http://www.mozillaonline.com/" target="_blank">Firefox</a> / <a href="http://www.google.com/chrome/?hl=zh-CN" target="_blank">Chrome</a> / <a href="http://www.apple.com.cn/safari/" target="_blank">Safari</a> / <a href="http://www.operachina.com/" target="_blank">Opera</a></p></div>
-	<![endif]-->
-	
-	<style>
-	/*ie6提示*/
-	#ie6-warning{width:100%;position:absolute;top:0;left:0;background:#fae692;padding:5px 0;font-size:12px}
-	#ie6-warning p{width:960px;margin:0 auto;}
-	</style>
-	<script>
-	jQuery(function ($) {
-	 if ( jQuery.browser.msie && ( jQuery.browser.version == "6.0" )&& ( jQuery.browser.version == "7.0" ) && !jQuery.support.style ){
-	  jQuery('#ie6-warning').css({'top':jQuery(this).scrollTop()+'px'});
-	 }
-	});
-	</script>
+<form id="loginform"  method="post">
+<table id="__01" width="925" border="0" cellpadding="0" cellspacing="0" style="margin: 100px auto 0px;">
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_01.png" width="506" height="78" alt=""></td>
+		<td colspan="2">
+			<img src="${ctx}/images/login_02.png" width="137" height="78" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_03.png" width="282" height="78" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_04.png" width="506" height="155" alt=""></td>
+		<td colspan="2">
+			<img src="${ctx}/images/login_05.png" width="137" height="155" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_06.png" width="282" height="155" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_07.png" width="506" height="19" alt=""></td>
+		<td colspan="2">
+			<input class="easyui-validatebox" style="width: 137px;height: 19px;" type="text" name="loginname" data-options="required:true" value="admin"></input>
+			</td>
+		<td>
+			<img src="${ctx}/images/login_09.png" width="282" height="19" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_10.png" width="506" height="14" alt=""></td>
+		<td colspan="2">
+			<img src="${ctx}/images/login_11.png" width="137" height="14" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_12.png" width="282" height="14" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_13.png" width="506" height="19" alt=""></td>
+		<td colspan="2">
+			<input class="easyui-validatebox" style="width: 137px;height: 19px;" type="password" name="password" data-options="required:true" value="admin"></input></td>
+		<td>
+			<img src="${ctx}/images/login_15.png" width="282" height="19" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_16.png" width="506" height="13" alt=""></td>
+		<td colspan="2">
+			<img src="${ctx}/images/login_17.png" width="137" height="13" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_18.png" width="282" height="13" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_19.png" width="506" height="20" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_20.png" width="73" height="20" onclick="submitForm();"></td>
+		<td>
+			<img src="${ctx}/images/login_21.png" width="64" height="20" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_22.png" width="282" height="20" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_23.png" width="506" height="180" alt=""></td>
+		<td colspan="2">
+			<img src="${ctx}/images/login_24.png" width="137" height="180" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_25.png" width="282" height="180" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="${ctx}/images/login_26.png" width="506" height="24" alt=""></td>
+		<td colspan="2">
+			<img src="${ctx}/images/login_27.png" width="137" height="24" alt=""></td>
+		<td>
+			<img src="${ctx}/images/login_28.png" width="282" height="24" alt=""></td>
+	</tr>
+</table>
+</form>
 	</body>
 </html>

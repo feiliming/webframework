@@ -65,6 +65,7 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 			u.setCode_id(t.getTenterpriseinfo().getCode_id());
 			u.setCode_name(t.getTenterpriseinfo().getCode_cn());
 			u.setCreditlevel(t.getTenterpriseinfo().getCreditlevel());
+			u.setTwodimension("/2d/product/"+t.getPid()+".png");
 			ul.add(u);
 		}
 		return ul;

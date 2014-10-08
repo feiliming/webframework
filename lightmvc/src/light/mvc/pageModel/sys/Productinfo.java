@@ -33,6 +33,13 @@ public class Productinfo implements java.io.Serializable{
 	private String status;
 	private String creditlevel;
 	private Date finishdate;
+	private String twodimension;
+	public String getTwodimension() {
+		return twodimension;
+	}
+	public void setTwodimension(String twodimension) {
+		this.twodimension = twodimension;
+	}
 	public Long getPid() {
 		return pid;
 	}
