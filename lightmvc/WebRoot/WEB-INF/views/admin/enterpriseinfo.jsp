@@ -56,22 +56,22 @@
 				width : '80',
 				title : '经济行业',
 				field : 'industry_id',
-				sortable : true
+				sortable : false
 			}, {
 				width : '200',
 				title : '地址',
 				field : 'addressname',
-				sortable : true
+				sortable : false
 			}, {
 				width : '80',
 				title : '邮编',
 				field : 'postcode',
-				sortable : true
+				sortable : false
 			}, {
 				width : '100',
 				title : '电话',
 				field : 'tel',
-				sortable : true
+				sortable : false
 			}, {
 				width : '80',
 				title : '信用等级',
@@ -90,6 +90,13 @@
 					case 'C':
 						return '★';	
 					}
+				}
+			},{
+				width : '100',
+				title : '相关产品',
+				field : 'action',
+				formatter : function(value, row, index) {
+					return "<a href='javascript:void(0)' onclick=eproducts('" +row.code_id+ "');>查看产品</a>";
 				}
 			}] ],
 			toolbar : '#toolbar'
@@ -127,6 +134,21 @@
 			textField:'zrxzqh_name'
 		});
 	});
+	
+	function eproducts(eid){
+		parent.$.modalDialog({
+			title : '相关产品',
+			//width : 800,
+			//height : auto,
+			href : '${ctx}/enterpriseinfo/eproductsPage?eid='+eid,
+			buttons : [ {
+				text : '关闭',
+				handler : function() {
+					parent.$.modalDialog.handler.dialog('close');
+				}
+			} ]
+		});
+	}
 	
 	function addFun() {
 		parent.$.modalDialog({

@@ -9,8 +9,10 @@ import light.mvc.pageModel.base.Grid;
 import light.mvc.pageModel.base.Json;
 import light.mvc.pageModel.base.PageFilter;
 import light.mvc.pageModel.base.Tree;
+import light.mvc.pageModel.sys.Enterpriseinfo;
 import light.mvc.pageModel.sys.Productinfo;
 import light.mvc.pageModel.sys.Zrxzqh;
+import light.mvc.service.sys.EnterpriseinfoServiceI;
 import light.mvc.service.sys.ProductinfoServiceI;
 import light.mvc.service.sys.ZrxzqhServiceI;
 
@@ -25,6 +27,8 @@ public class ProductinfoController extends BaseController {
 
 	@Autowired
 	private ProductinfoServiceI productinfoService;
+	@Autowired
+	private EnterpriseinfoServiceI enterpriseService;
 	
 	@Autowired
 	private ZrxzqhServiceI zrxzqhService;
@@ -58,6 +62,14 @@ public class ProductinfoController extends BaseController {
 	@RequestMapping("/statistic")
 	public String statistics(){
 		return "/admin/productinfostatistic";
+	}
+	
+	@RequestMapping("/edetailPage")
+	public String edetailPage(HttpServletRequest request){
+		String eid = request.getParameter("eid");
+		Enterpriseinfo enterpriseinfo = enterpriseService.get(eid);
+		request.setAttribute("enterprise", enterpriseinfo);
+		return "/admin/enterpriseDetail";
 	}
 	
 	@RequestMapping("/getLevel2")

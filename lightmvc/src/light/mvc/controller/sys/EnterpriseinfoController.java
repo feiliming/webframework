@@ -10,8 +10,10 @@ import light.mvc.pageModel.base.Json;
 import light.mvc.pageModel.base.PageFilter;
 import light.mvc.pageModel.base.Tree;
 import light.mvc.pageModel.sys.Enterpriseinfo;
+import light.mvc.pageModel.sys.Productinfo;
 import light.mvc.pageModel.sys.Zrxzqh;
 import light.mvc.service.sys.EnterpriseinfoServiceI;
+import light.mvc.service.sys.ProductinfoServiceI;
 import light.mvc.service.sys.ZrxzqhServiceI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class EnterpriseinfoController extends BaseController {
 
 	@Autowired
 	private EnterpriseinfoServiceI enterpriseinfoService;
+	@Autowired
+	private ProductinfoServiceI productinfoService;
 	@Autowired
 	private ZrxzqhServiceI zrxzqhService;
 	
@@ -51,6 +55,20 @@ public class EnterpriseinfoController extends BaseController {
 		grid.setRows(enterpriseinfoService.dataGrid(enterpriseinfo, ph));
 		grid.setTotal(enterpriseinfoService.count(enterpriseinfo, ph));
 		return grid;
+	}
+	
+	@RequestMapping("/eproductsPage")
+	public String eproductsPage(HttpServletRequest request){
+		String eid = request.getParameter("eid");
+		request.setAttribute("eid", eid);
+		return "/admin/enterpriseProducts";
+	}
+	@RequestMapping("/getByCodeId")
+	@ResponseBody
+	public List<Productinfo> getByCodeId(HttpServletRequest request){
+		String eid = request.getParameter("eid");
+		List<Productinfo> list = productinfoService.getByCodeId(eid);
+		return list;
 	}
 	
 	@RequestMapping("/statistic")

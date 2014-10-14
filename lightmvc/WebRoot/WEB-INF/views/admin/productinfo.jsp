@@ -36,17 +36,20 @@
 				width : '100',
 				title : '机构代码',
 				field : 'code_id',
-				sortable : true
+				sortable : false,
+				formatter: function(value,row,index){
+					return "<a href='javascript:void(0)' onclick=edetail('" +row.code_id+ "');>" +row.code_id+ "</a>";
+				}
 			}, {
 				width : '200',
 				title : '机构名称',
 				field : 'code_name',
-				sortable : true
+				sortable : false
 			}, {
 				width : '80',
 				title : '信用等级',
 				field : 'creditlevel',
-				sortable : true,
+				sortable : false,
 				formatter : function(value, row, index) {
 					switch (value) {
 					case 'AAA':
@@ -88,7 +91,7 @@
 				sortable : false
 			}, {
 				width : '220',
-				title : '二维码',
+				title : '二维码(扫描看产品详情)',
 				field : 'twodimension',
 				sortable : false,
 				formatter: function(value, row, index){
@@ -167,6 +170,21 @@
 			textField:'zrxzqh_name'
 		});
 	});
+	
+	function edetail(eid){
+		parent.$.modalDialog({
+			title : '机构详情',
+			width : 500,
+			height : 450,
+			href : '${ctx}/productinfo/edetailPage?eid='+eid,
+			buttons : [ {
+				text : '关闭',
+				handler : function() {
+					parent.$.modalDialog.handler.dialog('close');
+				}
+			} ]
+		});
+	}
 	
 	function addFun() {
 		parent.$.modalDialog({
@@ -249,8 +267,8 @@
 	}	
 	</script>
 </head>
-<body  class="easyui-layout" data-options="fit:true,border:false" style="overflow: hidden;">
-	<div data-options="region:'north',border:false" style="height: 30px; overflow: hidden;background-color: #f4f4f4">
+<body  class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'north',border:false" style="height: 30px; background-color: #f4f4f4">
 		<form id="searchForm">
 			<table>
 				<tr>

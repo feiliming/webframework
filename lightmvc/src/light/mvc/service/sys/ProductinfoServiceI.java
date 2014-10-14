@@ -24,4 +24,5 @@ public interface ProductinfoServiceI {
 
 	
 	public List<Object[]> statisticByZrxzqh();
+	public List<Productinfo> getByCodeId(String codeid);
 }

@@ -72,6 +72,24 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 	}
 
 	@Override
+	public List<Productinfo> getByCodeId(String codeid) {
+		List<Productinfo> ul = new ArrayList<Productinfo>();
+		Map<String, Object> params = new HashMap<String, Object>();
+		String hql = " from Tproductinfo t ";
+		List<Tproductinfo> l = productinfoDao.find(hql + "where t.tenterpriseinfo.code_id = '" + codeid + "'", params, 1, Integer.MAX_VALUE);
+		for (Tproductinfo t : l) {
+			Productinfo u = new Productinfo();
+			BeanUtils.copyProperties(t, u);
+			u.setCode_id(t.getTenterpriseinfo().getCode_id());
+			u.setCode_name(t.getTenterpriseinfo().getCode_cn());
+			u.setCreditlevel(t.getTenterpriseinfo().getCreditlevel());
+			u.setTwodimension("/2d/product/"+t.getPid()+".png");
+			ul.add(u);
+		}
+		return ul;
+	}
+
+	@Override
 	public Long count(String region, Productinfo productinfo, PageFilter ph) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		String hql = " from Tproductinfo t ";

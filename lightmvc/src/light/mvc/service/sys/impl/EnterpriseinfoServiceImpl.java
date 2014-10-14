@@ -47,6 +47,8 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoServiceI {
 		Tenterpriseinfo t = enterpriseinfoDao.get(Tenterpriseinfo.class, code_id);
 		Enterpriseinfo r = new Enterpriseinfo();
 		BeanUtils.copyProperties(t, r);
+		r.setZrxzqh_id(t.getZrxzqh().getZrxzqh_id());
+		r.setZrxzqh_name(t.getZrxzqh().getZrxzqh_name());
 		return r;
 	}
 
