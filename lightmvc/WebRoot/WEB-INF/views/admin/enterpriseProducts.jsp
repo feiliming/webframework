@@ -46,7 +46,7 @@ $(function() {
 });
 </script>
 <div class="easyui-layout" data-options="fit:true,border:false">
-	<div data-options="region:'center',fit:true,border:false" title="" style="overflow: hidden;padding: 3px;">
+	<div data-options="region:'center',fit:true,border:false" style="padding: 3px;">
 		<table id="epGrid" data-options="fit:true"></table>
 	</div>
 </div>
