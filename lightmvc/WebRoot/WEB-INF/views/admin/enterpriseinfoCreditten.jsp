@@ -31,7 +31,7 @@
 	   	"</graph>";
 		var chart1 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/Pie3D.swf", "ChartId", "900", "350");
 		chart1.setDataXML(participantPiexml);		   
-		chart1.render("typediv1"); 
+		chart1.render("typediv1"); **/
 		///////////////////////
 		var positionxml = "<graph caption='组织机构信用度排名前十' xAxisName='组织机构' yAxisName='分数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
 	   	"<categories><category name='吉林省组织机构代码管理中心'/><category name='吉林省工商行政管理局'/><category name='吉林省事业单位登记管理局'/><category name='扶余县双春纯净水有限公司'/><category name='吉林市棋盘粮油有限公司'/>"+
@@ -43,37 +43,8 @@
 		chart2.setDataXML(positionxml);		   
 		chart2.render("typediv2");
 		///////////////////////////
-		var OrgRiskMonthLinexml = "<graph  caption='组织机构信用历史变化情况' xAxisName='年份' yAxisName='分数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='2008'/><category name='2009'/><category name='2010'/><category name='2011'/><category name='2012'/><category name='2013'/>"+
-	   	"<category name='2014'/></categories>"+
-	   	"<dataset seriesName='吉林省工商行政管理局'color='C6EDFF'><set value='80'/><set value='85'/><set value='90'/><set value='82'/><set value='80'/><set value='89'/><set value='98'/></dataset>"+
-	   	"<dataset seriesName='白山市工商行政管理局'color='FFD42C'><set value='72'/><set value='85'/><set value='94'/><set value='88'/><set value='78'/><set value='76'/><set value='86'/></dataset>"+
-	   	"<dataset seriesName='吉林省事业单位登记管理局'color='9DCA14'><set value='83'/><set value='90'/><set value='91'/><set value='86'/><set value='98'/><set value='78'/><set value='94'/></dataset>"+
-	   	"<dataset seriesName='扶余县双春纯净水有限公司'color='D37A43'><set value='54'/><set value='88'/><set value='80'/><set value='90'/><set value='78'/><set value='56'/><set value='92'/></dataset>"+
-	   	"<dataset seriesName='吉林市棋盘粮油有限公司'color='21A9A9'><set value='65'/><set value='70'/><set value='78'/><set value='82'/><set value='96'/><set value='78'/><set value='91'/></dataset>"+
-	   	"</graph>";
-		var chart3 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSLine.swf", "ChartId", "900", "350");
-		chart3.setDataXML(OrgRiskMonthLinexml);		   
-		chart3.render("typediv3");
-		**/
+		
 
-		$.ajax({
-			type: "POST",
-			url: '${ctx}' + '/enterpriseinfo/statisticByZrxzqh',
-			async: false,
-			success: function(result){
-				var jdata = $.parseJSON(result);
-				
-				var chart = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "900", "350"); 
-				chart.setDataXML(jdata.obj);		   
-				chart.render("typediv"); 
-				
-				var chart1 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/Pie3D.swf", "ChartId", "900", "350");
-				chart1.setDataXML(jdata.msg);		   
-				chart1.render("typediv1"); 
-			},
-			error: function(){alert('出错了!');}
-		});
 	});
 
 	function searchFun() {
@@ -105,10 +76,7 @@
 	</div>
  -->	
 	<div data-options="region:'center',border:false">
-		<div id="typediv1" align="center" style="display:" ></div>	
 		<div id="typediv2" align="center" style="display:" ></div>	
-		<div id="typediv3" align="center" style="display:" ></div>	
-		<div id="typediv" align="center" style="display:" ></div>	
 	</div>
 </body>
 </html>

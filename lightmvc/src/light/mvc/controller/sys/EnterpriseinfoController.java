@@ -79,6 +79,14 @@ public class EnterpriseinfoController extends BaseController {
 	public String statistics2(){
 		return "/admin/enterpriseinfostatistic2";
 	}
+	@RequestMapping("/creditten")
+	public String creditten(){
+		return "/admin/enterpriseinfoCreditten";
+	}
+	@RequestMapping("/credithistory")
+	public String credithistory(){
+		return "/admin/enterpriseinfoCredithistory";
+	}
 	
 	@RequestMapping("/getLevel2")
 	@ResponseBody

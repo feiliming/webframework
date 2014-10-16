@@ -31,17 +31,8 @@
 	   	"</graph>";
 		var chart1 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/Pie3D.swf", "ChartId", "900", "350");
 		chart1.setDataXML(participantPiexml);		   
-		chart1.render("typediv1"); 
+		chart1.render("typediv1"); **/
 		///////////////////////
-		var positionxml = "<graph caption='组织机构信用度排名前十' xAxisName='组织机构' yAxisName='分数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
-	   	"<categories><category name='吉林省组织机构代码管理中心'/><category name='吉林省工商行政管理局'/><category name='吉林省事业单位登记管理局'/><category name='扶余县双春纯净水有限公司'/><category name='吉林市棋盘粮油有限公司'/>"+
-	   	"<category name='吉林兴龙薯业有限公司'/><category name='集安市恒益纺织有限公司'/><category name='白城市宏达化工产品有限公司'/><category name='吉林市汇缘包装制品有限公司'/><category name='吉林兆丰农业开发有限公司'/></categories>"+
-	   	"<dataset><set color='C6EDFF' value='99'/><set color='FFD42C' value='95'/><set color='9DCA14' value='92'/><set color='D37A43' value='88'/><set color='21A9A9' value='83'/><set color='EE6464' value='80'/><set color='A25DA2' value='75'/><set color='A25DA2' value='72'/><set color='A25DA2' value='71'/><set color='A25DA2' value='65'/>"+
-	   	"</dataset>"+
-	   	"</graph>";
-		var chart2 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSBar3D.swf", "ChartId", "900", "350"); 
-		chart2.setDataXML(positionxml);		   
-		chart2.render("typediv2");
 		///////////////////////////
 		var OrgRiskMonthLinexml = "<graph  caption='组织机构信用历史变化情况' xAxisName='年份' yAxisName='分数' outCnvBaseFontSize='12' bgColor='ffffff' showBorder='1' borderColor='d7e9f3' decimalPrecision='0' showColumnShadow='1' showAlternateHGridColor='1'>"+
 	   	"<categories><category name='2008'/><category name='2009'/><category name='2010'/><category name='2011'/><category name='2012'/><category name='2013'/>"+
@@ -55,25 +46,8 @@
 		var chart3 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSLine.swf", "ChartId", "900", "350");
 		chart3.setDataXML(OrgRiskMonthLinexml);		   
 		chart3.render("typediv3");
-		**/
+		
 
-		$.ajax({
-			type: "POST",
-			url: '${ctx}' + '/enterpriseinfo/statisticByZrxzqh',
-			async: false,
-			success: function(result){
-				var jdata = $.parseJSON(result);
-				
-				var chart = new FusionCharts("${pageContext.request.contextPath}/fusionchart/MSColumn3D.swf", "ChartId", "900", "350"); 
-				chart.setDataXML(jdata.obj);		   
-				chart.render("typediv"); 
-				
-				var chart1 = new FusionCharts("${pageContext.request.contextPath}/fusionchart/Pie3D.swf", "ChartId", "900", "350");
-				chart1.setDataXML(jdata.msg);		   
-				chart1.render("typediv1"); 
-			},
-			error: function(){alert('出错了!');}
-		});
 	});
 
 	function searchFun() {
@@ -105,10 +79,7 @@
 	</div>
  -->	
 	<div data-options="region:'center',border:false">
-		<div id="typediv1" align="center" style="display:" ></div>	
-		<div id="typediv2" align="center" style="display:" ></div>	
 		<div id="typediv3" align="center" style="display:" ></div>	
-		<div id="typediv" align="center" style="display:" ></div>	
 	</div>
 </body>
 </html>

@@ -33,13 +33,13 @@
 			pageSize : 10,
 			pageList : [ 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 ],
 			frozenColumns : [ [ {
-				width : '100',
+				width : '80',
 				title : '机构代码',
 				field : 'code_id',
-				sortable : false,
-				formatter: function(value,row,index){
-					return "<a href='javascript:void(0)' onclick=edetail('" +row.code_id+ "');>" +row.code_id+ "</a>";
-				}
+				sortable : false
+				//formatter: function(value,row,index){
+				//	return "<a href='javascript:void(0)' onclick=edetail('" +row.code_id+ "');>" +row.code_id+ "</a>";
+				//}
 			}, {
 				width : '200',
 				title : '机构名称',
@@ -90,12 +90,19 @@
 				field : 'standard_name',
 				sortable : false
 			}, {
-				width : '220',
+				width : '120',
 				title : '二维码(扫描看产品详情)',
 				field : 'twodimension',
 				sortable : false,
 				formatter: function(value, row, index){
 					return "<img src='${pageContext.request.contextPath}"+value+"'/>";
+				}
+			},{
+				width : '100',
+				title : '机构详情',
+				field : 'action',
+				formatter : function(value, row, index) {
+					return "<a href='javascript:void(0)' onclick=edetail('" +row.code_id+ "');>查看机构详情</a>";
 				}
 			}/**, {
 				width : '80',
