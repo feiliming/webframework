@@ -71,6 +71,13 @@ public class ProductinfoController extends BaseController {
 		request.setAttribute("enterprise", enterpriseinfo);
 		return "/admin/enterpriseDetail";
 	}
+	@RequestMapping("/pdetailPage")
+	public String pdetailPage(HttpServletRequest request){
+		String pid = request.getParameter("pid");
+		Productinfo productinfo = productinfoService.getImages(Long.parseLong(pid));
+		request.setAttribute("productinfo", productinfo);
+		return "/admin/productDetail";
+	}
 	
 	@RequestMapping("/getLevel2")
 	@ResponseBody
@@ -165,6 +172,11 @@ public class ProductinfoController extends BaseController {
 	@ResponseBody
 	public Productinfo get(String pid)  {
 		return productinfoService.get(Long.parseLong(pid));
+	}
+	@RequestMapping("/getImgs")
+	@ResponseBody
+	public Productinfo getImgs(String pid)  {
+		return productinfoService.getImages(Long.parseLong(pid));
 	}
 	
 	@RequestMapping("/editPage")

@@ -1,6 +1,7 @@
 package light.mvc.pageModel.sys;
 
 import java.util.Date;
+import java.util.List;
 
 public class Productinfo implements java.io.Serializable{
 
@@ -34,6 +35,7 @@ public class Productinfo implements java.io.Serializable{
 	private String creditlevel;
 	private Date finishdate;
 	private String twodimension;
+	private List<String> pimages;
 	public String getTwodimension() {
 		return twodimension;
 	}
@@ -201,6 +203,12 @@ public class Productinfo implements java.io.Serializable{
 	}
 	public void setFinishdate(Date finishdate) {
 		this.finishdate = finishdate;
+	}
+	public List<String> getPimages() {
+		return pimages;
+	}
+	public void setPimages(List<String> pimages) {
+		this.pimages = pimages;
 	}
 
 }

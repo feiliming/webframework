@@ -19,6 +19,7 @@ public interface ProductinfoServiceI {
 	public void edit(Productinfo productinfo);
 
 	public Productinfo get(Long pid);
+	public Productinfo getImages(Long pid);
 
 	public List<Tree> tree();
 

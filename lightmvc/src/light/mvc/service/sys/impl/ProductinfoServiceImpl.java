@@ -52,6 +52,26 @@ public class ProductinfoServiceImpl implements ProductinfoServiceI {
 		r.setCreditlevel(t.getTenterpriseinfo().getCreditlevel());
 		return r;
 	}
+	@Override
+	public Productinfo getImages(Long pid) {
+		Tproductinfo t = productinfoDao.get(Tproductinfo.class, pid);
+		Productinfo r = new Productinfo();
+		BeanUtils.copyProperties(t, r);
+		r.setCode_id(t.getTenterpriseinfo().getCode_id());
+		r.setCode_name(t.getTenterpriseinfo().getCode_cn());
+		r.setCreditlevel(t.getTenterpriseinfo().getCreditlevel());
+		r.setTwodimension("/2d/product/"+t.getPid()+".png");
+		
+		String sql = "SELECT storagepath FROM db_productimage WHERE memo2='1' and pid = " + pid;
+		List<String> list = (List)productinfoDao.findBySql(sql);
+		List<String> imgsList = new ArrayList<String>();
+		for(String obj : list){
+			imgsList.add(String.valueOf(obj));
+		}
+		r.setPimages(imgsList);
+		
+		return r;
+	}
 
 	@Override
 	public List<Productinfo> dataGrid(String region, Productinfo productinfo, PageFilter ph) {

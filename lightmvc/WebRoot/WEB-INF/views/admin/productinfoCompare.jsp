@@ -179,12 +179,14 @@
 						return '★';	
 					}
 				}},
-		        {field:'product_name',title:'产品名称',width:200},    
+		        {field:'product_name',title:'产品名称',width:120},    
 		        {field:'product_class',title:'产品类别',width:80},    
 		        {field:'product_commonname',title:'常用名',width:120},    
 		        {field:'standard_id',title:'执行标准ID',width:120},    
 		        {field:'standard_name',title:'执行标准名称',width:150},
-		        {field:'action',title:'操作',width:120}
+		        {field:'pimages',title:'产品图片',width:220},
+		        {field:'twodimension',title:'二维码',width:110},
+		        {field:'action',title:'操作',width:100}
 		    ]]    
 		});
 	});
@@ -271,10 +273,19 @@
 		//	if (b) {
 				$.ajax({
 					type: "POST",
-					url: '${ctx}' + '/productinfo/get?pid='+pid,
+					url: '${ctx}' + '/productinfo/getImgs?pid='+pid,
 					async: false,
 					success: function(result){
 						var jdata = $.parseJSON(result);
+						var twod = '<img src=${ctx}'+jdata.twodimension+'>';
+						var temp = jdata.pimages + "";
+						var pimgstemp = "";
+						if(temp != null && temp != ""){
+							var pimgs = temp.split(",");
+							for(var i=0;i<pimgs.length;i++){
+								pimgstemp = pimgstemp + '<a href=${ctx}'+pimgs[i].substr(0,pimgs[i].length-7)+pimgs[i].substr(-4)+' target=blank><img src=${ctx}'+pimgs[i]+'></a>';
+							}
+						}
 						$('#dghead').datagrid('appendRow',{
 							pid:jdata.pid,
 							code_id: jdata.code_id,
@@ -285,6 +296,8 @@
 							product_commonname: jdata.product_commonname,
 							standard_id: jdata.standard_id,
 							standard_name: jdata.standard_name,
+							pimages: $.formatString(pimgstemp),
+							twodimension: $.formatString(twod),
 							action: $.formatString('<a href="javascript:void(0)" onclick="delcompareFun(\'{0}\');" >删除对比</a>', pid)
 						});
 					},

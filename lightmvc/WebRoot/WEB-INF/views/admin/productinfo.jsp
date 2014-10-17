@@ -79,7 +79,7 @@
 				title : '常用名',
 				field : 'product_commonname',
 				sortable : false
-			}, {
+			}/**, {
 				width : '120',
 				title : '执行标准ID',
 				field : 'standard_id',
@@ -89,8 +89,8 @@
 				title : '执行标准名称',
 				field : 'standard_name',
 				sortable : false
-			}, {
-				width : '120',
+			}*/, {
+				width : '140',
 				title : '二维码(扫描看产品详情)',
 				field : 'twodimension',
 				sortable : false,
@@ -98,11 +98,11 @@
 					return "<img src='${pageContext.request.contextPath}"+value+"'/>";
 				}
 			},{
-				width : '100',
-				title : '机构详情',
+				width : '240',
+				title : '操作',
 				field : 'action',
 				formatter : function(value, row, index) {
-					return "<a href='javascript:void(0)' onclick=edetail('" +row.code_id+ "');>查看机构详情</a>";
+					return "<a href='javascript:void(0)' onclick=edetail('" +row.code_id+ "');>查看机构详情</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0)' onclick=pdetail('" +row.pid+ "');>查看产品详情</a>";
 				}
 			}/**, {
 				width : '80',
@@ -184,6 +184,20 @@
 			width : 500,
 			height : 450,
 			href : '${ctx}/productinfo/edetailPage?eid='+eid,
+			buttons : [ {
+				text : '关闭',
+				handler : function() {
+					parent.$.modalDialog.handler.dialog('close');
+				}
+			} ]
+		});
+	}
+	function pdetail(pid){
+		parent.$.modalDialog({
+			title : '产品详情',
+			width : 500,
+			height : 450,
+			href : '${ctx}/productinfo/pdetailPage?pid='+pid,
 			buttons : [ {
 				text : '关闭',
 				handler : function() {
