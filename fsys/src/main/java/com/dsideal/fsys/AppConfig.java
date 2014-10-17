@@ -8,9 +8,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dsideal.fsys.controller.ConfigController;
 import com.dsideal.fsys.controller.IndexController;
+import com.dsideal.fsys.controller.ResourceController;
 import com.dsideal.fsys.controller.UserController;
 import com.dsideal.fsys.interceptor.IsLoginInterceptor;
+import com.dsideal.fsys.model.Config;
+import com.dsideal.fsys.model.Resource;
 import com.dsideal.fsys.model.User;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -21,7 +25,9 @@ import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 
@@ -51,7 +57,9 @@ public class AppConfig extends JFinalConfig
 	public void configRoute(Routes me) {
 		//setBaseViewPath是全局设置, 在这里可以单个设置
 		me.add("/", IndexController.class, "/html");
-		me.add("/user", UserController.class, "/html/user");
+		me.add("/user", UserController.class, "/html/sys");
+		me.add("/resource", ResourceController.class, "/html/sys");
+		me.add("/config", ConfigController.class, "/html/sys");
 	}
 
 	@Override
@@ -62,9 +70,13 @@ public class AppConfig extends JFinalConfig
 		//Record模式
 		ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(druidPlugin);
 		activeRecordPlugin.setShowSql(getPropertyToBoolean("showSql"));
+		//配置数据库列名大写不敏感
+		activeRecordPlugin.setContainerFactory(new CaseInsensitiveContainerFactory(true));
 		me.add(activeRecordPlugin);
 		//数据库表和Model对应
 		activeRecordPlugin.addMapping("sys_user", User.class);
+		activeRecordPlugin.addMapping("sys_resource", Resource.class);
+		activeRecordPlugin.addMapping("sys_config", Config.class);
 		
 		me.add(new EhCachePlugin());
 	}
@@ -92,6 +104,8 @@ public class AppConfig extends JFinalConfig
 				e.printStackTrace();
 			}
 		}
+		
+		//TODO 初始化系统配置
 	}
 	//加载.sql文件
 	public List<String> loadSql(String sqlFile) throws IOException{
@@ -116,6 +130,6 @@ public class AppConfig extends JFinalConfig
 	}
 
 	public static void main(String[] args) {
-		JFinal.start("src/main/webapp", 8080, "/f", 3);
+		JFinal.start("src/main/webapp", 8088, "/f", 3);
 	}
 }

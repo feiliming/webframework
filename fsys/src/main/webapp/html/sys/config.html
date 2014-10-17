@@ -1,0 +1,59 @@
+<style>
+<!--
+table {border-collapse: collapse;}
+th, td {padding: 0.5em 1em; } 
+-->
+</style>
+	<div style="padding-top:20px" align="center">
+    <form id="configform" class="easyui-form" method="post" data-options="novalidate:true,ajax:true">
+   		<input type="hidden" name="config.id" value="${config.id}"/>
+    	<table>
+    		<tr>
+    			<td>系统名称:</td>
+    			<td><input class="easyui-textbox" type="text" name="config.system_name" value="${config.system_name}" data-options="required:true"></input></td>
+    		</tr>
+    		<tr>
+    			<td>菜单类型:</td>
+    			<td><select class="easyui-combobox" name="config.navigation_type"  value="${config.navigation_type}" data-options="required:true">
+    				<option value="accordion">手风琴风格</option>
+    				<option value="tree">树风格</option>
+    			</select></td>
+    		</tr>
+    	</table>
+    </form>
+    <div style="text-align:center;padding:5px">
+    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存</a>
+    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除</a>
+    </div>
+    </div>
+
+<script>
+	$(function(){
+		//填充表单
+		//$("#configform").form('load','${contextPath}/config/getConfig');
+	});
+
+	function submitForm(){
+		$.messager.progress();//显示进度条
+		$('#configform').form('submit',{
+			url: '${contextPath}/config/saveConfig',
+			onSubmit:function(){
+				var isValid = $(this).form('enableValidation').form('validate');
+				if(!isValid){
+					$.messager.progress('close');//如果表单是无效的则隐藏进度条
+				}
+				return isValid;
+			},
+			onSuccess:function(data){
+				$.messager.progress('close');//如果提交成功则隐藏进度条
+				if(data.success){
+					alert("成功");
+				}
+			}
+		});
+	}
+	
+	function clearForm(){
+		$('#configform').form('clear');
+	}
+</script>

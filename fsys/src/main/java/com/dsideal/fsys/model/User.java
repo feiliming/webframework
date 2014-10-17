@@ -8,6 +8,7 @@ import com.jfinal.plugin.activerecord.Model;
 
 /**
  * 
+ * 用户管理
  * @author feilm220
  *
  */

@@ -31,7 +31,7 @@ public class IsLoginInterceptor implements Interceptor{
 			Controller controller = ai.getController();
 			String userId = controller.getCookie("userId");
 			if(userId == null || "".equals(userId)){
-				controller.render("login.html");
+				controller.render("/html/login.html");
 			}else{
 				ai.invoke();
 			}

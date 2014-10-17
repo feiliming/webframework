@@ -1,28 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>index</title>
+<title>${config.system_name}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="edge" />
+<link rel="shortcut icon" href="${contextPath}/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/component/jquery-easyui-1.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${contextPath}/component/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${contextPath}/css/fsys.css">
 </head>
 <body>
+<div id="loading" style="position: fixed;top: -50%;left: -50%;width: 200%;height: 200%;background: #fff;z-index: 100;overflow: hidden;">
+	<img src="${contextPath}/images/ajax-loading.gif" style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;margin: auto;"/>
+</div>
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'north'" style="height:50px"></div>
+	<div data-options="region:'south',split:true" style="height:40px;"></div>
+	<div data-options="region:'east',split:true,collapsed:true" title="TODO?" style="width:100px;"></div>
+	
+	<div id="west" data-options="region:'west',iconCls:'icon-nav',split:true" title="导航" style="width:200px;"></div>
+	
+	<div data-options="region:'center'">
+		<div id="tabs">
+			<div title="首页" data-options="title:'Home',iconCls:'icon-home'"></div>
+		</div>
+	</div>
+	
+</div>
+
 <script type="text/javascript" src="${contextPath}/component/jquery.min.js"></script>
+<script type="text/javascript" src="${contextPath}/component/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${contextPath}/component/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${contextPath}/js/easyui-extension.js"></script>
+<script type="text/javascript" src="${contextPath}/js/fsys.js"></script>
 <script type="text/javascript">
 (function(){
-	$.ajax({
-		type: "POST",
-		url: "${contextPath}/user/userList",
-		success: function(data){
-			var html;
-			for(var i=0;i<data.length;i++){
-				//alert(data[i].login_name);
-				html = html + "<tr><td>"+data[i].id+"</td><td>"+data[i].login_name+"</td><td>"+data[i].password+"</td></tr>";
+	//1.加载左侧导航
+	//手风琴风格
+	if('${config.navigation_type}' == 'accordion'){
+		$("#west").append('<div id="nav"></div>');
+		$("#nav").accordion({
+			fit: true,
+			border: false
+			//multiple: true
+		});
+		$.ajax({
+			url: "${contextPath}/resource/getByPidAndResourceType?pid=0&resource_type=menu",
+			type: "GET",
+			async: false,
+			success: function(data){
+				$.each(data, function(i,n){
+					$("#nav").accordion('add', {
+						id: n.id,
+						title: n.name,
+						//content: '<div style="padding:10px"><ul id="tree'+n.id+'"></ul></div>',
+						selected: false
+					});
+					$("#"+n.id).html('<div style="padding:10px"><ul id="tree' + n.id + '"></ul></div>');
+					$("#tree"+n.id).tree({
+						url: "${contextPath}/resource/getTreeByPidAndResourceType?pid=" + n.id + "&resource_type=menu",
+						parentField : 'pid',
+						lines: false,
+						onClick: function(node){
+							if(node.attributes && node.attributes.url){
+								var url = '${contextPath}' + node.attributes.url;
+								addTabs({
+									url: url,
+									title: node.text,
+									iconCls: node.iconCls
+								});
+							}
+						}
+					});
+				});
 			}
-			$("#userList").html(html);
-		}
+		});
+
+	//直接树风格
+	} else {
+		$("#west").html('<ul id="navtree"></ul>');
+		$("#navtree").tree({
+			url: "${contextPath}/resource/getTreeByPidAndResourceType?pid=0&resource_type=menu",
+			parentField: 'pid',
+			lines: true,
+			onClick: function(node){
+				if(node.attributes && node.attributes.url){
+					var url = '${contextPath}' + node.attributes.url;
+					addTabs({
+						url: url,
+						title: node.text,
+						iconCls: node.iconCls
+					});
+				}
+			}
+		});
+	}
+
+	//2.tabs选项卡
+	$('#tabs').tabs({
+		fit:true,
+	    border:false
 	});
+	function addTabs(tab){
+		if($("#tabs").tabs('exists',tab.title)){
+			$("#tabs").tabs('select',tab.title);
+		}else{
+			$("#tabs").tabs('add', {
+				title: tab.title,
+				iconCls: tab.iconCls,
+				href: tab.url,
+				closable: true
+			});
+		}
+	}
 })()
 </script>
-<table id="userList">
-</table>
 </body>
 </html>
