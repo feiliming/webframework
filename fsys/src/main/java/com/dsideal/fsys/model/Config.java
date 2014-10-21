@@ -18,7 +18,6 @@ public class Config extends Model<Config>{
 
 	/**
 	 * 查询系统配置
-	 * @return
 	 */
 	public Config getConfig(){
 		return dao.findFirst("select * from sys_config");

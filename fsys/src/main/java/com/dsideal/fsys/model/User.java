@@ -20,8 +20,6 @@ public class User extends Model<User>{
 	
 	/**
 	 * 校验用户名和密码.
-	 * @param user
-	 * @return User
 	 */
 	public User checkLoginNameAndPassword(User user){
 		log.info("校验用户名 {} 和密码 {}", user.getStr("login_name"), user.getStr("password") );

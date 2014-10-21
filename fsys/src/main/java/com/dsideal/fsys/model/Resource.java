@@ -23,8 +23,11 @@ public class Resource extends Model<Resource>{
 	
 	public static final Resource dao = new Resource();
 
+	/**
+	 * 根据资源类型查询
+	 */
 	public List<Resource> getByResourceType(String resourceType){
-		String sql = "select * from sys_resource where resourceType = ? order by sequence asc";
+		String sql = "select * from sys_resource where type = ? and status = 0 order by sequence asc";
 		return dao.find(sql, resourceType);
 	}
 	
@@ -39,6 +42,31 @@ public class Resource extends Model<Resource>{
 	}
 	
 	/**
+	 * 一次性加载
+	 * 根据资源类型查询, 并封装成easyui的tree返回
+	 */
+	public List<Tree> getTreeByResourceType(String resourceType){
+		String sql = "select * from sys_resource where type = ? and status = 0 order by sequence asc";
+		List<Resource> rlist = dao.find(sql, resourceType);
+		List<Tree> tlist = new ArrayList<Tree>();
+		for(Resource resource : rlist){
+			Tree tree = new Tree();
+			tree.setId(resource.getStr("id"));
+			tree.setText(resource.getStr("name"));
+			tree.setState("open");
+			tree.setPid(resource.getStr("pid"));
+			tree.setIconCls(resource.getStr("icon_class"));
+			Map<String, Object> attr = new HashMap<String, Object>();
+			attr.put("url", resource.getStr("url"));
+			tree.setAttributes(attr);
+			tlist.add(tree);
+		}
+		log_.debug("根据资源类型{}查询资源, 返回List<Tree>, {}", resourceType, tlist);
+		return tlist;
+	}
+	
+	/**
+	 * 异步展开时使用
 	 * 根据pid和资源类型查询, 并封装成easyui的tree返回
 	 */
 	public List<Tree> getTreeByPidAndResourceType(String pid, String resourceType){

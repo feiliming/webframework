@@ -40,12 +40,12 @@
 	if('${config.navigation_type}' == 'accordion'){
 		$("#west").append('<div id="nav"></div>');
 		$("#nav").accordion({
-			fit: true,
-			border: false
+			//fit: true,
+			//border: false
 			//multiple: true
 		});
 		$.ajax({
-			url: "${contextPath}/resource/getByPidAndResourceType?pid=0&resource_type=menu",
+			url: "${contextPath}/resource/getByPidAndResourceType?pid=-1&resource_type=menu",
 			type: "GET",
 			async: false,
 			success: function(data){
@@ -54,7 +54,8 @@
 						id: n.id,
 						title: n.name,
 						//content: '<div style="padding:10px"><ul id="tree'+n.id+'"></ul></div>',
-						selected: false
+						selected: false,
+						iconCls: n.icon_class
 					});
 					$("#"+n.id).html('<div style="padding:10px"><ul id="tree' + n.id + '"></ul></div>');
 					$("#tree"+n.id).tree({
@@ -75,12 +76,19 @@
 				});
 			}
 		});
-
-	//直接树风格
+		//fit属性放上面accordion展不开,样式问题
+		$("#nav").accordion({
+			fit: true,
+			border: false
+		});
+		//展开第一个
+		$("#nav").accordion('select',0);
+		
+	//直接树风格,如果想异步则调用getTreeByPidAndResourceType
 	} else {
 		$("#west").html('<ul id="navtree"></ul>');
 		$("#navtree").tree({
-			url: "${contextPath}/resource/getTreeByPidAndResourceType?pid=0&resource_type=menu",
+			url: "${contextPath}/resource/getTreeByResourceType?resource_type=menu",
 			parentField: 'pid',
 			lines: true,
 			onClick: function(node){

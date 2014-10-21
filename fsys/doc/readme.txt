@@ -67,4 +67,6 @@ slf4j是门面，log4j、logback是api实现
 pom引用log4j则使用log4j.properties
 pom引用logback-classic则使用logback.xml
 
-12.
+12.ajax时IE提示下载,使用forIE
+renderJson("{\"success\":true}");
+render(new JsonRender("{\"success\":true}").forIE());

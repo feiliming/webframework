@@ -36,12 +36,12 @@ $(document).keydown(function (e) {
 /**
  * show ok or nok messager
  */
-function showok(){
+function showok(message){
 	$.messager.show({
 		title:'消息',
-		msg:'操作成功!',
+		msg:message == null ? '操作成功！' : message,
 		showType:'show',
-		timeout:2000,
+		timeout:3000,
 		style:{
 			right:'',
 			top:document.body.scrollTop+document.documentElement.scrollTop,
@@ -49,12 +49,12 @@ function showok(){
 		}
 	});
 }
-function shownok(){
+function shownok(message){
 	$.messager.show({
 		title:'消息',
-		msg:'操作失败!请重试，或联系管理员!',
+		msg:message == null ? '操作失败！请重试，或联系管理员！' : message,
 		showType:'show',
-		timeout:2000,
+		timeout:3000,
 		style:{
 			right:'',
 			top:document.body.scrollTop+document.documentElement.scrollTop,

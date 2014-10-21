@@ -10,7 +10,7 @@ import com.jfinal.core.Controller;
  */
 public class ConfigController extends Controller{
 	
-	public void config(){
+	public void index(){
 		render("config.html");
 	}
 
@@ -23,9 +23,6 @@ public class ConfigController extends Controller{
 		Config config = getModel(Config.class);
 		boolean result = config.update();
 		if(result){
-			//ajax时IE提示下载,使用forIE
-			//renderJson("{\"success\":true}");
-			//render(new JsonRender("{\"success\":true}").forIE());
 			renderText("ok");
 		}else{
 			renderText("nok");
