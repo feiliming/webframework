@@ -11,17 +11,24 @@ import com.jfinal.core.Controller;
 public class ConfigController extends Controller{
 	
 	public void config(){
-		setAttr("config", Config.dao.getConfig());
 		render("config.html");
 	}
 
-	public void saveConfig(){
+	public void getConfig(){
+		renderJson("config", Config.dao.getConfig());
+	}
+	
+	public void updateConfig(){
+		//getModel自动收集,modelName默认为Model类名小写,即config.system_name
 		Config config = getModel(Config.class);
-		boolean b = config.update();
-		if(b){
-			renderJson("{\"success\":true}");
+		boolean result = config.update();
+		if(result){
+			//ajax时IE提示下载,使用forIE
+			//renderJson("{\"success\":true}");
+			//render(new JsonRender("{\"success\":true}").forIE());
+			renderText("ok");
 		}else{
-			renderJson("{\"success\":false}");
+			renderText("nok");
 		}
 	}
 }

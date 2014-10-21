@@ -280,11 +280,13 @@
 						var twod = '<img src=${ctx}'+jdata.twodimension+'>';
 						var temp = jdata.pimages + "";
 						var pimgstemp = "";
-						if(temp != null && temp != ""){
+						if(temp != null && temp != "" && (temp.indexOf("220300") > -1 || temp.indexOf("220381") > -1)){
 							var pimgs = temp.split(",");
 							for(var i=0;i<pimgs.length;i++){
 								pimgstemp = pimgstemp + '<a href=${ctx}'+pimgs[i].substr(0,pimgs[i].length-7)+pimgs[i].substr(-4)+' target=blank><img src=${ctx}'+pimgs[i]+'></a>';
 							}
+						}else{
+							pimgstemp = "暂无图片";
 						}
 						$('#dghead').datagrid('appendRow',{
 							pid:jdata.pid,

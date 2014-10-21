@@ -32,9 +32,24 @@
 			<tr>
 				<td>产品图片</td>
 				<td>
+				<c:if test="${productinfo.pimages != null and productinfo.pimages != '' and fn:length(productinfo.pimages) > 0}">
 					<c:forEach var="pi" items="${productinfo.pimages}">
-						<a href="${ctx}${fn:substring(pi,0,fn:length(pi)-7)}${fn:substring(pi,fn:length(pi)-4,fn:length(pi))}" target="_blank"><img src="${ctx}${pi}"></a>
+					<c:choose>
+						<c:when test="${fn:contains(pi,'/UPLOADIMAGE/220300')}">
+							<a href="${ctx}${fn:substring(pi,0,fn:length(pi)-7)}${fn:substring(pi,fn:length(pi)-4,fn:length(pi))}" target="_blank"><img src="${ctx}${pi}"></a>
+						</c:when>
+						<c:when test="${fn:contains(pi,'/UPLOADIMAGE/220381')}">
+							<a href="${ctx}${fn:substring(pi,0,fn:length(pi)-7)}${fn:substring(pi,fn:length(pi)-4,fn:length(pi))}" target="_blank"><img src="${ctx}${pi}"></a>
+						</c:when>
+						<c:otherwise>
+							暂无图片
+						</c:otherwise>
+					</c:choose>
 					</c:forEach>
+				</c:if>
+				<c:if test="${productinfo.pimages == null or productinfo.pimages == '' or fn:length(productinfo.pimages) == 0}">
+					暂无图片
+				</c:if>
 				</td>
 			</tr>
 		</table>

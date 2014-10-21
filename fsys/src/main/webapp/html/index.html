@@ -18,7 +18,7 @@
 	<div data-options="region:'south',split:true" style="height:40px;"></div>
 	<div data-options="region:'east',split:true,collapsed:true" title="TODO?" style="width:100px;"></div>
 	
-	<div id="west" data-options="region:'west',iconCls:'icon-nav',split:true" title="导航" style="width:200px;"></div>
+	<div id="west" data-options="region:'west',iconCls:'icon-navigation',split:true" title="导航" style="width:200px;"></div>
 	
 	<div data-options="region:'center'">
 		<div id="tabs">
@@ -109,7 +109,14 @@
 				title: tab.title,
 				iconCls: tab.iconCls,
 				href: tab.url,
-				closable: true
+				closable: true,
+			    tools:[{    
+			        iconCls:'icon-mini-refresh',    
+			        handler:function(){    
+			        	var stab = $('#tabs').tabs('getSelected');  // 获取选择的面板
+			        	stab.panel('refresh');
+			        }    
+			    }]
 			});
 		}
 	}

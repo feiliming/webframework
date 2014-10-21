@@ -1,8 +1,6 @@
 package com.dsideal.fsys.model;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
-import com.jfinal.plugin.activerecord.Record;
 
 /**
  * 系统配置
@@ -22,7 +20,7 @@ public class Config extends Model<Config>{
 	 * 查询系统配置
 	 * @return
 	 */
-	public Record getConfig(){
-		return Db.findFirst("select * from sys_config");
+	public Config getConfig(){
+		return dao.findFirst("select * from sys_config");
 	}
 }

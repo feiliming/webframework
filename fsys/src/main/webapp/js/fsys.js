@@ -32,3 +32,33 @@ $(document).keydown(function (e) {
 	if (doPrevent) 
 	e.preventDefault(); 
 });
+
+/**
+ * show ok or nok messager
+ */
+function showok(){
+	$.messager.show({
+		title:'消息',
+		msg:'操作成功!',
+		showType:'show',
+		timeout:2000,
+		style:{
+			right:'',
+			top:document.body.scrollTop+document.documentElement.scrollTop,
+			bottom:''
+		}
+	});
+}
+function shownok(){
+	$.messager.show({
+		title:'消息',
+		msg:'操作失败!请重试，或联系管理员!',
+		showType:'show',
+		timeout:2000,
+		style:{
+			right:'',
+			top:document.body.scrollTop+document.documentElement.scrollTop,
+			bottom:''
+		}
+	});
+}
