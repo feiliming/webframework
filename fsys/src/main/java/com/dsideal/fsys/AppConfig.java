@@ -56,9 +56,9 @@ public class AppConfig extends JFinalConfig
 	public void configRoute(Routes me) {
 		//setBaseViewPath是全局设置, 在这里可以单个设置
 		me.add("/", IndexController.class, "/html");
-		me.add("/user", UserController.class, "/html/sys");
-		me.add("/resource", ResourceController.class, "/html/sys");
 		me.add("/config", ConfigController.class, "/html/sys");
+		me.add("/resource", ResourceController.class, "/html/sys");
+		me.add("/user", UserController.class, "/html/sys");
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class AppConfig extends JFinalConfig
 		activeRecordPlugin.setContainerFactory(new CaseInsensitiveContainerFactory(true));
 		me.add(activeRecordPlugin);
 		//数据库表和Model对应
-		activeRecordPlugin.addMapping("sys_user", User.class);
-		activeRecordPlugin.addMapping("sys_resource", Resource.class);
 		activeRecordPlugin.addMapping("sys_config", Config.class);
+		activeRecordPlugin.addMapping("sys_resource", Resource.class);
+		activeRecordPlugin.addMapping("sys_user", User.class);
 		
 		me.add(new EhCachePlugin());
 	}

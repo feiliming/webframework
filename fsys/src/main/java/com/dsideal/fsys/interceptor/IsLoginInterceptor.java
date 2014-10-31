@@ -18,7 +18,6 @@ public class IsLoginInterceptor implements Interceptor{
 	private List<String> nointerceptorList;
 	public IsLoginInterceptor() {
 		nointerceptorList = new ArrayList<String>();
-		nointerceptorList.add("/");
 		nointerceptorList.add("/login");
 		nointerceptorList.add("/logout");
 	}

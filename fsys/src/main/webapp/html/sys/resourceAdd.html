@@ -1,0 +1,72 @@
+<div style="padding: 3px;">
+	<form id="resourceAddForm" class="easyui-form" method="post" data-options="novalidate:true">
+		<table class="grid">
+			<tr>
+				<td>资源名称</td>
+				<td><input name="resource.name" type="text" placeholder="请输入资源名称" class="easyui-validatebox span2" data-options="required:true" ></td>
+				<td>资源类型</td>
+				<td><select name="resource.type" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+							<option value="menu">菜单</option>
+							<option value="button">按钮</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>资源路径</td>
+				<td><input name="resource.url" type="text" placeholder="请输入资源路径" class="easyui-validatebox span2" data-options="width:140,height:29" ></td>
+				<td>排序</td>
+				<td><input name="resource.sequence" value="0"  class="easyui-numberspinner" style="width:140px; height:29px;" data-options="required:true,editable:false"></td>
+			</tr>
+			<tr>
+				<td>菜单图标</td>
+				<td ><input  name="resource.icon_class" /></td>
+				<td>是否禁用</td>
+				<td ><select name="resource.disable" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+							<option value="0">正常</option>
+							<option value="1">停用</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>上级资源</td>
+				<td colspan="3"><select id="pid" name="resource.pid" style="width: 200px; height: 29px;"></select>
+				<a class="easyui-linkbutton" href="javascript:void(0)" onclick="$('#pid').combotree('clear');" >清空</a></td>
+			</tr>
+		</table>
+		<input type="hidden" name="resource.hasleaf" value="0" />
+	</form>
+</div>
+
+<script type="text/javascript">
+
+	$(function() {
+		
+		$('#pid').combotree({
+			url : '${contextPath}/resource/getResourceTreeList',
+			parentField : 'pid',
+			lines : true,
+			panelHeight : 'auto'
+		});
+		
+		$('#resourceAddForm').form({
+			url : '${contextPath}/resource/add',
+			onSubmit : function() {
+				progressLoad();
+				var isValid =  $(this).form('enableValidation').form('validate');
+				if (!isValid) {
+					progressClose();
+				}
+				return isValid;
+			},
+			success : function(result) {
+				progressClose();
+				if (result == 'ok') {
+					showok();
+					parent.resourceTreeGrid.treegrid('reload');
+					parent.resourceAddDialog.dialog('close');
+				} else {
+					shownok();
+				}
+			}
+		});
+		
+	});
+</script>

@@ -144,3 +144,4 @@ $.extend($.fn.form.methods, {
 		};
 	}
 });
+

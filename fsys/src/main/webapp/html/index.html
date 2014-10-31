@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="${contextPath}/css/fsys.css">
 </head>
 <body>
+<!-- 这里没有使用progressLoad()方法, 因为此方法需要jquery, 而此时jquery还没有加载  -->
 <div id="loading" style="position: fixed;top: -50%;left: -50%;width: 200%;height: 200%;background: #fff;z-index: 100;overflow: hidden;">
 	<img src="${contextPath}/images/ajax-loading.gif" style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;margin: auto;"/>
 </div>
@@ -45,9 +46,10 @@
 			//multiple: true
 		});
 		$.ajax({
-			url: "${contextPath}/resource/getByPidAndResourceType?pid=-1&resource_type=menu",
-			type: "GET",
+			url: "${contextPath}/resource/getResourceList",
+			type: "POST",
 			async: false,
+			data: "pid=-1&resource_type=menu&disable=0",
 			success: function(data){
 				$.each(data, function(i,n){
 					$("#nav").accordion('add', {
@@ -55,11 +57,11 @@
 						title: n.name,
 						//content: '<div style="padding:10px"><ul id="tree'+n.id+'"></ul></div>',
 						selected: false,
-						iconCls: n.icon_class
+						iconCls: n.iconCls
 					});
 					$("#"+n.id).html('<div style="padding:10px"><ul id="tree' + n.id + '"></ul></div>');
 					$("#tree"+n.id).tree({
-						url: "${contextPath}/resource/getTreeByPidAndResourceType?pid=" + n.id + "&resource_type=menu",
+						url: "${contextPath}/resource/getResourceTreeList?pid=" + n.id + "&resource_type=menu&disable=0",
 						parentField : 'pid',
 						lines: false,
 						onClick: function(node){
@@ -84,11 +86,11 @@
 		//展开第一个
 		$("#nav").accordion('select',0);
 		
-	//直接树风格,如果想异步则调用getTreeByPidAndResourceType
+	//直接树风格
 	} else {
 		$("#west").html('<ul id="navtree"></ul>');
 		$("#navtree").tree({
-			url: "${contextPath}/resource/getTreeByResourceType?resource_type=menu",
+			url: "${contextPath}/resource/getResourceTreeList?resource_type=menu&disable=0",
 			parentField: 'pid',
 			lines: true,
 			onClick: function(node){

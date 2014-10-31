@@ -2,6 +2,11 @@ package com.dsideal.fsys.bean;
 
 import java.util.List;
 
+/**
+ * 
+ * @author feilm220
+ *
+ */
 public class Tree implements java.io.Serializable{
 
 	private static final long serialVersionUID = -7986194015663981710L;

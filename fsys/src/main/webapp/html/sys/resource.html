@@ -1,19 +1,153 @@
-	<table  class="easyui-treegrid"
-			data-options="
-				url: '${contextPath}/html/treegrid_data1.json',
-				method: 'get',
-				lines: true,
-				rownumbers: true,
-				idField: 'id',
-				treeField: 'name',
-				fit: true,
-				border: false
-			">
-		<thead>
-			<tr>
-				<th data-options="field:'name'" width="220">Name</th>
-				<th data-options="field:'size'" width="100" align="right">Size</th>
-				<th data-options="field:'date'" width="150">Modified Date</th>
-			</tr>
-		</thead>
-	</table>
+<script type="text/javascript">
+
+	var resourceTreeGrid;
+	$(function(){
+		resourceTreeGrid = $("#resourceTreeGrid").treegrid({
+			url: '${contextPath}/resource/getResourceList',
+			method: 'post',
+			idField: 'id',
+			parentField: 'pid',
+			treeField: 'name',
+			lines: false,
+			rownumbers: true,
+			fit: true,
+			border: false,
+			singleSelect: false,
+			columns: [[{
+				field: 'name',
+				title: '资源名称'
+			},{
+				field: 'url',
+				title: 'Url'
+			},{
+				field: 'iconCls',
+				title: '图标'
+			},{
+				field: 'sequence',
+				title: '排序'
+			},{
+				field: 'disable',
+				title: '是否禁用'
+			},{
+				field: 'type',
+				title: '资源类型'
+			},{
+				field: 'action',
+				title: '操作',
+				formatter: function(value, row, index) {
+					var str = '&nbsp;';
+					str += '<a href="javascript:void(0)" onclick="editResource(\'' + row.id + '\');" >编辑</a>';
+					str += '&nbsp;&nbsp;|&nbsp;&nbsp;';
+					str += '<a href="javascript:void(0)" onclick="deleteResource(\'' + row.id + '\');" >删除</a>';
+					return str;
+				}
+			}]],              
+			toolbar: '#toolbar'
+		});
+		
+	});
+
+	var resourceAddDialog;
+	function addResource(){
+		resourceAddDialog = $("#resourceAddDialog").dialog({
+		    title: '添加资源',
+		    width: 500,
+		    height: 350,
+		    cache: false,
+		    iconCls: 'icon-add',
+		    href: '${contextPath}/resource/addPage',
+		    buttons: [{
+		    	text: '保存',
+		    	iconCls:'icon-save',
+		    	handler:function(){
+					var f = resourceAddDialog.find('#resourceAddForm');
+					f.submit();
+		    	}
+		    },{
+		    	text: '取消',
+		    	iconCls:'icon-cancel',
+		    	handler:function(){
+		    		resourceAddDialog.dialog('close');
+		    	}
+		    }]
+		}); 
+	}
+	
+	var resourceEditDialog;
+	function editResource(id){
+		if (id == undefined) {
+			var rows = resourceTreeGrid.treegrid('getSelections');
+			if(rows.length != 1){
+				shownok("请选择一条数据进行编辑!");
+				return;
+			}else{
+				id = rows[0].id;
+			}
+		}
+		resourceEditDialog = $("#resourceEditDialog").dialog({
+		    title: '编辑资源',
+		    width: 500,
+		    height: 350,
+		    cache: false,
+		    iconCls: 'icon-add',
+		    href: '${contextPath}/resource/editPage?id=' + id,
+		    buttons: [{
+		    	text: '保存',
+		    	iconCls:'icon-save',
+		    	handler:function(){
+					var f = resourceEditDialog.find('#resourceEditForm');
+					f.submit();
+		    	}
+		    },{
+		    	text: '取消',
+		    	iconCls:'icon-cancel',
+		    	handler:function(){
+		    		resourceEditDialog.dialog('close');
+		    	}
+		    }]
+		}); 
+	}	
+	
+	function deleteResource(id){
+		var ids = "";
+		if (id == undefined) {
+			var rows = resourceTreeGrid.treegrid('getSelections');
+			if(rows.lenght < 1){
+				shownok("请至少选择一条要删除的数据!");
+				return;
+			}
+			for(int i=0; i<rows.length; i++){
+				ids = ids + rows[i].id + ",";
+			}
+		}else{
+			ids = id + ",";
+		}
+		if(ids.length > 0){
+			ids = ids.substring(0, ids.length-1);
+		}
+		$.ajax({
+			type: "POST",
+			url: "${contextPath}/resource/delete",
+			async: false,
+			data: "ids=" + ids,
+			success: function(data){
+				if(data == "ok"){
+					showok();
+				}else{
+					shownok();
+				}
+			}
+		});
+	}	
+
+</script>
+
+<table id="resourceTreeGrid"></table>
+<div id="toolbar">
+	<a href="javascript:void(0)" onclick="addResource();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+	<a href="javascript:void(0)" onclick="editResource();" class="easyui-linkbutton" data-options="iconCls:'icon-eidt',plain:true">编辑</a>
+	<a href="javascript:void(0)" onclick="deleteResource();" class="easyui-linkbutton" data-options="iconCls:'icon-del',plain:true">删除</a>
+</div>
+
+<div id="resourceAddDialog"></div>
+<div id="resourceEditDialog"></div>
