@@ -4270,3 +4270,4 @@ java.lang.OutOfMemoryError: PermGen space
 2014-10-29 08:55:35 [qtp679125458-41] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2014-10-29 16:43:29 [qtp679125458-54] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2014-10-29 16:52:10 [qtp679125458-53] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2014-11-01 15:37:26 [qtp865320306-23] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456

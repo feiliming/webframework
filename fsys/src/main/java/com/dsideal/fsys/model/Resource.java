@@ -50,7 +50,6 @@ public class Resource extends Model<Resource>{
 				rb.setSequence(r.getInt("sequence"));
 				rb.setDisable(r.getInt("disable"));
 				rb.setType(r.getStr("type"));
-				rb.setHasleaf(r.getInt("hasleaf"));
 				rb.setPid(r.getStr("pid"));
 				listb.add(rb);
 			}
@@ -73,11 +72,15 @@ public class Resource extends Model<Resource>{
 			Tree tree = new Tree();
 			tree.setId(resource.getStr("id"));
 			tree.setText(resource.getStr("name"));
-			if(resource.getInt("hasleaf") == 1){
+			
+			String sql2 = "select id from sys_resource where pid = '" + resource.getStr("id") + "'";
+			List<String> ids = Db.query(sql2);
+			if(ids.size() > 0){
 				tree.setState("closed");
 			}else{
 				tree.setState("open");
 			}
+			
 			tree.setPid(resource.getStr("pid"));
 			tree.setIconCls(resource.getStr("icon_class"));
 			Map<String, Object> attr = new HashMap<String, Object>();
@@ -89,49 +92,49 @@ public class Resource extends Model<Resource>{
 	}
 	
 	public boolean addResource(final Resource resource){
-		return Db.tx(new IAtom() {
-			
-			@Override
-			public boolean run() throws SQLException {
-				resource.set("id", GuidUtil.getUuid());
-				String pid = resource.getStr("pid");
-				int updateResult = 0;
-				if(StringUtil.isNullOrEmpty(pid)){
-					resource.set("pid", "-1");
-					updateResult = 1;
-				}else{
-					String sql = "update sys_resource set hasleaf = 1 where id = ?";
-					updateResult = Db.update(sql, pid);
-				}
-				boolean saveResult = resource.save();
-				return (updateResult == 1) && saveResult;
-			}
-		});
+		resource.set("id", GuidUtil.getUuid());
+		String pid = resource.getStr("pid");
+		if(StringUtil.isNullOrEmpty(pid)){
+			resource.set("pid", "-1");
+		}
+		return resource.save();
 	}
 	
 	public boolean editResource(final Resource resource){
+		String pid = resource.getStr("pid");
+		if(StringUtil.isNullOrEmpty(pid)){
+			resource.set("pid", "-1");
+		}
+		return resource.update();
+	}
+	
+	public boolean deleteResource(final List<String> ids){
 		return Db.tx(new IAtom() {
 			
 			@Override
 			public boolean run() throws SQLException {
-				String pid = resource.getStr("pid");
-				int updateResult = 0;
-				if(StringUtil.isNullOrEmpty(pid)){
-					resource.set("pid", "-1");
-					updateResult = 1;
-				}else{
-					String sql = "update sys_resource set hasleaf = 1 where id = ?";
-					updateResult = Db.update(sql, pid);
+				List<String> deleteids = new ArrayList<String>();
+				getDeleteIds(ids, deleteids);
+				boolean flag = true;
+				for(String id : deleteids){
+					boolean result = Db.deleteById("sys_resource", id);
+					if(!result){
+						flag = false;
+						break;
+					}
 				}
-				boolean saveResult = resource.update();
-				return (updateResult == 1) && saveResult;
+				return flag;
 			}
 		});
 	}
-	
-	public void deleteResource(String ids){
-		String sql = "delete from sys_resource where id in ?";
-		Db.update(sql, paras);
+	//递归查询所有要删除的ids
+	public void getDeleteIds(List<String> ids, List<String> deleteids){
+		for(String id : ids){
+			deleteids.add(id);
+			String sql2 = "select id from sys_resource where pid = '" + id + "'";
+			List<String> ids2 = Db.query(sql2);
+			getDeleteIds(ids2, deleteids);
+		}
 	}
 	
 	private String formatSql(String pid, String type, String disable){

@@ -31,7 +31,6 @@
 				<a class="easyui-linkbutton" href="javascript:void(0)" onclick="$('#pid').combotree('clear');" >清空</a></td>
 			</tr>
 		</table>
-		<input type="hidden" name="resource.hasleaf" />
 		<input type="hidden" name="resource.id" />
 	</form>
 </div>
@@ -71,7 +70,7 @@
 		
 		$.ajax({
 			url:'${contextPath}/resource/getResource?id=${id}',
-			type:"GET",
+			type:"POST",
 			async:false,
 			success: function(data){
 				$("#resourceEditForm").form('myLoad',data);

@@ -18,7 +18,6 @@ public class ResourceBean implements Serializable{
 	private int sequence;
 	private int disable;
 	private String type;
-	private int hasleaf;
 	private String pid;
 	
 	public String getId() {
@@ -62,12 +61,6 @@ public class ResourceBean implements Serializable{
 	}
 	public void setType(String type) {
 		this.type = type;
-	}
-	public int getHasleaf() {
-		return hasleaf;
-	}
-	public void setHasleaf(int hasleaf) {
-		this.hasleaf = hasleaf;
 	}
 	public String getPid() {
 		return pid;

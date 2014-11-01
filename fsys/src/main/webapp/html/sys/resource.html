@@ -15,25 +15,42 @@
 			singleSelect: false,
 			columns: [[{
 				field: 'name',
-				title: '资源名称'
+				title: '资源名称',
+				width: 120
 			},{
 				field: 'url',
-				title: 'Url'
+				title: 'Url',
+				width: 120
 			},{
 				field: 'iconCls',
-				title: '图标'
+				title: '图标',
+				width: 100
 			},{
 				field: 'sequence',
-				title: '排序'
+				title: '排序',
+				width: 80
 			},{
 				field: 'disable',
-				title: '是否禁用'
+				title: '是否禁用',
+				width: 80,
+				formatter: function(value, row, index){
+					switch(value){
+						case 0 :
+							return '否';
+							break;
+						case 1 :
+							return '是';
+							break;
+					}
+				}
 			},{
 				field: 'type',
-				title: '资源类型'
+				title: '资源类型',
+				width: 80
 			},{
 				field: 'action',
 				title: '操作',
+				width: 120,
 				formatter: function(value, row, index) {
 					var str = '&nbsp;';
 					str += '<a href="javascript:void(0)" onclick="editResource(\'' + row.id + '\');" >编辑</a>';
@@ -116,7 +133,7 @@
 				shownok("请至少选择一条要删除的数据!");
 				return;
 			}
-			for(int i=0; i<rows.length; i++){
+			for(var i=0; i<rows.length; i++){
 				ids = ids + rows[i].id + ",";
 			}
 		}else{
@@ -133,6 +150,7 @@
 			success: function(data){
 				if(data == "ok"){
 					showok();
+					resourceTreeGrid.treegrid('reload');
 				}else{
 					shownok();
 				}

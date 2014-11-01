@@ -1,5 +1,8 @@
 package com.dsideal.fsys.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dsideal.fsys.model.Resource;
 import com.dsideal.fsys.util.StringUtil;
 import com.jfinal.core.Controller;
@@ -69,6 +72,14 @@ public class ResourceController extends Controller{
 	
 	public void delete(){
 		String ids = getPara("ids");
-		
+		List<String> idlist = new ArrayList<String>();
+		for(String id : ids.split(",")){
+			idlist.add(id);
+		}
+		if(Resource.dao.deleteResource(idlist)){
+			renderText("ok");
+		}else{
+			renderText("nok");
+		}
 	}
 }
