@@ -4271,3 +4271,52 @@ java.lang.OutOfMemoryError: PermGen space
 2014-10-29 16:43:29 [qtp679125458-54] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2014-10-29 16:52:10 [qtp679125458-53] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2014-11-01 15:37:26 [qtp865320306-23] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2014-11-08 14:42:04 [qtp865320306-25] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-01-19 15:57:04 [qtp766130375-23] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-01-26 10:11:39 [qtp766130375-24] INFO  com.dsideal.fsys.model.User - 校验用户名 a 和密码 a
+2015-01-26 14:03:44 [qtp61376705-23] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-01-26 14:25:52 [qtp61376705-25] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-01-28 09:16:10 [main] WARN  org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED jfinal: java.lang.IllegalArgumentException: Properties file not found: C:\Users\feilm220\git\webframework\fsys\src\main\webapp\WEB-INF\config.properties
+java.lang.IllegalArgumentException: Properties file not found: C:\Users\feilm220\git\webframework\fsys\src\main\webapp\WEB-INF\config.properties
+	at com.jfinal.config.JFinalConfig.loadPropertyFile(JFinalConfig.java:96) ~[jfinal-1.8.jar:na]
+	at com.dsideal.fsys.AppConfig.configConstant(AppConfig.java:45) [classes/:na]
+	at com.jfinal.core.Config.configJFinal(Config.java:46) ~[jfinal-1.8.jar:na]
+	at com.jfinal.core.JFinal.init(JFinal.java:67) [jfinal-1.8.jar:na]
+	at com.jfinal.core.JFinalFilter.init(JFinalFilter.java:49) ~[jfinal-1.8.jar:na]
+	at org.eclipse.jetty.servlet.FilterHolder.doStart(FilterHolder.java:119) ~[jetty-servlet-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64) [jetty-util-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:724) [jetty-servlet-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:265) [jetty-servlet-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1250) [jetty-server-8.1.8.jar:na]
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:706) [jetty-server-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:492) [jetty-server-8.1.8.jar:na]
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64) [jetty-util-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.doStart(HandlerWrapper.java:95) [jetty-server-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.server.Server.doStart(Server.java:277) [jetty-server-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64) [jetty-util-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at com.jfinal.server.JettyServer.doStart(JettyServer.java:120) [jfinal-1.8.jar:na]
+	at com.jfinal.server.JettyServer.start(JettyServer.java:64) [jfinal-1.8.jar:na]
+	at com.jfinal.core.JFinal.start(JFinal.java:159) [jfinal-1.8.jar:na]
+	at com.dsideal.fsys.AppConfig.main(AppConfig.java:132) [classes/:na]
+2015-01-28 09:16:10 [main] WARN  org.eclipse.jetty.webapp.WebAppContext - Failed startup of context o.e.j.w.WebAppContext{/f,file:/C:/Users/feilm220/git/webframework/fsys/src/main/webapp/}
+java.lang.IllegalArgumentException: Properties file not found: C:\Users\feilm220\git\webframework\fsys\src\main\webapp\WEB-INF\config.properties
+	at com.jfinal.config.JFinalConfig.loadPropertyFile(JFinalConfig.java:96) ~[jfinal-1.8.jar:na]
+	at com.dsideal.fsys.AppConfig.configConstant(AppConfig.java:45) [classes/:na]
+	at com.jfinal.core.Config.configJFinal(Config.java:46) ~[jfinal-1.8.jar:na]
+	at com.jfinal.core.JFinal.init(JFinal.java:67) [jfinal-1.8.jar:na]
+	at com.jfinal.core.JFinalFilter.init(JFinalFilter.java:49) ~[jfinal-1.8.jar:na]
+	at org.eclipse.jetty.servlet.FilterHolder.doStart(FilterHolder.java:119) ~[jetty-servlet-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64) [jetty-util-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:724) ~[jetty-servlet-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:265) ~[jetty-servlet-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1250) ~[jetty-server-8.1.8.jar:na]
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:706) ~[jetty-server-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:492) ~[jetty-server-8.1.8.jar:na]
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64) [jetty-util-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.doStart(HandlerWrapper.java:95) [jetty-server-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.server.Server.doStart(Server.java:277) [jetty-server-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64) [jetty-util-8.1.8.v20121106.jar:8.1.8.v20121106]
+	at com.jfinal.server.JettyServer.doStart(JettyServer.java:120) [jfinal-1.8.jar:na]
+	at com.jfinal.server.JettyServer.start(JettyServer.java:64) [jfinal-1.8.jar:na]
+	at com.jfinal.core.JFinal.start(JFinal.java:159) [jfinal-1.8.jar:na]
+	at com.dsideal.fsys.AppConfig.main(AppConfig.java:132) [classes/:na]
