@@ -8,10 +8,22 @@
     
     <defaultCache
     	   maxElementsInMemory="1000"
-           eternal="true"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
            overflowToDisk="true"
     />
 	    
+	<cache name="resource"
+        maxElementsInMemory="3000"
+        eternal="false"
+        timeToIdleSeconds="60"
+        timeToLiveSeconds="60"
+        overflowToDisk="true"
+        diskSpoolBufferSizeMB="30"
+        memoryStoreEvictionPolicy="LFU"
+     />
+     
 	<cache name="user"
         maxElementsInMemory="3000"
         eternal="false"

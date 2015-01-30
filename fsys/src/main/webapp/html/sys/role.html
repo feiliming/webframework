@@ -1,0 +1,175 @@
+
+<table id="roleDataGrid" data-options="fit:true,border:false"></table>
+<div id="roleToolbar">
+	<a onclick="addRole();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
+</div>
+
+<div id="roleAddDialog"></div>
+<div id="roleEditDialog"></div>
+
+<script type="text/javascript">
+	var roleDataGrid;
+	$(function() {
+		roleDataGrid = $('#roleDataGrid').datagrid({
+			url : '${contextPath}' + '/role/getRoles',
+			striped : true,
+			rownumbers : true,
+			pagination : true,
+			singleSelect : true,
+			idField : 'id',
+			sortName : 'sequence',
+			sortOrder : 'asc',
+			pageSize : 20,
+			pageList : [ 10, 20, 30, 40, 50, 100],
+			nowrap: false,
+			columns : [ [ {
+				///width : '100',
+				title : 'id',
+				field : 'id'
+			}, {
+				width : '100',
+				title : '名称',
+				field : 'name'
+			} , {
+				width : '80',
+				title : '排序号',
+				field : 'sequence',
+				sortable : true
+			}, {
+				width : '250',
+				title : '描述',
+				field : 'description'
+			} , {
+				field : 'action',
+				title : '操作',
+				//width : 120,
+				formatter : function(value, row, index) {
+					var str = '&nbsp;';
+					str += $.formatString('<a href="javascript:void(0)" onclick="grantFun(\'{0}\');" >授权</a>', row.id);
+					str += '&nbsp;|&nbsp;';
+					str += $.formatString('<a href="javascript:void(0)" onclick="editRole(\'{0}\');" >编辑</a>', row.id);
+					str += '&nbsp;|&nbsp;';
+					str += $.formatString('<a href="javascript:void(0)" onclick="deleteRole(\'{0}\');" >删除</a>', row.id);
+					str += '&nbsp;';
+					return str;
+				}
+			} ] ],
+			toolbar : '#roleToolbar'
+		});
+	});
+	
+	var roleAddDialog;
+	function addRole(){
+		roleAddDialog = $("#roleAddDialog").dialog({
+		    title: '添加角色',
+		    width: 500,
+		    height: 350,
+		    cache: false,
+		    iconCls: 'icon-add',
+		    href: '${contextPath}/role/addPage',
+		    modal: true,
+		    buttons: [{
+		    	text: '保存',
+		    	iconCls:'icon-save',
+		    	handler:function(){
+					var f = roleAddDialog.find('#roleAddForm');
+					f.submit();
+		    	}
+		    },{
+		    	text: '取消',
+		    	iconCls:'icon-cancel',
+		    	handler:function(){
+		    		roleAddDialog.dialog('close');
+		    	}
+		    }]
+		}); 
+	}
+	
+	var roleEditDialog;
+	function editRole(id){
+		if (id == undefined) {
+			var rows = roleDataGrid.datagrid('getSelections');
+			if(rows.length != 1){
+				shownok("请选择一条数据进行编辑!");
+				return;
+			}else{
+				id = rows[0].id;
+			}
+		}
+		roleEditDialog = $("#roleEditDialog").dialog({
+		    title: '编辑资源',
+		    width: 500,
+		    height: 350,
+		    cache: false,
+		    iconCls: 'icon-add',
+		    href: '${contextPath}/role/editPage?id=' + id,
+		    buttons: [{
+		    	text: '保存',
+		    	iconCls:'icon-save',
+		    	handler:function(){
+					var f = roleEditDialog.find('#roleEditForm');
+					f.submit();
+		    	}
+		    },{
+		    	text: '取消',
+		    	iconCls:'icon-cancel',
+		    	handler:function(){
+		    		roleEditDialog.dialog('close');
+		    	}
+		    }]
+		}); 
+	}	
+	
+	function deleteRole(id){
+		if (id == undefined) {
+			var rows = roleDataGrid.datagrid('getSelections');
+			if(rows.lenght < 1){
+				shownok("请至少选择一条要删除的数据!");
+				return;
+			}
+		}
+		parent.$.messager.confirm('询问', '确认要删除该角色？', function(b) {
+			if (b) {
+				$.ajax({
+					type: "POST",
+					url: "${contextPath}/role/delete",
+					async: false,
+					data: "id=" + id,
+					success: function(data){
+						if(data == "true"){
+							showok();
+							roleDataGrid.datagrid('reload');
+						}else{
+							shownok();
+						}
+					}
+				});
+			}
+		});
+	}	
+	
+	function grantFun(id) {
+		if (id == undefined) {
+			var rows = roleDataGrid.datagrid('getSelections');
+			id = rows[0].id;
+		} else {
+			roleDataGrid.datagrid('unselectAll').datagrid('uncheckAll');
+		}
+		
+		parent.$.modalDialog({
+			title : '授权',
+			width : 500,
+			height : 500,
+			href : '${contextPath}/role/grantPage?id=' + id,
+			buttons : [ {
+				text : '授权',
+				handler : function() {
+					parent.$.modalDialog.openner_roleDataGrid = roleDataGrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
+					var f = parent.$.modalDialog.handler.find('#roleGrantForm');
+					f.submit();
+				}
+			} ]
+		});
+	}
+	
+</script>

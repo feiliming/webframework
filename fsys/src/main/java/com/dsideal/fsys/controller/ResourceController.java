@@ -13,6 +13,11 @@ import com.jfinal.core.Controller;
  *
  */
 public class ResourceController extends Controller{
+	
+	public void getMenus() {
+		String pid = getPara("pid");
+		renderJson(Resource.dao.getResourceList("menu", pid));
+	}
 
 	public void getResourceList(){
 		String pid = getPara("pid");

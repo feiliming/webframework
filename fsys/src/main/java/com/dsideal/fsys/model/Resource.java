@@ -29,6 +29,16 @@ public class Resource extends Model<Resource>{
 	
 	public static final Resource dao = new Resource();
 	
+	public List<Resource> getResourceList() {
+		String sql = "select * from sys_resource order by sequence asc";
+		return dao.findByCache("resource", "getResourceList", sql);
+	}
+	
+	public List<Resource> getResourceList(String resource_type, String pid) {
+		String sql = "select * from sys_resource where type = ? and pid = ? order by sequence asc";
+		return dao.findByCache("resource", "getResourceList_" + resource_type + "_" + pid, sql, resource_type, pid);
+	}
+	
 	/**
 	 * 根据条件查询资源, 只返回下一级资源列表
 	 * @param pid

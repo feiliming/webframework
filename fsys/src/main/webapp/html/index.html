@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="edge" />
 <link rel="shortcut icon" href="${contextPath}/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${contextPath}/component/jquery-easyui-1.4/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="${contextPath}/component/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${contextPath}/component/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${contextPath}/component/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}/css/fsys.css">
 </head>
 <body>
@@ -15,8 +15,10 @@
 	<img src="${contextPath}/images/ajax-loading.gif" style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;margin: auto;"/>
 </div>
 <div class="easyui-layout" data-options="fit:true">
-	<div data-options="region:'north'" style="height:50px"></div>
-	<div data-options="region:'south',split:true" style="height:40px;"></div>
+	<div data-options="region:'north'" style="height:50px">
+		<a href="${contextPath}/logout">退出</a>
+	</div>
+	<div data-options="region:'south'" style="height:40px;"></div>
 	<div data-options="region:'east',split:true,collapsed:true" title="TODO?" style="width:100px;"></div>
 	
 	<div id="west" data-options="region:'west',iconCls:'icon-navigation',split:true" title="导航" style="width:200px;"></div>
@@ -30,8 +32,8 @@
 </div>
 
 <script type="text/javascript" src="${contextPath}/component/jquery.min.js"></script>
-<script type="text/javascript" src="${contextPath}/component/jquery-easyui-1.4/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${contextPath}/component/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${contextPath}/component/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${contextPath}/component/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${contextPath}/js/easyui-extension.js"></script>
 <script type="text/javascript" src="${contextPath}/js/fsys.js"></script>
 <script type="text/javascript">
@@ -46,10 +48,10 @@
 			//multiple: true
 		});
 		$.ajax({
-			url: "${contextPath}/resource/getResourceList",
+			url: "${contextPath}/resource/getMenus",
 			type: "POST",
 			async: false,
-			data: "pid=-1&resource_type=menu&disable=0",
+			data: "pid=-1",
 			success: function(data){
 				$.each(data, function(i,n){
 					$("#nav").accordion('add', {
@@ -57,7 +59,7 @@
 						title: n.name,
 						//content: '<div style="padding:10px"><ul id="tree'+n.id+'"></ul></div>',
 						selected: false,
-						iconCls: n.iconCls
+						iconCls: n.icon_class
 					});
 					$("#"+n.id).html('<div style="padding:10px"><ul id="tree' + n.id + '"></ul></div>');
 					$("#tree"+n.id).tree({
@@ -84,7 +86,7 @@
 			border: false
 		});
 		//展开第一个
-		$("#nav").accordion('select',0);
+		//$("#nav").accordion('select',0);
 		
 	//直接树风格
 	} else {

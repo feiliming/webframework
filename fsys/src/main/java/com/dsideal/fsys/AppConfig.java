@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import com.dsideal.fsys.controller.ConfigController;
 import com.dsideal.fsys.controller.IndexController;
 import com.dsideal.fsys.controller.ResourceController;
+import com.dsideal.fsys.controller.RoleController;
 import com.dsideal.fsys.controller.UserController;
 import com.dsideal.fsys.interceptor.IsLoginInterceptor;
 import com.dsideal.fsys.model.Config;
 import com.dsideal.fsys.model.Resource;
+import com.dsideal.fsys.model.Role;
 import com.dsideal.fsys.model.User;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -55,10 +57,11 @@ public class AppConfig extends JFinalConfig
 	@Override
 	public void configRoute(Routes me) {
 		//setBaseViewPath是全局设置, 在这里可以单个设置
-		me.add("/", IndexController.class, "/html");
-		me.add("/config", ConfigController.class, "/html/sys");
+		me.add("/", IndexController.class, "/html"); // 第三个参数为该Controller的视图存放路径
+		me.add("/config", ConfigController.class, "/html/sys"); //第三个参数省略时默认与第一个参数值相同，在此即为 "/config"
 		me.add("/resource", ResourceController.class, "/html/sys");
 		me.add("/user", UserController.class, "/html/sys");
+		me.add("/role", RoleController.class, "/html/sys");
 	}
 
 	@Override
@@ -76,6 +79,7 @@ public class AppConfig extends JFinalConfig
 		activeRecordPlugin.addMapping("sys_config", Config.class);
 		activeRecordPlugin.addMapping("sys_resource", Resource.class);
 		activeRecordPlugin.addMapping("sys_user", User.class);
+		activeRecordPlugin.addMapping("sys_role", Role.class);
 		
 		me.add(new EhCachePlugin());
 	}

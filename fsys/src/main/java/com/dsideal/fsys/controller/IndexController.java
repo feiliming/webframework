@@ -18,6 +18,7 @@ public class IndexController extends Controller{
 		//TODO 系统全局配置应该放在哪?
 		setAttr("config", Config.dao.getConfig());
 		//如果/index.html则从根目录查询,否则相对基目录
+		//去掉下面这句话默认也会访问index.html，方法名.html
 		render("index.html");
 	}
 	
