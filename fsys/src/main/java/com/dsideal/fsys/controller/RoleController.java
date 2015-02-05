@@ -2,7 +2,6 @@ package com.dsideal.fsys.controller;
 
 import com.dsideal.fsys.bean.DataGrid;
 import com.dsideal.fsys.model.Role;
-import com.dsideal.fsys.util.GuidUtil;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -47,7 +46,7 @@ public class RoleController extends Controller{
 	 */
 	public void add() {
 		Role role = getModel(Role.class);
-		role.set("id", GuidUtil.getUuid());
+		role.set("id", Role.dao.getId());
 		
 		boolean b = role.save();
 		

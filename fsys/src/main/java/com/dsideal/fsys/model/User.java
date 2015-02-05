@@ -1,22 +1,30 @@
 package com.dsideal.fsys.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dsideal.fsys.util.MD5Util;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 
 /**
- * 
  * 用户管理
- * @author feilm220
- *
  */
 public class User extends Model<User>{
 
 	private static final long serialVersionUID = -6215788653570590020L;
-	public static final User dao = new User();
+	
 	private static final Logger log = LoggerFactory.getLogger(User.class);
+	
+	public static final User dao = new User();
+	
+	private static final AtomicInteger ai = new AtomicInteger(Db.queryInt("SELECT MAX(id) FROM sys_user"));
+
+	public int getId() {
+		return ai.incrementAndGet();
+	}
 	
 	/**
 	 * 校验用户名和密码.

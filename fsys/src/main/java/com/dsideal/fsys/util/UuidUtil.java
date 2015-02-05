@@ -7,7 +7,7 @@ import java.util.UUID;
  * @author feilm220
  *
  */
-public class GuidUtil {
+public class UuidUtil {
 
 	public static String getUuid(){
 		UUID uuid = UUID.randomUUID();

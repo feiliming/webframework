@@ -11,19 +11,19 @@ public class Tree implements java.io.Serializable{
 
 	private static final long serialVersionUID = -7986194015663981710L;
 	
-	private String id;
+	private int id;
 	private String text;
 	private String iconCls;
 	private String state = "open";
 	private boolean checked = false;
 	private Object attributes;
 	private List<Tree> children;
-	private String pid;
+	private int pid;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getText() {
@@ -56,10 +56,10 @@ public class Tree implements java.io.Serializable{
 	public void setAttributes(Object attributes) {
 		this.attributes = attributes;
 	}
-	public String getPid() {
+	public int getPid() {
 		return pid;
 	}
-	public void setPid(String pid) {
+	public void setPid(int pid) {
 		this.pid = pid;
 	}
 	public List<Tree> getChildren() {

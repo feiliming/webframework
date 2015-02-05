@@ -108,6 +108,8 @@ public class AppConfig extends JFinalConfig
 			}
 		}
 		
+		//初始化个表
+		
 		//TODO 初始化系统配置
 	}
 	//加载.sql文件

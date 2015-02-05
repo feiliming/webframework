@@ -9,9 +9,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.ehcache.CacheKit;
 
 /**
- * 
- * @author feilm220
- *
+ * 用户Controller
  */
 public class UserController extends Controller {
 

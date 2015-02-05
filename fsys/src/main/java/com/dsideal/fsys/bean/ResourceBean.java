@@ -11,19 +11,19 @@ public class ResourceBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String id;
+	private int id;
 	private String name;
 	private String url;
 	private String iconCls;
 	private int sequence;
 	private int disable;
 	private String type;
-	private String pid;
+	private int pid;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -62,10 +62,10 @@ public class ResourceBean implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getPid() {
+	public int getPid() {
 		return pid;
 	}
-	public void setPid(String pid) {
+	public void setPid(int pid) {
 		this.pid = pid;
 	}
 	

@@ -5,22 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dsideal.fsys.bean.ResourceBean;
 import com.dsideal.fsys.bean.Tree;
-import com.dsideal.fsys.util.GuidUtil;
 import com.dsideal.fsys.util.StringUtil;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Model;
 
 /**
- * 资源管理
- * @author feilm220
- *
+ * 资源Model
  */
 public class Resource extends Model<Resource>{
 
@@ -28,6 +26,12 @@ public class Resource extends Model<Resource>{
 	private static final Logger log_ = LoggerFactory.getLogger(Resource.class);
 	
 	public static final Resource dao = new Resource();
+	
+	private static final AtomicInteger ai = new AtomicInteger(Db.queryInt("SELECT MAX(id) FROM sys_resource"));
+
+	public int getId() {
+		return ai.incrementAndGet();
+	}
 	
 	public List<Resource> getResourceList() {
 		String sql = "select * from sys_resource order by sequence asc";
@@ -53,14 +57,14 @@ public class Resource extends Model<Resource>{
 		if(list != null){
 			for(Resource r : list){
 				ResourceBean rb = new ResourceBean();
-				rb.setId(r.getStr("id"));
+				rb.setId(r.getInt("id"));
 				rb.setName(r.getStr("name"));
 				rb.setUrl(r.getStr("url"));
 				rb.setIconCls(r.getStr("icon_class"));
 				rb.setSequence(r.getInt("sequence"));
 				rb.setDisable(r.getInt("disable"));
 				rb.setType(r.getStr("type"));
-				rb.setPid(r.getStr("pid"));
+				rb.setPid(r.getInt("pid") == null ? -1 : r.getInt("pid"));
 				listb.add(rb);
 			}
 		}
@@ -80,10 +84,10 @@ public class Resource extends Model<Resource>{
 		List<Tree> tlist = new ArrayList<Tree>();
 		for(Resource resource : rlist){
 			Tree tree = new Tree();
-			tree.setId(resource.getStr("id"));
+			tree.setId(resource.getInt("id"));
 			tree.setText(resource.getStr("name"));
 			
-			String sql2 = "select id from sys_resource where pid = '" + resource.getStr("id") + "'";
+			String sql2 = "select id from sys_resource where pid = " + resource.getInt("id") + "";
 			List<String> ids = Db.query(sql2);
 			if(ids.size() > 0){
 				tree.setState("closed");
@@ -91,7 +95,7 @@ public class Resource extends Model<Resource>{
 				tree.setState("open");
 			}
 			
-			tree.setPid(resource.getStr("pid"));
+			tree.setPid(resource.getInt("pid"));
 			tree.setIconCls(resource.getStr("icon_class"));
 			Map<String, Object> attr = new HashMap<String, Object>();
 			attr.put("url", resource.getStr("url"));
@@ -102,11 +106,9 @@ public class Resource extends Model<Resource>{
 	}
 	
 	public boolean addResource(final Resource resource){
-		resource.set("id", GuidUtil.getUuid());
-		String pid = resource.getStr("pid");
-		if(StringUtil.isNullOrEmpty(pid)){
-			resource.set("pid", "-1");
-		}
+		resource.set("id", getId());
+		if(resource.getInt("pid") == null)
+			resource.set("pid", -1);
 		return resource.save();
 	}
 	

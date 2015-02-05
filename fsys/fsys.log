@@ -4326,3 +4326,7 @@ java.lang.IllegalArgumentException: Properties file not found: C:\Users\feilm220
 2015-01-29 14:38:25 [qtp829571289-24] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2015-01-30 13:02:27 [qtp96982295-27] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2015-01-30 13:03:11 [qtp1639039907-27] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-02-03 16:44:24 [qtp1883305029-25] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-02-05 14:10:51 [qtp300123455-22] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-02-05 14:10:53 [qtp300123455-23] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-02-05 14:11:31 [qtp300123455-25] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456

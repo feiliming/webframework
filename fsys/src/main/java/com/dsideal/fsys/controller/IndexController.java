@@ -27,7 +27,7 @@ public class IndexController extends Controller{
 		User user = User.dao.checkLoginNameAndPassword(userModel);
 		if(user != null){
 			//-1关闭浏览器cookie失效
-			setCookie("userId", user.getStr("id").toString(), -1, "/");
+			setCookie("userId", user.getInt("id").toString(), -1, "/");
 			renderJson("{\"success\" : true}");
 		}else{
 			renderJson("{\"success\" : false}");

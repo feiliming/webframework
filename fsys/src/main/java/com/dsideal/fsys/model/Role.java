@@ -1,5 +1,8 @@
 package com.dsideal.fsys.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -11,14 +14,14 @@ public class Role extends Model<Role>{
 	private static final long serialVersionUID = -8511214619720791276L;
 	
 	public static final Role dao = new Role();
+	
+	//AtomicInteger线程安全, 以原子方式加减1, 类第一次加载的时候执行初始化
+	private static final AtomicInteger ai = new AtomicInteger(Db.queryInt("SELECT MAX(id) FROM sys_role"));
 
-	/**
-	 * 角色分页查询
-	 * @param pageNumber
-	 * @param pageSize
-	 * @param sortOrder 排序方式, asc或desc
-	 * @return Page对象
-	 */
+	public int getId() {
+		return ai.incrementAndGet();
+	}
+	
 	public Page<Role> getRoles(int pageNumber, int pageSize, String sortOrder) {
 		return dao.paginate(pageNumber, pageSize, "select *", "from sys_role order by sequence " + sortOrder);
 	}
