@@ -27,7 +27,8 @@ public class Resource extends Model<Resource>{
 	
 	public static final Resource dao = new Resource();
 	
-	private static final AtomicInteger ai = new AtomicInteger(Db.queryInt("SELECT MAX(id) FROM sys_resource"));
+	private static final Integer maxId = Db.queryInt("SELECT MAX(id) FROM sys_resource");
+	private static final AtomicInteger ai = new AtomicInteger(maxId == null ? 1 : maxId);
 
 	public int getId() {
 		return ai.incrementAndGet();
@@ -113,8 +114,7 @@ public class Resource extends Model<Resource>{
 	}
 	
 	public boolean editResource(final Resource resource){
-		String pid = resource.getStr("pid");
-		if(StringUtil.isNullOrEmpty(pid)){
+		if(resource.getInt("pid") == null){
 			resource.set("pid", "-1");
 		}
 		return resource.update();

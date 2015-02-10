@@ -10,11 +10,13 @@ import org.slf4j.LoggerFactory;
 
 import com.dsideal.fsys.controller.ConfigController;
 import com.dsideal.fsys.controller.IndexController;
+import com.dsideal.fsys.controller.OrganizationController;
 import com.dsideal.fsys.controller.ResourceController;
 import com.dsideal.fsys.controller.RoleController;
 import com.dsideal.fsys.controller.UserController;
 import com.dsideal.fsys.interceptor.IsLoginInterceptor;
 import com.dsideal.fsys.model.Config;
+import com.dsideal.fsys.model.Organization;
 import com.dsideal.fsys.model.Resource;
 import com.dsideal.fsys.model.Role;
 import com.dsideal.fsys.model.User;
@@ -62,6 +64,7 @@ public class AppConfig extends JFinalConfig
 		me.add("/resource", ResourceController.class, "/html/sys");
 		me.add("/user", UserController.class, "/html/sys");
 		me.add("/role", RoleController.class, "/html/sys");
+		me.add("/org", OrganizationController.class, "/html/sys");
 	}
 
 	@Override
@@ -80,6 +83,7 @@ public class AppConfig extends JFinalConfig
 		activeRecordPlugin.addMapping("sys_resource", Resource.class);
 		activeRecordPlugin.addMapping("sys_user", User.class);
 		activeRecordPlugin.addMapping("sys_role", Role.class);
+		activeRecordPlugin.addMapping("sys_organization", Organization.class);
 		
 		me.add(new EhCachePlugin());
 	}

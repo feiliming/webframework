@@ -20,7 +20,8 @@ public class User extends Model<User>{
 	
 	public static final User dao = new User();
 	
-	private static final AtomicInteger ai = new AtomicInteger(Db.queryInt("SELECT MAX(id) FROM sys_user"));
+	private static final Integer maxId = Db.queryInt("SELECT MAX(id) FROM sys_user");
+	private static final AtomicInteger ai = new AtomicInteger(maxId == null ? 1 : maxId);
 
 	public int getId() {
 		return ai.incrementAndGet();

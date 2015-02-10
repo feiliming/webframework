@@ -1,0 +1,171 @@
+
+<ul id="orgTree" class="ztree"></ul>
+
+<div id="orgAddDialog"></div>
+<div id="orgEditDialog"></div>
+
+<!-- 增加按钮的样式 -->
+<style type="text/css">
+	.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+</style>
+
+<SCRIPT type="text/javascript">
+	var setting = {
+		view: {
+			addHoverDom: addHoverDom,
+			removeHoverDom: removeHoverDom,
+			selectedMulti: false
+		},
+		edit: {
+			enable: true,
+			editNameSelectAll: true,
+			showRemoveBtn: showRemoveBtn,
+			showRenameBtn: showRenameBtn
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeDrag: beforeDrag,
+			beforeEditName: beforeEditName,
+			beforeRemove: beforeRemove
+			//onClick: onClick
+			//beforeRename: beforeRename
+			//onRemove: onRemove
+			//onRename: onRename
+		}
+	};
+
+	function beforeDrag(treeId, treeNodes) {
+		//禁止拖拽
+		return false;
+	}
+	
+	function beforeEditName(treeId, treeNode) {
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		zTree.selectNode(treeNode);
+		editOrg(treeNode.id);
+	}
+	
+	function beforeRemove(treeId, treeNode) {
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		zTree.selectNode(treeNode);
+		return confirm("确认删除“" + treeNode.name + "”吗？");
+	}
+	
+	function showRemoveBtn(treeId, treeNode) {
+		return true;
+	}
+	
+	function showRenameBtn(treeId, treeNode) {
+		return true;
+	}
+
+	function addHoverDom(treeId, treeNode) {
+		var sObj = $("#" + treeNode.tId + "_span");
+		if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+			+ "' title='添加机构' onfocus='this.blur();'></span>";
+		sObj.after(addStr);
+		var btn = $("#addBtn_"+treeNode.tId);
+		if (btn) btn.bind("click", function(){
+			addOrg(treeNode.id);
+		});
+	};
+	
+	function removeHoverDom(treeId, treeNode) {
+		$("#addBtn_"+treeNode.tId).unbind().remove();
+	};
+	
+	function addNodeAfterSave(treeData){
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		var nodes = zTree.getNodesByParam("id", treeData.pId, null);
+		zTree.addNodes(nodes[0], {
+			id : treeData.id,
+			pId : treeData.pId,
+			name : treeData.name
+		});
+	}
+	
+	function renameNodeAfterEdit(name){
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		var nodes = zTree.getSelectedNodes();
+		nodes[0].name = name;
+		zTree.updateNode(nodes[0]);
+	}
+	
+	$(document).ready(function(){
+		$.ajax({
+			type : "GET",
+			url : '${contextPath}' + '/org/getOrgs',
+			async : false,
+			success : function(data) {
+				$.fn.zTree.init($("#orgTree"), setting, data);
+			}
+		});
+	});
+	
+	var orgAddDialog;
+	function addOrg(pId){
+		orgAddDialog = $("#orgAddDialog").dialog({
+		    title: '添加机构',
+		    width: 500,
+		    height: 350,
+		    cache: false,
+		    iconCls: 'icon-add',
+		    href: '${contextPath}/org/addPage?pId=' + pId,
+		    modal: true,
+		    onLoad: function(){
+		    	$('#orgAddName').textbox('textbox').focus();
+		    },
+		    buttons: [{
+		    	text: '保存',
+		    	iconCls:'icon-save',
+		    	handler:function(){
+					addOrgSubmit();
+		    	}
+		    },{
+		    	text: '取消',
+		    	iconCls:'icon-cancel',
+		    	handler:function(){
+		    		orgAddDialog.dialog('close');
+		    	}
+		    }]
+		}); 
+	}
+	
+	var orgEditDialog;
+	function editOrg(id){
+		if (id == undefined) {
+			shownok("请选择一条数据进行编辑!");
+			return;
+		}
+		orgEditDialog = $("#orgEditDialog").dialog({
+		    title: '编辑机构',
+		    width: 500,
+		    height: 350,
+		    cache: false,
+		    iconCls: 'icon-add',
+		    href: '${contextPath}/org/editPage?id=' + id,
+		    modal: true,
+		    onLoad: function(){
+		    	$('#orgEditName').textbox('textbox').focus();
+		    },
+		    buttons: [{
+		    	text: '保存',
+		    	iconCls:'icon-save',
+		    	handler:function(){
+					editOrgSubmit();
+		    	}
+		    },{
+		    	text: '取消',
+		    	iconCls:'icon-cancel',
+		    	handler:function(){
+		    		orgEditDialog.dialog('close');
+		    	}
+		    }]
+		}); 
+	}
+</SCRIPT>

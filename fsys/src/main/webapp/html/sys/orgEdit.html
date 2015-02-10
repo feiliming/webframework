@@ -1,0 +1,55 @@
+<div style="padding: 10px 20px 10px 20px">
+	<form id="orgEditForm" class="easyui-form" method="post" data-options="novalidate:true">
+		<table>
+			<tr>
+				<td>机构名称:</td>
+				<td><input id="orgEditName" name="organization.name" value="${organization.name}" type="text" class="easyui-textbox"
+					data-options="required:true,width:240,height:29,validType:'length[1,20]',missingMessage:'请输入机构名称'" /><font color="red">*</font></td>
+			</tr>
+			<tr>
+				<td>机构编码:</td>
+				<td><input name="organization.code" value="${organization.code!}" type="text" class="easyui-textbox"
+					data-options="width:240,height:29,validType:'length[0,20]'" /></td>
+			</tr>
+			<tr>
+				<td>说明:</td>
+				<td><input name="organization.description" value="${organization.description!}" type="text" class="easyui-textbox" 
+					data-options="multiline:true,width:240,height:120,validType:'length[0,100]'" /></td>
+			</tr>
+			<tr>
+				<td>排序:</td>
+				<td><input name="organization.sequence" value="${organization.sequence}" value="0"  class="easyui-numberspinner"
+				    data-options="required:true,editable:false,width:240,height:29" /></td>
+			</tr>
+		</table>
+		<input type="hidden" name="organization.id" value="${organization.id}"/>
+	</form>
+</div>
+<script type="text/javascript">
+	function editOrgSubmit(){
+		var f = $('#orgEditForm');
+		progressLoad();
+		var isValid = f.form('enableValidation').form('validate');
+		if (!isValid) {
+			progressClose();
+		}else {
+			$.ajax({
+				url : '${contextPath}/org/edit',
+				async : false,
+				type : "POST",
+				data : f.serialize(),
+				dataType : "json",
+				success : function(data) {
+					progressClose();
+					if (data.success) {
+						showok();
+						renameNodeAfterEdit(data.name);
+						orgEditDialog.dialog('close');
+					} else {
+						shownok();
+					}
+				}
+			});
+		}
+	}
+</script>

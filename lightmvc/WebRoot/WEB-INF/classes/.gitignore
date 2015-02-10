@@ -1,2 +1,4 @@
-/light/
 /com/
+/config.properties
+/ehcache.xml
+/light/

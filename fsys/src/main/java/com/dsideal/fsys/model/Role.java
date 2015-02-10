@@ -16,7 +16,8 @@ public class Role extends Model<Role>{
 	public static final Role dao = new Role();
 	
 	//AtomicInteger线程安全, 以原子方式加减1, 类第一次加载的时候执行初始化
-	private static final AtomicInteger ai = new AtomicInteger(Db.queryInt("SELECT MAX(id) FROM sys_role"));
+	private static final Integer maxId = Db.queryInt("SELECT MAX(id) FROM sys_role");
+	private static final AtomicInteger ai = new AtomicInteger(maxId == null ? 1 : maxId);
 
 	public int getId() {
 		return ai.incrementAndGet();
