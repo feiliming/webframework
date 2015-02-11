@@ -46,7 +46,7 @@ public class RoleController extends Controller{
 	 */
 	public void add() {
 		Role role = getModel(Role.class);
-		role.set("id", Role.dao.getId());
+		role.set("id", Role.dao.generatorId());
 		
 		boolean b = role.save();
 		

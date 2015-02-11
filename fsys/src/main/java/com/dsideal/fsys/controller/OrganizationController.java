@@ -1,6 +1,7 @@
 package com.dsideal.fsys.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -47,6 +48,7 @@ public class OrganizationController extends Controller{
 	public void add() {
 		Organization org = getModel(Organization.class);
 		org.set("id", Organization.dao.generatorId());
+		org.set("create_time", new Date());
 		
 		boolean b = org.save();
 		

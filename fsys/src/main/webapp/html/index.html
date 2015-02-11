@@ -5,13 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="edge" />
 <link rel="shortcut icon" href="${contextPath}/favicon.ico" />
-
-<link rel="stylesheet" type="text/css" href="${contextPath}/component/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="${contextPath}/component/easyui/themes/icon.css">
-
-<link rel="stylesheet" type="text/css" href="${contextPath}/component/zTree/css/zTreeStyle/zTreeStyle.css">
-
-<link rel="stylesheet" type="text/css" href="${contextPath}/css/fsys.css">
+<#include "/html/include.html" />
 </head>
 <body>
 <!-- 这里没有使用progressLoad()方法, 因为此方法需要jquery, 而此时jquery还没有加载  -->
@@ -35,15 +29,6 @@
 	
 </div>
 
-<script type="text/javascript" src="${contextPath}/component/jquery.min.js"></script>
-
-<script type="text/javascript" src="${contextPath}/component/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${contextPath}/component/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="${contextPath}/js/easyui-extension.js"></script>
-
-<script type="text/javascript" src="${contextPath}/component/zTree/js/jquery.ztree.all-3.5.min.js"></script>
-
-<script type="text/javascript" src="${contextPath}/js/fsys.js"></script>
 <script type="text/javascript">
 (function(){
 	//1.加载左侧导航
@@ -122,24 +107,27 @@
 	    border:false
 	});
 	function addTabs(tab){
+		var iframe = '<iframe src="' + tab.url + '" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>';
 		if($("#tabs").tabs('exists',tab.title)){
 			$("#tabs").tabs('select',tab.title);
 		}else{
 			$("#tabs").tabs('add', {
 				title: tab.title,
 				iconCls: tab.iconCls,
-				href: tab.url,
+				//href: tab.url,
+				content: iframe,
 				closable: true,
 			    tools:[{    
 			        iconCls:'icon-mini-refresh',    
 			        handler:function(){    
-			        	var stab = $('#tabs').tabs('getSelected');  // 获取选择的面板
+			        	var stab = $('#tabs').tabs('getSelected');
 			        	stab.panel('refresh');
 			        }    
 			    }]
 			});
 		}
 	}
+	
 })()
 </script>
 </body>

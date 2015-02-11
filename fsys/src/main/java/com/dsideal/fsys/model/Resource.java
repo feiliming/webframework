@@ -30,7 +30,7 @@ public class Resource extends Model<Resource>{
 	private static final Integer maxId = Db.queryInt("SELECT MAX(id) FROM sys_resource");
 	private static final AtomicInteger ai = new AtomicInteger(maxId == null ? 1 : maxId);
 
-	public int getId() {
+	public int generatorId() {
 		return ai.incrementAndGet();
 	}
 	
@@ -107,7 +107,7 @@ public class Resource extends Model<Resource>{
 	}
 	
 	public boolean addResource(final Resource resource){
-		resource.set("id", getId());
+		resource.set("id", generatorId());
 		if(resource.getInt("pid") == null)
 			resource.set("pid", -1);
 		return resource.save();

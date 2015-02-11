@@ -139,6 +139,6 @@ public class AppConfig extends JFinalConfig
 	}
 
 	public static void main(String[] args) {
-		JFinal.start("src/main/webapp", 8080, "/f", 3);
+		JFinal.start("src/main/webapp", 8081, "/f", 3);
 	}
 }

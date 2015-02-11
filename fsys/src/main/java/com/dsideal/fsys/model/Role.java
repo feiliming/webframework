@@ -19,7 +19,7 @@ public class Role extends Model<Role>{
 	private static final Integer maxId = Db.queryInt("SELECT MAX(id) FROM sys_role");
 	private static final AtomicInteger ai = new AtomicInteger(maxId == null ? 1 : maxId);
 
-	public int getId() {
+	public int generatorId() {
 		return ai.incrementAndGet();
 	}
 	

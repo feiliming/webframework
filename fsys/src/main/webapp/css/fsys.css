@@ -47,3 +47,16 @@
 .icon-collection{
 	background:url('../images/icons/collection.png') no-repeat center center;
 }
+
+/*ztree增加按钮的样式 */
+.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+/*没有满屏出现滚动条*/
+.panel-body{
+    overflow: visible;
+}
+body{ /*.org, .org */
+	overflow: visible;
+}
+.layout{ /*.org body */
+	overflow: auto;
+}

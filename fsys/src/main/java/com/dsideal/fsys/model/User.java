@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.dsideal.fsys.util.MD5Util;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Page;
 
 /**
  * 用户管理
@@ -23,8 +24,12 @@ public class User extends Model<User>{
 	private static final Integer maxId = Db.queryInt("SELECT MAX(id) FROM sys_user");
 	private static final AtomicInteger ai = new AtomicInteger(maxId == null ? 1 : maxId);
 
-	public int getId() {
+	public int generatorId() {
 		return ai.incrementAndGet();
+	}
+	
+	public Page<User> getUsers(int pageNumber, int pageSize, String sortOrder) {
+		return dao.paginate(pageNumber, pageSize, "select *", "from sys_user");
 	}
 	
 	/**

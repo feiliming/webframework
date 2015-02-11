@@ -36,7 +36,7 @@ function showok(message){
 		timeout:3000,
 		style:{
 			right:'',
-			top:document.body.scrollTop+document.documentElement.scrollTop,
+			top:document.body.scrollTop + document.documentElement.scrollTop,
 			bottom:''
 		}
 	});
@@ -49,7 +49,7 @@ function shownok(message){
 		timeout:3000,
 		style:{
 			right:'',
-			top:document.body.scrollTop+document.documentElement.scrollTop,
+			top:document.body.scrollTop + document.documentElement.scrollTop,
 			bottom:''
 		}
 	});

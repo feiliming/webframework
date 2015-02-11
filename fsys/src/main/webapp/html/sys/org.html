@@ -1,13 +1,14 @@
-
-<ul id="orgTree" class="ztree"></ul>
-
-<div id="orgAddDialog"></div>
-<div id="orgEditDialog"></div>
-
-<!-- 增加按钮的样式 -->
-<style type="text/css">
-	.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
-</style>
+<!DOCTYPE html>
+<html class="org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="edge" />
+<#include "/html/include.html" />
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true,border:false">
+	<ul id="orgTree" class="ztree" style="height:300px;"></ul>
+</div>
 
 <SCRIPT type="text/javascript">
 	var setting = {
@@ -107,9 +108,9 @@
 		});
 	});
 	
-	var orgAddDialog;
 	function addOrg(pId){
-		orgAddDialog = $("#orgAddDialog").dialog({
+		$("<div/>").dialog({
+			id: 'orgAddDialog',
 		    title: '添加机构',
 		    width: 500,
 		    height: 350,
@@ -130,19 +131,19 @@
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		orgAddDialog.dialog('close');
+		    		$("#orgAddDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
 	}
 	
-	var orgEditDialog;
 	function editOrg(id){
 		if (id == undefined) {
 			shownok("请选择一条数据进行编辑!");
 			return;
 		}
-		orgEditDialog = $("#orgEditDialog").dialog({
+		$("<div/>").dialog({
+			id: 'orgEditDialog',
 		    title: '编辑机构',
 		    width: 500,
 		    height: 350,
@@ -163,9 +164,11 @@
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		orgEditDialog.dialog('close');
+		    		$("#orgEditDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
 	}
 </SCRIPT>
+</body>
+</html>

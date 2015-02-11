@@ -4397,3 +4397,4 @@ java.lang.OutOfMemoryError: PermGen space
 	at java.util.TimerThread.run(Timer.java:505) [na:1.7.0_55]
 2015-02-07 13:31:41 [qtp6325382-22] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
 2015-02-09 08:43:38 [qtp41343992-30] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456
+2015-02-10 15:40:12 [qtp491927076-25] INFO  com.dsideal.fsys.model.User - 校验用户名 admin 和密码 123456

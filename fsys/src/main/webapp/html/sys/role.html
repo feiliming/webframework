@@ -1,11 +1,15 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="edge" />
+<#include "/html/include.html" />
+</head>
+<body>
 <table id="roleDataGrid" data-options="fit:true,border:false"></table>
 <div id="roleToolbar">
 	<a onclick="addRole();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
 </div>
-
-<div id="roleAddDialog"></div>
-<div id="roleEditDialog"></div>
 
 <script type="text/javascript">
 	var roleDataGrid;
@@ -58,9 +62,9 @@
 		});
 	});
 	
-	var roleAddDialog;
 	function addRole(){
-		roleAddDialog = $("#roleAddDialog").dialog({
+		$("<div/>").dialog({
+			id: 'roleAddDialog',
 		    title: '添加角色',
 		    width: 500,
 		    height: 350,
@@ -72,20 +76,18 @@
 		    	text: '保存',
 		    	iconCls:'icon-save',
 		    	handler:function(){
-					var f = roleAddDialog.find('#roleAddForm');
-					f.submit();
+		    		addRoleSubmit();
 		    	}
 		    },{
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		roleAddDialog.dialog('close');
+		    		$("#roleAddDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
 	}
 	
-	var roleEditDialog;
 	function editRole(id){
 		if (id == undefined) {
 			var rows = roleDataGrid.datagrid('getSelections');
@@ -96,7 +98,8 @@
 				id = rows[0].id;
 			}
 		}
-		roleEditDialog = $("#roleEditDialog").dialog({
+		$("<div/>").dialog({
+			id: 'roleEditDialog',
 		    title: '编辑资源',
 		    width: 500,
 		    height: 350,
@@ -107,14 +110,13 @@
 		    	text: '保存',
 		    	iconCls:'icon-save',
 		    	handler:function(){
-					var f = roleEditDialog.find('#roleEditForm');
-					f.submit();
+					editRoleSubmit();
 		    	}
 		    },{
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		roleEditDialog.dialog('close');
+		    		$("#roleEditDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
@@ -173,3 +175,5 @@
 	}
 	
 </script>
+</body>
+</html>

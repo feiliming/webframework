@@ -12,6 +12,11 @@
 					data-options="width:240,height:29,validType:'length[0,20]'" /></td>
 			</tr>
 			<tr>
+				<td>地址:</td>
+				<td><input name="organization.address" value="${organization.address!}" type="text" class="easyui-textbox"
+					data-options="width:240,height:29,validType:'length[0,50]'" /></td>
+			</tr>
+			<tr>
 				<td>说明:</td>
 				<td><input name="organization.description" value="${organization.description!}" type="text" class="easyui-textbox" 
 					data-options="multiline:true,width:240,height:120,validType:'length[0,100]'" /></td>
@@ -42,11 +47,11 @@
 				success : function(data) {
 					progressClose();
 					if (data.success) {
-						showok();
+						parent.showok();
 						renameNodeAfterEdit(data.name);
-						orgEditDialog.dialog('close');
+						$('#orgEditDialog').dialog('destroy');
 					} else {
-						shownok();
+						parent.shownok();
 					}
 				}
 			});
