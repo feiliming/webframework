@@ -3,48 +3,50 @@
 		<table>
 			<tr>
 				<td>角色名称:</td>
-				<td><input name="role.name" value="${role.name}" type="text" placeholder="请输入角色名称" class="easyui-textbox"
-					data-options="required:true,width:240,height:29,validType:'length[1,20]'"></input></td>
+				<td><input id="roleEditName" name="role.name" value="${role.name}" type="text" class="easyui-textbox"
+					data-options="required:true,width:240,height:29,validType:'length[1,20]',missingMessage:'请输入角色名称'" /><font color="red">*</font></td>
 			</tr>
 			<tr>
 				<td>说明:</td>
 				<td><input name="role.description" value="${role.description!}" type="text" class="easyui-textbox" 
-					data-options="multiline:true,width:240,height:160,validType:'length[0,100]'"></input></td>
+					data-options="multiline:true,width:240,height:160,validType:'length[0,100]'" /></td>
 			</tr>
 			<tr>
 				<td>排序:</td>
 				<td><input name="role.sequence" value="${role.sequence}"  class="easyui-numberspinner"
-				    data-options="required:true,editable:false,width:240,height:29"></td>
+				    data-options="required:true,editable:false,width:240,height:29" /></td>
 			</tr>
 		</table>
-		<input type="hidden" name="role.id" />
+		<input type="hidden" name="role.id" value="${role.id}" />
 	</form>
 </div>
 <script type="text/javascript">
 
-	$(function() {
-		
-		$('#roleEditForm').form({
-			url : '${contextPath}/role/edit',
-			onSubmit : function() {
-				progressLoad();
-				var isValid =  $(this).form('enableValidation').form('validate');
-				if (!isValid) {
+	function editRoleSubmit(){
+		var f = $('#roleEditForm');
+		progressLoad();
+		var isValid = f.form('enableValidation').form('validate');
+		if (!isValid) {
+			progressClose();
+		}else {
+			$.ajax({
+				url : '${contextPath}/role/edit',
+				async : false,
+				type : "POST",
+				data : f.serialize(),
+				dataType : "json",
+				success : function(data) {
 					progressClose();
+					if (data.success) {
+						parent.showok();
+						roleDataGrid.datagrid('reload');
+						$("#roleEditDialog").dialog('destroy');
+					} else {
+						parent.shownok();
+					}
 				}
-				return isValid;
-			},
-			success : function(result) {
-				progressClose();
-				if (result == 'true') {
-					showok();
-					parent.roleDataGrid.datagrid('reload');
-					parent.roleEditDialog.dialog('close');
-				} else {
-					shownok();
-				}
-			}
-		});
-		
-	});
+			});
+		}
+	}
+	
 </script>

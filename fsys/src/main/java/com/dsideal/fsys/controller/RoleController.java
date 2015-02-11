@@ -1,5 +1,6 @@
 package com.dsideal.fsys.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dsideal.fsys.bean.DataGrid;
 import com.dsideal.fsys.model.Role;
 import com.jfinal.core.Controller;
@@ -50,7 +51,10 @@ public class RoleController extends Controller{
 		
 		boolean b = role.save();
 		
-		renderText(String.valueOf(b));
+		JSONObject result = new JSONObject();
+		result.put("success", b);
+		
+		renderJson(result);
 	}
 	
 	/**
@@ -70,7 +74,10 @@ public class RoleController extends Controller{
 		
 		boolean b = role.update();
 		
-		renderText(String.valueOf(b));
+		JSONObject result = new JSONObject();
+		result.put("success", b);
+		
+		renderJson(result);
 	}
 	
 	/**

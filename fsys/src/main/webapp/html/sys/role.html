@@ -72,6 +72,9 @@
 		    iconCls: 'icon-add',
 		    href: '${contextPath}/role/addPage',
 		    modal: true,
+		    onLoad: function(){
+		    	$('#roleAddName').textbox('textbox').focus();
+		    },
 		    buttons: [{
 		    	text: '保存',
 		    	iconCls:'icon-save',
@@ -106,6 +109,10 @@
 		    cache: false,
 		    iconCls: 'icon-add',
 		    href: '${contextPath}/role/editPage?id=' + id,
+		    modal: true,
+		    onLoad: function(){
+		    	$('#roleEditName').textbox('textbox').focus();
+		    },
 		    buttons: [{
 		    	text: '保存',
 		    	iconCls:'icon-save',

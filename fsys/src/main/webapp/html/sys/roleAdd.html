@@ -3,25 +3,25 @@
 		<table>
 			<tr>
 				<td>角色名称:</td>
-				<td><input name="role.name" type="text" placeholder="请输入角色名称" class="easyui-textbox"
-					data-options="required:true,width:240,height:29,validType:'length[1,20]'"></input></td>
+				<td><input id="roleAddName" name="role.name" type="text" class="easyui-textbox"
+					data-options="required:true,width:240,height:29,validType:'length[1,20]',missingMessage:'请输入角色名称'" /><font color="red">*</font></td>
 			</tr>
 			<tr>
 				<td>说明:</td>
 				<td><input name="role.description" type="text" class="easyui-textbox" 
-					data-options="multiline:true,width:240,height:160,validType:'length[0,100]'"></input></td>
+					data-options="multiline:true,width:240,height:160,validType:'length[0,100]'" /></td>
 			</tr>
 			<tr>
 				<td>排序:</td>
 				<td><input name="role.sequence" value="0"  class="easyui-numberspinner"
-				    data-options="required:true,editable:false,width:240,height:29"></td>
+				    data-options="required:true,editable:false,width:240,height:29" /></td>
 			</tr>
 		</table>
 	</form>
 </div>
 <script type="text/javascript">
 
-	function editRoleSubmit(){
+	function addRoleSubmit(){
 		var f = $('#roleAddForm');
 		progressLoad();
 		var isValid = f.form('enableValidation').form('validate');
@@ -38,25 +38,14 @@
 					progressClose();
 					if (data.success) {
 						parent.showok();
-						addNodeAfterSave(data.treeNode);
-						$('#orgAddDialog').dialog('destroy');
+						roleDataGrid.datagrid('reload');
+						$("#roleAddDialog").dialog('destroy');
 					} else {
 						parent.shownok();
 					}
 				}
 			});
 		}
-			success : function(result) {
-				progressClose();
-				if (result == 'true') {
-					showok();
-					parent.roleDataGrid.datagrid('reload');
-					parent.roleAddDialog.dialog('close');
-				} else {
-					shownok();
-				}
-			}
-		});
 	}
 		
 </script>
