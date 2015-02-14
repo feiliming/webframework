@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dsideal.fsys.util.MD5Util;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
@@ -28,8 +29,24 @@ public class User extends Model<User>{
 		return ai.incrementAndGet();
 	}
 	
-	public Page<User> getUsers(int pageNumber, int pageSize, String sortOrder) {
-		return dao.paginate(pageNumber, pageSize, "select *", "from sys_user");
+	public Page<User> getUsers(int pageNumber, int pageSize, String sortOrder, String searchValue) {
+		String sqlExceptSelect = "";
+		if(StrKit.notBlank(searchValue)){
+			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id AND (u.login_name LIKE '%" + searchValue + "%' OR u.real_name LIKE '%" + searchValue + "%')  ORDER BY create_time " + sortOrder;
+		}else{
+			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id ORDER BY create_time " + sortOrder;
+		}
+		return dao.paginate(pageNumber, pageSize, "SELECT u.id,u.login_name,u.real_name,u.gender,u.age,u.create_time,u.org_id,o.name AS org_name,u.disabled", sqlExceptSelect);
+	}
+	
+	public Page<User> getUsers(int pageNumber, int pageSize, String sortOrder, String orgId, String searchValue) {
+		String sqlExceptSelect = "";
+		if(StrKit.notBlank(searchValue)){
+			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id AND org_id = ? AND (u.login_name LIKE '%" + searchValue + "%' OR u.real_name LIKE '%" + searchValue + "%')  ORDER BY create_time " + sortOrder;
+		}else{
+			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id AND org_id = ? ORDER BY create_time " + sortOrder;
+		}
+		return dao.paginate(pageNumber, pageSize, "SELECT u.id,u.login_name,u.real_name,u.gender,u.age,u.create_time,u.org_id,o.name AS org_name,u.disabled", sqlExceptSelect, orgId);
 	}
 	
 	/**

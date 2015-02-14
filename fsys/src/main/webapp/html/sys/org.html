@@ -100,7 +100,7 @@
 	$(document).ready(function(){
 		$.ajax({
 			type : "GET",
-			url : '${contextPath}' + '/org/getOrgs',
+			url : '${contextPath}' + '/org/getOrgsForZtree',
 			async : false,
 			success : function(data) {
 				$.fn.zTree.init($("#orgTree"), setting, data);

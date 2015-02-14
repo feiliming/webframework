@@ -14,6 +14,7 @@
 	var resourceTreeGrid;
 	$(function(){
 		resourceTreeGrid = $("#resourceTreeGrid").treegrid({
+			method: 'get',
 			url: '${contextPath}/resource/getResourceList',
 			method: 'post',
 			idField: 'id',

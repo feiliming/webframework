@@ -70,3 +70,5 @@ pom引用logback-classic则使用logback.xml
 12.ajax时IE提示下载,使用forIE
 renderJson("{\"success\":true}");
 render(new JsonRender("{\"success\":true}").forIE());
+
+13.

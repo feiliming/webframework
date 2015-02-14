@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dsideal.fsys.bean.EasyuiTree;
 import com.dsideal.fsys.bean.ZTree;
 import com.dsideal.fsys.model.Organization;
 import com.jfinal.core.Controller;
@@ -19,9 +20,9 @@ public class OrganizationController extends Controller{
 	}
 	
 	/**
-	 * org/getOrgs
+	 * org/getOrgsForZtree
 	 */
-	public void getOrgs() {
+	public void getOrgsForZtree() {
 		List<Organization> olist = Organization.dao.getOrganizations();
 		List<ZTree> tlist = new ArrayList<ZTree>();
 		for(Organization org : olist) {
@@ -30,6 +31,22 @@ public class OrganizationController extends Controller{
 			zt.setPId(org.getInt("pid"));
 			zt.setName(org.getStr("name"));
 			tlist.add(zt);
+		}
+		renderJson(tlist);
+	}
+	
+	/**
+	 * org/getOrgsForEtree
+	 */
+	public void getOrgsForEtree() {
+		List<Organization> olist = Organization.dao.getOrganizations();
+		List<EasyuiTree> tlist = new ArrayList<EasyuiTree>();
+		for(Organization org : olist) {
+			EasyuiTree et = new EasyuiTree();
+			et.setId(org.getInt("id"));
+			et.setPid(org.getInt("pid"));
+			et.setText(org.getStr("name"));
+			tlist.add(et);
 		}
 		renderJson(tlist);
 	}

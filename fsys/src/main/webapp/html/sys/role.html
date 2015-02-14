@@ -15,6 +15,7 @@
 	var roleDataGrid;
 	$(function() {
 		roleDataGrid = $('#roleDataGrid').datagrid({
+			method: 'get',
 			url : '${contextPath}' + '/role/getRoles',
 			striped : true,
 			rownumbers : true,
@@ -24,7 +25,7 @@
 			sortName : 'sequence',
 			sortOrder : 'asc',
 			pageSize : 20,
-			pageList : [ 10, 20, 30, 40, 50, 100],
+			//pageList : [ 10, 20, 30, 40, 50, 100],
 			nowrap: false,
 			columns : [ [ {
 				///width : '100',
@@ -146,10 +147,10 @@
 					data: "id=" + id,
 					success: function(data){
 						if(data == "true"){
-							showok();
+							parent.showok();
 							roleDataGrid.datagrid('reload');
 						}else{
-							shownok();
+							parent.shownok();
 						}
 					}
 				});

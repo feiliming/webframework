@@ -4,10 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="edge" />
 <#include "/html/include.html" />
-<!-- 增加按钮的样式 -->
-<style type="text/css">
-	.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
-</style>
 </head>
 <body>
 
@@ -18,14 +14,11 @@
 	<div id="center" data-options="region:'center',border:false,title:'用户列表'">
 		<div id="userToolbar">
 			<a onclick="addUser();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
+			<input class="easyui-searchbox" data-options="prompt:'输入登录名称或真实姓名',searcher:searchUser" style="width:200px"></input>
 		</div>
 		<table id="userDataGrid" data-options="fit:true,border:false"></table>
 	</div>
 </div>
-
-<div id="userAddDialog"></div>
-<div id="userEditDialog"></div>
-
 
 <SCRIPT type="text/javascript">
 	var setting = {
@@ -45,13 +38,11 @@
 	};
 	
 	function onClick(event, treeId, treeNode){
-		$.ajax({
-			type : "GET",
-			url : '${contextPath}' + '/user/getUsers',
-			async : false,
-			success : function(data) {
-				$.fn.zTree.init($("#orgTree"), setting, data);
-			}
+		$('#userDataGrid').datagrid('load',{
+			org_id: treeNode.id,
+			page: '1',
+			rows: '20',
+			order: 'asc'
 		});
 	}
 	
@@ -82,7 +73,7 @@
 	$(document).ready(function(){
 		$.ajax({
 			type : "GET",
-			url : '${contextPath}' + '/org/getOrgs',
+			url : '${contextPath}' + '/org/getOrgsForZtree',
 			async : false,
 			success : function(data) {
 				$.fn.zTree.init($("#orgTree"), setting, data);
@@ -90,18 +81,21 @@
 		});
 	});
 	
-	var userAddDialog;
-	function addUser(orgId){
-		userAddDialog = $("#userAddDialog").dialog({
-		    title: '添加机构',
+	function addUser(){
+		$("<div/>").dialog({
+			id: 'userAddDialog',
+		    title: '添加用户',
 		    width: 500,
 		    height: 350,
 		    cache: false,
 		    iconCls: 'icon-add',
-		    href: '${contextPath}/user/addPage?orgId=' + orgId,
+		    href: '${contextPath}/user/addPage',
 		    modal: true,
 		    onLoad: function(){
 		    	$('#userAddName').textbox('textbox').focus();
+		    },
+		    onClose: function(){
+		    	$("#userAddDialog").dialog('destroy');
 		    },
 		    buttons: [{
 		    	text: '保存',
@@ -113,20 +107,20 @@
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		userAddDialog.dialog('close');
+		    		$("#userAddDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
 	}
 	
-	var userEditDialog;
 	function editUser(id){
 		if (id == undefined) {
 			shownok("请选择一条数据进行编辑!");
 			return;
 		}
-		userEditDialog = $("#userEditDialog").dialog({
-		    title: '编辑机构',
+		$("<div/>").dialog({
+			id: 'userEditDialog',
+		    title: '编辑用户',
 		    width: 500,
 		    height: 350,
 		    cache: false,
@@ -135,6 +129,9 @@
 		    modal: true,
 		    onLoad: function(){
 		    	$('#userEditName').textbox('textbox').focus();
+		    },
+		    onClose: function(){
+		    	$("#userEditDialog").dialog('destroy');
 		    },
 		    buttons: [{
 		    	text: '保存',
@@ -146,40 +143,77 @@
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		userEditDialog.dialog('close');
+		    		$("#userEditDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
 	}
 	
 	$(function(){
-		var userDataGrid;
 		$(function() {
-			userDataGrid = $('#userDataGrid').datagrid({
+			$('#userDataGrid').datagrid({
+				method: 'get',
 				url : '${contextPath}' + '/user/getUsers',
 				striped : true,
 				rownumbers : true,
 				pagination : true,
 				singleSelect : true,
 				idField : 'id',
-				//sortName : 'sequence',
-				//sortOrder : 'asc',
+				sortName : 'create_time',
+				sortOrder : 'asc',
 				pageSize : 20,
-				pageList : [ 10, 20, 30, 40, 50, 100],
+				//pageList : [ 10, 20, 30, 40, 50, 100],
 				nowrap: false,
 				columns : [ [ {
-					///width : '100',
-					title : 'id',
-					field : 'id'
-				}, {
 					width : '100',
 					title : '登录名称',
 					field : 'login_name'
-				} , {
-					width : '80',
+				}, {
+					width : '100',
+					title : '真实姓名',
+					field : 'real_name'
+				}, {
+					width : '100',
+					title : '性别',
+					field : 'gender',
+					formatter: function(value, row, index){
+						switch(value){
+							case 1 :
+								return '男';
+								break;
+							case 2 :
+								return '女';
+								break;
+						}
+					}
+				}, {
+					width : '100',
+					title : '年龄',
+					field : 'age'
+				}, {
+					width : '100',
+					title : '所属机构',
+					field : 'org_name'
+				}, {
+					width : '140',
 					title : '创建时间',
-					field : 'create_time'
-				} , {
+					field : 'create_time',
+					sortable : true
+				}, {
+					width : '80',
+					title : '状态',
+					field : 'disabled',
+					formatter: function(value, row, index){
+						switch(value){
+							case 0 :
+								return '启用';
+								break;
+							case 1 :
+								return '禁用';
+								break;
+						}
+					}
+				}, {
 					field : 'action',
 					title : '操作',
 					//width : 120,
@@ -198,6 +232,22 @@
 			});
 		});
 	})
+	
+	function searchUser(value){
+		var orgId = "";
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		var nodes = zTree.getSelectedNodes();
+		if(nodes.length > 0){
+			orgId = nodes[0].id;
+		}
+		$('#userDataGrid').datagrid('load',{
+			searchValue: value,
+			org_id: orgId,
+			page: '1',
+			rows: '20',
+			order: 'asc'
+		});
+	}
 </SCRIPT>
 </body>
 </html>

@@ -3,11 +3,9 @@ package com.dsideal.fsys.bean;
 import java.util.List;
 
 /**
- * 
- * @author feilm220
- *
+ * easyui tree
  */
-public class Tree implements java.io.Serializable{
+public class EasyuiTree implements java.io.Serializable{
 
 	private static final long serialVersionUID = -7986194015663981710L;
 	
@@ -17,7 +15,7 @@ public class Tree implements java.io.Serializable{
 	private String state = "open";
 	private boolean checked = false;
 	private Object attributes;
-	private List<Tree> children;
+	private List<EasyuiTree> children;
 	private int pid;
 	
 	public int getId() {
@@ -62,10 +60,10 @@ public class Tree implements java.io.Serializable{
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public List<Tree> getChildren() {
+	public List<EasyuiTree> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Tree> children) {
+	public void setChildren(List<EasyuiTree> children) {
 		this.children = children;
 	}
 	

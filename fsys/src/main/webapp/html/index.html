@@ -107,23 +107,24 @@
 	    border:false
 	});
 	function addTabs(tab){
-		var iframe = '<iframe src="' + tab.url + '" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>';
+		var iframe = '<iframe src="' + tab.url + '" frameborder="0" scrolling="auto" style="border:0;width:100%;height:100%;"></iframe>';
 		if($("#tabs").tabs('exists',tab.title)){
 			$("#tabs").tabs('select',tab.title);
 		}else{
 			$("#tabs").tabs('add', {
 				title: tab.title,
 				iconCls: tab.iconCls,
-				//href: tab.url,
-				content: iframe,
-				closable: true,
-			    tools:[{    
+				//href: tab.url, //使用div
+				fit:true,
+				content: iframe, //使用iframe
+				closable: true
+			    /**tools:[{  iframe刷新不好使
 			        iconCls:'icon-mini-refresh',    
-			        handler:function(){    
+			        handler:function(){
 			        	var stab = $('#tabs').tabs('getSelected');
 			        	stab.panel('refresh');
 			        }    
-			    }]
+			    }]*/
 			});
 		}
 	}

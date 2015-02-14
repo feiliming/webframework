@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dsideal.fsys.bean.ResourceBean;
-import com.dsideal.fsys.bean.Tree;
+import com.dsideal.fsys.bean.EasyuiTree;
 import com.dsideal.fsys.util.StringUtil;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -79,12 +79,12 @@ public class Resource extends Model<Resource>{
 	 * @param disable
 	 * @return List<Tree>
 	 */
-	public List<Tree> getResourceTreeList(String pid, String type, String disable){
+	public List<EasyuiTree> getResourceTreeList(String pid, String type, String disable){
 		String sql = formatSql(pid, type, disable);
 		List<Resource> rlist = dao.find(sql);
-		List<Tree> tlist = new ArrayList<Tree>();
+		List<EasyuiTree> tlist = new ArrayList<EasyuiTree>();
 		for(Resource resource : rlist){
-			Tree tree = new Tree();
+			EasyuiTree tree = new EasyuiTree();
 			tree.setId(resource.getInt("id"));
 			tree.setText(resource.getStr("name"));
 			

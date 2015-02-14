@@ -3,9 +3,10 @@ package com.dsideal.fsys.controller;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dsideal.fsys.bean.DataGrid;
-import com.dsideal.fsys.model.Role;
 import com.dsideal.fsys.model.User;
+import com.dsideal.fsys.util.MD5Util;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -28,11 +29,18 @@ public class UserController extends Controller {
 	 * user/getUsers
 	 */
 	public void getUsers() {
+		String org_id = getPara("org_id");
 		int pageNumber = getParaToInt("page");
 		int pageSize = getParaToInt("rows");
 		String sortOrder = getPara("order");
+		String searchValue = getPara("searchValue");
 		
-		Page<User> users = User.dao.getUsers(pageNumber, pageSize, sortOrder);
+		Page<User> users;
+		if(org_id != null && !"".equals(org_id)){
+			users = User.dao.getUsers(pageNumber, pageSize, sortOrder, org_id, searchValue);
+		}else{
+			users = User.dao.getUsers(pageNumber, pageSize, sortOrder, searchValue);
+		}
 		
 		DataGrid<User> dataGrid = new DataGrid<User>();
 		dataGrid.setTotal(users.getTotalRow());
@@ -45,8 +53,47 @@ public class UserController extends Controller {
 	 * user/addPage
 	 */
 	public void addPage() {
-		setAttr("orgId", getPara("orgId"));
-		render("orgAdd.html");
+		render("userAdd.html");
+	}
+	
+	/**
+	 * user/add
+	 */
+	public void add() {
+		User user = getModel(User.class);
+		user.set("id", User.dao.generatorId());
+		user.set("password", MD5Util.md5("123456"));
+		user.set("create_time", new Date());
+		
+		boolean b = user.save();
+		
+		JSONObject result = new JSONObject();
+		result.put("success", b);
+		
+		renderJson(result);
+	}
+	
+	/**
+	 * user/editPage
+	 */
+	public void editPage() {
+		String id = getPara("id");
+		setAttr("user", User.dao.findById(id));
+		render("userEdit.html");
+	}
+	
+	/**
+	 * user/edit
+	 */
+	public void edit() {
+		User user = getModel(User.class);
+		
+		boolean b = user.update();
+		
+		JSONObject result = new JSONObject();
+		result.put("success", b);
+		
+		renderJson(result);
 	}
 
 	public void userList(){

@@ -1,0 +1,99 @@
+<style>
+<!--
+.panel-body{
+    overflow: auto;
+}
+-->
+</style>
+<div style="padding: 10px 20px 10px 20px">
+	<form id="userEditForm" class="easyui-form" method="post" data-options="novalidate:true">
+		<table>
+			<tr>
+				<td>登录名称:</td>
+				<td><input id="userAddName" name="user.login_name" value="${user.login_name!}" type="text" class="easyui-textbox"
+					data-options="required:true,width:240,height:29,validType:'length[1,25]',missingMessage:'请输入登录名称',prompt:'请输入登录名称'" /><font color="red">*</font></td>
+			</tr>
+			<tr>
+				<td>姓名:</td>
+				<td><input name="user.real_name" value="${user.real_name!}" type="text" class="easyui-textbox"
+					data-options="required:true,width:240,height:29,validType:'length[1,25]',missingMessage:'请输入姓名',prompt:'请输入姓名'" /><font color="red">*</font></td>
+			</tr>
+			<tr>
+				<td>性别:</td>
+				<td>
+					<select name="user.gender" value="${user.gender!}" class="easyui-combobox" data-options="width:240,height:29,editable:false,panelHeight:'auto'">
+						<option value="1">男</option>
+						<option value="2">女</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>年龄:</td>
+				<td><input name="user.age" value="${user.age!}" type="text" class="easyui-numberbox"
+					data-options="width:240,height:29,validType:'length[0,3]'" /></td>
+			</tr>
+			<tr>
+				<td>所属机构:</td>
+				<td><select id="userOrgTree"  name="user.org_id" style="width: 240px; height: 29px;"></select></td>
+			</tr>
+			<tr>
+				<td>状态:</td>
+				<td>
+					<select name="user.disabled" value="${user.disabled!}" class="easyui-combobox" data-options="width:240,height:29,editable:false,panelHeight:'auto'">
+						<option value="0">启用</option>
+						<option value="1">停用</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<input type="hidden" name="user.id" value="${user.id!}" />
+		<input type="hidden" id="userOrgId" name="orgId" value="${user.org_id!}"/>
+	</form>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#userOrgTree').combotree({
+			method : 'get',
+			url : '${contextPath}/org/getOrgsForEtree',
+			parentField : 'pid',
+			lines : true,
+			onLoadSuccess : function(node,data){
+				//选中机构节点
+				var orgId = $("#userOrgId").val();
+				if(orgId){
+					var t = $('#userOrgTree').combotree('tree');
+					var n = t.tree('find',orgId)
+					t.tree('select', n.target)
+					$('#userOrgTree').combotree('setValue', orgId);
+				}
+			}
+		});
+	})
+
+	function editUserSubmit(){
+		var f = $('#userEditForm');
+		progressLoad();
+		var isValid = f.form('enableValidation').form('validate');
+		if (!isValid) {
+			progressClose();
+		}else {
+			$.ajax({
+				url : '${contextPath}/user/edit',
+				async : false,
+				type : "POST",
+				data : f.serialize(),
+				dataType : "json",
+				success : function(data) {
+					progressClose();
+					if (data.success) {
+						parent.showok();
+						$('#userDataGrid').datagrid('reload');
+						$('#userEditDialog').dialog('destroy');
+					} else {
+						parent.shownok();
+					}
+				}
+			});
+		}
+	}
+</script>

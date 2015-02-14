@@ -54,9 +54,9 @@
 .panel-body{
     overflow: visible;
 }
-body{ /*.org, .org */
+.org, .org body{ /*.org, .org */
 	overflow: visible;
 }
-.layout{ /*.org body */
+.org body .layout{ /*.org body */
 	overflow: auto;
 }

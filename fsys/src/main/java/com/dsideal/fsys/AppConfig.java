@@ -31,6 +31,7 @@ import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 
@@ -111,8 +112,6 @@ public class AppConfig extends JFinalConfig
 				e.printStackTrace();
 			}
 		}
-		
-		//初始化个表
 		
 		//TODO 初始化系统配置
 	}
