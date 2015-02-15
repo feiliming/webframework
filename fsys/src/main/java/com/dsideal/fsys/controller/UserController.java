@@ -35,12 +35,7 @@ public class UserController extends Controller {
 		String sortOrder = getPara("order");
 		String searchValue = getPara("searchValue");
 		
-		Page<User> users;
-		if(org_id != null && !"".equals(org_id)){
-			users = User.dao.getUsers(pageNumber, pageSize, sortOrder, org_id, searchValue);
-		}else{
-			users = User.dao.getUsers(pageNumber, pageSize, sortOrder, searchValue);
-		}
+		Page<User> users = User.dao.getUsers(pageNumber, pageSize, sortOrder, org_id, searchValue);
 		
 		DataGrid<User> dataGrid = new DataGrid<User>();
 		dataGrid.setTotal(users.getTotalRow());

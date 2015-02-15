@@ -1,21 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="edge" />
 <#include "/html/include.html" />
+</head>
+<body>
+
 <table id="resourceTreeGrid"></table>
 <div id="resourceToolbar">
 	<a href="javascript:void(0)" onclick="addResource();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
-	<a href="javascript:void(0)" onclick="editResource();" class="easyui-linkbutton" data-options="iconCls:'icon-eidt',plain:true">编辑</a>
-	<a href="javascript:void(0)" onclick="deleteResource();" class="easyui-linkbutton" data-options="iconCls:'icon-del',plain:true">删除</a>
 </div>
-
-<div id="resourceAddDialog"></div>
-<div id="resourceEditDialog"></div>
 
 <script type="text/javascript">
 
-	var resourceTreeGrid;
 	$(function(){
-		resourceTreeGrid = $("#resourceTreeGrid").treegrid({
+		$("#resourceTreeGrid").treegrid({
 			method: 'get',
-			url: '${contextPath}/resource/getResourceList',
+			url: '${contextPath}/resource/getResources',
 			method: 'post',
 			idField: 'id',
 			parentField: 'pid',
@@ -24,11 +26,11 @@
 			rownumbers: true,
 			fit: true,
 			border: false,
-			singleSelect: false,
+			singleSelect: true,
 			columns: [[{
 				field: 'name',
 				title: '资源名称',
-				width: 120
+				width: 150
 			},{
 				field: 'url',
 				title: 'Url',
@@ -36,25 +38,11 @@
 			},{
 				field: 'iconCls',
 				title: '图标',
-				width: 100
+				width: 120
 			},{
 				field: 'sequence',
 				title: '排序',
 				width: 80
-			},{
-				field: 'disable',
-				title: '是否禁用',
-				width: 80,
-				formatter: function(value, row, index){
-					switch(value){
-						case 0 :
-							return '否';
-							break;
-						case 1 :
-							return '是';
-							break;
-					}
-				}
 			},{
 				field: 'type',
 				title: '资源类型',
@@ -62,7 +50,7 @@
 			},{
 				field: 'action',
 				title: '操作',
-				width: 120,
+				width: 150,
 				formatter: function(value, row, index) {
 					var str = '&nbsp;';
 					str += '<a href="javascript:void(0)" onclick="editResource(\'' + row.id + '\');" >编辑</a>';
@@ -76,62 +64,67 @@
 		
 	});
 
-	var resourceAddDialog;
 	function addResource(){
-		resourceAddDialog = $("#resourceAddDialog").dialog({
+		$("<div/>").dialog({
+			id: 'resourceAddDialog',
 		    title: '添加资源',
 		    width: 500,
 		    height: 350,
 		    cache: false,
 		    iconCls: 'icon-add',
 		    href: '${contextPath}/resource/addPage',
+		    onLoad: function(){
+		    	$('#resourceAddName').textbox('textbox').focus();
+		    },
+		    onClose: function(){
+		    	$("#resourceAddDialog").dialog('destroy');
+		    },
 		    buttons: [{
 		    	text: '保存',
 		    	iconCls:'icon-save',
 		    	handler:function(){
-					var f = resourceAddDialog.find('#resourceAddForm');
-					f.submit();
+		    		addResourceSubmit();
 		    	}
 		    },{
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		resourceAddDialog.dialog('close');
+		    		$("#resourceAddDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
 	}
 	
-	var resourceEditDialog;
 	function editResource(id){
 		if (id == undefined) {
-			var rows = resourceTreeGrid.treegrid('getSelections');
-			if(rows.length != 1){
-				shownok("请选择一条数据进行编辑!");
-				return;
-			}else{
-				id = rows[0].id;
-			}
+			parent.shownok("请选择一条数据进行编辑!");
+			return;
 		}
-		resourceEditDialog = $("#resourceEditDialog").dialog({
+		$("<div/>").dialog({
+			id: 'resourceEditDialog',
 		    title: '编辑资源',
 		    width: 500,
 		    height: 350,
 		    cache: false,
 		    iconCls: 'icon-add',
 		    href: '${contextPath}/resource/editPage?id=' + id,
+		    onLoad: function(){
+		    	$('#resourceEditName').textbox('textbox').focus();
+		    },
+		    onClose: function(){
+		    	$("#resourceEditDialog").dialog('destroy');
+		    },
 		    buttons: [{
 		    	text: '保存',
 		    	iconCls:'icon-save',
 		    	handler:function(){
-					var f = resourceEditDialog.find('#resourceEditForm');
-					f.submit();
+		    		editResourceSubmit();
 		    	}
 		    },{
 		    	text: '取消',
 		    	iconCls:'icon-cancel',
 		    	handler:function(){
-		    		resourceEditDialog.dialog('close');
+		    		$("#resourceEditDialog").dialog('destroy');
 		    	}
 		    }]
 		}); 
@@ -140,7 +133,7 @@
 	function deleteResource(id){
 		var ids = "";
 		if (id == undefined) {
-			var rows = resourceTreeGrid.treegrid('getSelections');
+			var rows = $("#resourceTreeGrid").treegrid('getSelections');
 			if(rows.lenght < 1){
 				shownok("请至少选择一条要删除的数据!");
 				return;
@@ -161,13 +154,15 @@
 			data: "ids=" + ids,
 			success: function(data){
 				if(data == "ok"){
-					showok();
-					resourceTreeGrid.treegrid('reload');
+					parent.showok();
+					$("#resourceTreeGrid").treegrid('reload');
 				}else{
-					shownok();
+					parent.shownok();
 				}
 			}
 		});
 	}	
 
 </script>
+</body>
+</html>

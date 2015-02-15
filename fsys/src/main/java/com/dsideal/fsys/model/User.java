@@ -29,24 +29,17 @@ public class User extends Model<User>{
 		return ai.incrementAndGet();
 	}
 	
-	public Page<User> getUsers(int pageNumber, int pageSize, String sortOrder, String searchValue) {
-		String sqlExceptSelect = "";
-		if(StrKit.notBlank(searchValue)){
-			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id AND (u.login_name LIKE '%" + searchValue + "%' OR u.real_name LIKE '%" + searchValue + "%')  ORDER BY create_time " + sortOrder;
-		}else{
-			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id ORDER BY create_time " + sortOrder;
-		}
-		return dao.paginate(pageNumber, pageSize, "SELECT u.id,u.login_name,u.real_name,u.gender,u.age,u.create_time,u.org_id,o.name AS org_name,u.disabled", sqlExceptSelect);
-	}
-	
 	public Page<User> getUsers(int pageNumber, int pageSize, String sortOrder, String orgId, String searchValue) {
-		String sqlExceptSelect = "";
-		if(StrKit.notBlank(searchValue)){
-			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id AND org_id = ? AND (u.login_name LIKE '%" + searchValue + "%' OR u.real_name LIKE '%" + searchValue + "%')  ORDER BY create_time " + sortOrder;
-		}else{
-			sqlExceptSelect = "FROM sys_user u,sys_organization o WHERE u.org_id = o.id AND org_id = ? ORDER BY create_time " + sortOrder;
+		StringBuilder sqlExceptSelect = new StringBuilder("FROM sys_user u,sys_organization o WHERE u.org_id = o.id ");
+		if(StrKit.notBlank(orgId)){
+			sqlExceptSelect.append(" AND org_id = " + orgId);
 		}
-		return dao.paginate(pageNumber, pageSize, "SELECT u.id,u.login_name,u.real_name,u.gender,u.age,u.create_time,u.org_id,o.name AS org_name,u.disabled", sqlExceptSelect, orgId);
+		if(StrKit.notBlank(searchValue)){
+			sqlExceptSelect.append(" AND (u.login_name LIKE '%" + searchValue + "%' OR u.real_name LIKE '%" + searchValue + "%') ");
+		}
+		sqlExceptSelect.append(" ORDER BY create_time " + sortOrder);
+		
+		return dao.paginate(pageNumber, pageSize, "SELECT u.id,u.login_name,u.real_name,u.gender,u.age,u.create_time,u.org_id,o.name AS org_name,u.disabled", sqlExceptSelect.toString());
 	}
 	
 	/**

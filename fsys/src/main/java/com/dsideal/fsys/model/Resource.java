@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.dsideal.fsys.bean.ETree;
 import com.dsideal.fsys.bean.ResourceBean;
-import com.dsideal.fsys.bean.EasyuiTree;
 import com.dsideal.fsys.util.StringUtil;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -23,7 +20,7 @@ import com.jfinal.plugin.activerecord.Model;
 public class Resource extends Model<Resource>{
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger log_ = LoggerFactory.getLogger(Resource.class);
+	//private static final Logger log_ = LoggerFactory.getLogger(Resource.class);
 	
 	public static final Resource dao = new Resource();
 	
@@ -34,25 +31,24 @@ public class Resource extends Model<Resource>{
 		return ai.incrementAndGet();
 	}
 	
-	public List<Resource> getResourceList() {
+	public List<Resource> getResources() {
 		String sql = "select * from sys_resource order by sequence asc";
-		return dao.findByCache("resource", "getResourceList", sql);
+		return dao.find(sql);
 	}
 	
-	public List<Resource> getResourceList(String resource_type, String pid) {
+	public List<Resource> getResources(String resource_type, String pid) {
 		String sql = "select * from sys_resource where type = ? and pid = ? order by sequence asc";
-		return dao.findByCache("resource", "getResourceList_" + resource_type + "_" + pid, sql, resource_type, pid);
+		return dao.find(sql, resource_type, pid);
 	}
 	
 	/**
 	 * 根据条件查询资源, 只返回下一级资源列表
 	 * @param pid
 	 * @param type 资源类型,字典码,menu or button
-	 * @param disable 0启用,1禁用
 	 * @return List<Resource>
 	 */
-	public List<ResourceBean> getResourceList(String pid, String type, String disable){
-		String sql = formatSql(pid, type, disable);
+	public List<ResourceBean> getResourceList2(String pid, String type){
+		String sql = formatSql(pid, type);
 		List<ResourceBean> listb = new ArrayList<ResourceBean>();
 		List<Resource> list = dao.find(sql);
 		if(list != null){
@@ -63,7 +59,6 @@ public class Resource extends Model<Resource>{
 				rb.setUrl(r.getStr("url"));
 				rb.setIconCls(r.getStr("icon_class"));
 				rb.setSequence(r.getInt("sequence"));
-				rb.setDisable(r.getInt("disable"));
 				rb.setType(r.getStr("type"));
 				rb.setPid(r.getInt("pid") == null ? -1 : r.getInt("pid"));
 				listb.add(rb);
@@ -79,12 +74,12 @@ public class Resource extends Model<Resource>{
 	 * @param disable
 	 * @return List<Tree>
 	 */
-	public List<EasyuiTree> getResourceTreeList(String pid, String type, String disable){
-		String sql = formatSql(pid, type, disable);
+	public List<ETree> getResourceTreeList(String pid, String type){
+		String sql = formatSql(pid, type);
 		List<Resource> rlist = dao.find(sql);
-		List<EasyuiTree> tlist = new ArrayList<EasyuiTree>();
+		List<ETree> tlist = new ArrayList<ETree>();
 		for(Resource resource : rlist){
-			EasyuiTree tree = new EasyuiTree();
+			ETree tree = new ETree();
 			tree.setId(resource.getInt("id"));
 			tree.setText(resource.getStr("name"));
 			
@@ -149,7 +144,7 @@ public class Resource extends Model<Resource>{
 		}
 	}
 	
-	private String formatSql(String pid, String type, String disable){
+	private String formatSql(String pid, String type){
 		StringBuilder sql = new StringBuilder();
 		sql.append("select * from sys_resource");
 		if(!StringUtil.isNullOrEmpty(pid)){
@@ -164,13 +159,6 @@ public class Resource extends Model<Resource>{
 				sql.append(" where type = '" + type + "'");
 			}else{
 				sql.append(" and type = '" + type + "'");
-			}
-		}
-		if(!StringUtil.isNullOrEmpty(disable)){
-			if(sql.indexOf("where") == -1){
-				sql.append(" where disable = " + disable);
-			}else{
-				sql.append(" and disable = " + disable);
 			}
 		}
 		sql.append(" order by sequence asc");

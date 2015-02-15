@@ -3,9 +3,7 @@ package com.dsideal.fsys.bean;
 import java.io.Serializable;
 
 /**
- * 
- * @author feilm220
- *
+ * 页面使用TreeGrid组件, 有easyui tree的属性, 还有Resource的属性
  */
 public class ResourceBean implements Serializable{
 
@@ -16,7 +14,6 @@ public class ResourceBean implements Serializable{
 	private String url;
 	private String iconCls;
 	private int sequence;
-	private int disable;
 	private String type;
 	private int pid;
 	
@@ -49,12 +46,6 @@ public class ResourceBean implements Serializable{
 	}
 	public void setSequence(int sequence) {
 		this.sequence = sequence;
-	}
-	public int getDisable() {
-		return disable;
-	}
-	public void setDisable(int disable) {
-		this.disable = disable;
 	}
 	public String getType() {
 		return type;

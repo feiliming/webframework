@@ -1,37 +1,45 @@
-<div style="padding: 3px;">
+<style>
+<!--
+.panel-body{
+    overflow: auto;
+}
+-->
+</style>
+<div style="padding: 10px 20px 10px 20px">
 	<form id="resourceEditForm" class="easyui-form" method="post" data-options="novalidate:true">
-		<table class="grid">
+		<table>
 			<tr>
 				<td>资源名称</td>
-				<td><input name="resource.name" type="text" placeholder="请输入资源名称" class="easyui-validatebox span2" data-options="required:true" ></td>
+				<td><input id="resourceEditName" name="resource.name" value="${resource.name!}" type="text" class="easyui-textbox" 
+					data-options="required:true,width:240,height:29,validType:'length[1,25]',missingMessage:'请输入资源名称',prompt:'请输入资源名称'" /><font color="red">*</font></td>
+			</tr>
+			<tr>
 				<td>资源类型</td>
-				<td><select name="resource.type" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+				<td><select name="resource.type" class="easyui-combobox" value="${resource.type!}" data-options="width:240,height:29,editable:false,panelHeight:'auto'">
 							<option value="menu">菜单</option>
 							<option value="button">按钮</option>
-				</select></td>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>资源路径</td>
-				<td><input name="resource.url" type="text" placeholder="请输入资源路径" class="easyui-validatebox span2" data-options="width:140,height:29" ></td>
+				<td><input name="resource.url" type="text" class="easyui-textbox" value="${resource.url!}" data-options="width:240,height:29" ></td>
+			</tr>
+			<tr>
 				<td>排序</td>
-				<td><input name="resource.sequence" class="easyui-numberspinner" style="width:140px; height:29px;" data-options="required:true,editable:false"></td>
+				<td><input name="resource.sequence" class="easyui-numberspinner" value="${resource.sequence!}" data-options="required:true,editable:false,width:240,height:29"></td>
 			</tr>
 			<tr>
 				<td>菜单图标</td>
-				<td ><input  name="resource.icon_class" /></td>
-				<td>是否禁用</td>
-				<td ><select name="resource.disable" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
-							<option value="0">正常</option>
-							<option value="1">停用</option>
-				</select></td>
+				<td ><input  name="resource.icon_class" type="text" class="easyui-textbox" value="${resource.icon_class!}" data-options="width:240,height:29"/></td>
 			</tr>
 			<tr>
 				<td>上级资源</td>
-				<td colspan="3"><select id="pid" name="resource.pid" style="width: 200px; height: 29px;"></select>
+				<td colspan="3"><select id="rpTree" name="resource.pid" value="${resource.pid!}" style="width: 240px; height: 29px;"></select>
 				<a class="easyui-linkbutton" href="javascript:void(0)" onclick="$('#pid').combotree('clear');" >清空</a></td>
 			</tr>
 		</table>
-		<input type="hidden" name="resource.id" />
+		<input type="hidden" name="resource.id" value="${resource.id!}"/>
 	</form>
 </div>
 
@@ -39,43 +47,48 @@
 
 	$(function() {
 		
-		$('#pid').combotree({
+		$('#rpTree').combotree({
 			url : '${contextPath}/resource/getResourceTreeList',
 			parentField : 'pid',
 			lines : true,
-			panelHeight : 'auto'
-		});
-		
-		$('#resourceEditForm').form({
-			url : '${contextPath}/resource/edit',
-			onSubmit : function() {
-				progressLoad();
-				var isValid =  $(this).form('enableValidation').form('validate');
-				if (!isValid) {
-					progressClose();
+			onLoadSuccess : function(node,data){
+				//选中资源节点
+				var rpid = "${resource.pid!}";
+				if(rpid){
+					var t = $('#rpTree').combotree('tree');
+					var n = t.tree('find',rpid)
+					t.tree('select', n.target)
+					$('#rpTree').combotree('setValue', rpid);
 				}
-				return isValid;
-			},
-			success : function(result) {
-				progressClose();
-				if (result == 'ok') {
-					showok();
-					parent.resourceTreeGrid.treegrid('reload');
-					parent.resourceEditDialog.dialog('close');
-				} else {
-					shownok();
-				}
-			}
-		});
-		
-		$.ajax({
-			url:'${contextPath}/resource/getResource?id=${id}',
-			type:"POST",
-			async:false,
-			success: function(data){
-				$("#resourceEditForm").form('myLoad',data);
 			}
 		});
 		
 	});
+	
+	function editResourceSubmit(){
+		var f = $('#resourceEditForm');
+		progressLoad();
+		var isValid = f.form('enableValidation').form('validate');
+		if (!isValid) {
+			progressClose();
+		}else {
+			$.ajax({
+				url : '${contextPath}/resource/edit',
+				async : false,
+				type : "POST",
+				data : f.serialize(),
+				dataType : "json",
+				success : function(data) {
+					progressClose();
+					if (data.success) {
+						parent.showok();
+						$('#resourceTreeGrid').treegrid('reload');
+						$('#resourceEditDialog').dialog('destroy');
+					} else {
+						parent.shownok();
+					}
+				}
+			});
+		}
+	}
 </script>

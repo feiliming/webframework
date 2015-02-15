@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * easyui tree
  */
-public class EasyuiTree implements java.io.Serializable{
+public class ETree implements java.io.Serializable{
 
 	private static final long serialVersionUID = -7986194015663981710L;
 	
@@ -15,7 +15,7 @@ public class EasyuiTree implements java.io.Serializable{
 	private String state = "open";
 	private boolean checked = false;
 	private Object attributes;
-	private List<EasyuiTree> children;
+	private List<ETree> children;
 	private int pid;
 	
 	public int getId() {
@@ -60,10 +60,10 @@ public class EasyuiTree implements java.io.Serializable{
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public List<EasyuiTree> getChildren() {
+	public List<ETree> getChildren() {
 		return children;
 	}
-	public void setChildren(List<EasyuiTree> children) {
+	public void setChildren(List<ETree> children) {
 		this.children = children;
 	}
 	
